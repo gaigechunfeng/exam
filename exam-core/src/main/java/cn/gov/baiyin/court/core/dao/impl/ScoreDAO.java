@@ -137,4 +137,67 @@ public class ScoreDAO extends AbstractDAO implements IScoreDAO {
         jdbcTemplate.update("delete t.* from score t left join reply t1 on t.rid=t1.id left join examine_topic t2 on t1.etid=t2.id " +
                 "where t1.uid=? and t2.eid=?", uid, eid);
     }
+
+    @Override
+    public String exportDb2Sql() {
+
+        String queryTablenameSql = "select table_name from information_schema.tables where TABLE_SCHEMA=?";
+
+        List<Map<String, Object>> list = jdbcTemplate.queryForList(queryTablenameSql, "exam");
+        if (!CollectionUtils.isEmpty(list)) {
+
+            return list.stream()
+                    .map(m -> {
+                        String tableName = MapUtils.getString(m, "table_name", "");
+                        if (!StringUtils.isEmpty(tableName)) {
+                            List<Map<String, Object>> subList = jdbcTemplate.queryForList("select * from " + tableName);
+                            if (!CollectionUtils.isEmpty(subList)) {
+                                return subList.stream()
+                                        .map(sm -> map2Sql(tableName, sm)).reduce((s1, s2) -> s1 + "\r\n" + s2).orElse("");
+                            }
+                        }
+                        return "";
+                    }).reduce((s1, s2) -> s1 + "\r\n" + s2).orElse("");
+        }
+        return "";
+    }
+
+    private static String map2Sql(String tableName, Map<String, Object> sm) {
+
+        StringBuilder fields = new StringBuilder();
+        StringBuilder values = new StringBuilder();
+
+        StringBuilder r = new StringBuilder("insert into " + tableName + "(");
+
+        for (Map.Entry<String, Object> entry : sm.entrySet()) {
+            String field = entry.getKey();
+            Object val = entry.getValue();
+
+            if ("id".equalsIgnoreCase(field)) {
+                continue;
+            }
+            fields.append(",").append(field);
+            values.append(",").append(parseVal(val));
+        }
+        if (fields.length() > 0) {
+            fields.delete(0, 1);
+        }
+        if (values.length() > 0) {
+            values.delete(0, 1);
+        }
+        r.append(fields).append(") values(").append(values).append(");");
+
+        return r.toString();
+    }
+
+    private static String parseVal(Object val) {
+        if (val == null) return null;
+        Class cls = val.getClass();
+
+        if (cls.isPrimitive() || Number.class.isAssignableFrom(cls)) {
+            return String.valueOf(val);
+        } else {
+            return "'" + val + "'";
+        }
+    }
 }

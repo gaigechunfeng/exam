@@ -26,4 +26,5 @@ public interface IScoreService {
 
     void reExam(Integer uid, Integer eid) throws ServiceException;
 
+    String exportDb2Sql();
 }

@@ -1,5 +1,9 @@
 package cn.gov.baiyin.court.test;
 
+import cn.gov.baiyin.court.core.service.IScoreService;
+import cn.gov.baiyin.court.core.util.Utils;
+import cn.gov.baiyin.court.www.util.WebUtil;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,9 +25,19 @@ public class MainTest {
     @Autowired
     private WebApplicationContext wac;
 
+    @Autowired
+    private IScoreService scoreService;
+
+    @BeforeClass
+    public static void doBefore() {
+        Utils.setApp(WebUtil.APP);
+    }
+
     @Test
     public void test() {
 
         System.out.println(wac);
+
+        System.out.println(scoreService.exportDb2Sql());
     }
 }

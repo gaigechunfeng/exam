@@ -223,6 +223,11 @@ public class ScoreService implements IScoreService {
         scoreDAO.removeReplyByUidAndEid(uid, eid);
     }
 
+    @Override
+    public String exportDb2Sql() {
+        return scoreDAO.exportDb2Sql();
+    }
+
     private float findScoreInMap(String s, Map<String, Object> scoreMap) {
 
         float score = 0;

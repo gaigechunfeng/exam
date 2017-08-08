@@ -90,6 +90,20 @@ public class ScoreController {
         }
     }
 
+    @RequestMapping("/export/db")
+    @ResponseBody
+    public void exportDb(HttpServletResponse response) {
+        String s = scoreService.exportDb2Sql();
+
+        response.setCharacterEncoding("utf-8");
+        response.setHeader("Content-Disposition", "attachment; filename=db-" + new Date().getTime() + ".sql");
+        try {
+            response.getOutputStream().write(s.getBytes("utf-8"));
+        } catch (IOException e) {
+            throw new RuntimeException("download score excel error", e);
+        }
+    }
+
     private static String genScoreExcelFileName() {
 
         String fn = new SimpleDateFormat("yyyyMMddHHmmssSSS").format(new Date());
