@@ -77,6 +77,8 @@
     <tr>
         <td width="709" height="41" align="right" valign="middle" style=" border-bottom:3px solid #0066FF"><input
                 type="button" name="show" value="刷   新" class="btns" id="refreshBtn"/>
+            <input type="button" id="downTemplateBtn" value="导入模块下载" class="btns"/>
+            <input type="button" id="importTopicBtn" value="导入" class="btns"/>
             <input type="button" name="add" value="新增题目" class="btns" onclick="Chref('addTi.html')"/>
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         </td>
@@ -129,6 +131,7 @@
     var isChoose = App.getParam('isChoose');
     var method = App.getParam('method');
     var mainData = [];
+    var importWin;
     function deleteTopic(id) {
         if (confirm('您确认删除这个题目吗？')) {
             $.post(App.basePath + '/back/topic/delete.do', {id: id}, function (data) {
@@ -138,6 +141,15 @@
                     alert('错误：' + data.errmsg)
                 }
             }, 'json');
+        }
+    }
+
+    function importSuccess(filePath) {
+
+        $('#refreshBtn').click();
+
+        if (importWin) {
+            importWin.close();
         }
     }
     $(function () {
@@ -168,6 +180,10 @@
         }
         loadData();
 
+        $('#downTemplateBtn').on('click',function () {
+            window.open(App.basePath+'/back/topic_template.xls')
+        })
+
         $('#refreshBtn').on('click', loadData);
 
         $('#chooseBtn').on('click', function () {
@@ -186,6 +202,11 @@
                 self.opener[method](selectedRs);
                 self.close();
             }
+        })
+
+        $('#importTopicBtn').on('click', function () {
+
+            importWin = self.open(App.basePath + '/back/importExcel.html?type=importTopic', '_import', 'width=600px,height=200px');
         })
     })
 </script>

@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * Created by WK on 2017/3/26.
@@ -84,5 +85,17 @@ public class TopicController {
         } catch (ServiceException e) {
             return Msg.error(e);
         }
+    }
+
+    @RequestMapping("/import")
+    @ResponseBody
+    public Msg importUser(MultipartFile file) {
+
+        try {
+            topicService.importTopics(file);
+        } catch (ServiceException e) {
+            return Msg.error(e);
+        }
+        return Msg.SUCCESS;
     }
 }

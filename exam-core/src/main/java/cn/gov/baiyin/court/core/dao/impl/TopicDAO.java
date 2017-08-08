@@ -62,6 +62,14 @@ public class TopicDAO extends AbstractDAO implements ITopicDAO {
         return queryList("select t2.* from examine_topic t left join topic t2 on t.tid=t2.id where t.eid=? and t2.id is not null", Topic.class, eid);
     }
 
+    @Override
+    public void addMulti(List<Topic> topics) {
+
+        for (Topic topic : topics) {
+            add(topic);
+        }
+    }
+
 //    public static void main(String[] args) {
 //
 //        for (Object o : System.getProperties().keySet()) {

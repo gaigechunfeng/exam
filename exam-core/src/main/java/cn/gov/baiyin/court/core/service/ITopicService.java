@@ -4,6 +4,7 @@ package cn.gov.baiyin.court.core.service;
 import cn.gov.baiyin.court.core.entity.Topic;
 import cn.gov.baiyin.court.core.exception.ServiceException;
 import cn.gov.baiyin.court.core.util.PageInfo;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -24,4 +25,6 @@ public interface ITopicService {
     Topic findById(Integer tid);
 
     List<String> listFieldsByEid(Integer eid);
+
+    void importTopics(MultipartFile file) throws ServiceException;
 }

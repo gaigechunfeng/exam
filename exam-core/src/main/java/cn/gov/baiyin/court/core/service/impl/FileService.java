@@ -90,10 +90,10 @@ public class FileService implements IFileService {
     public static File getProductionFolder() {
         File f = new File(Utils.getApp().getString("upload.path", System.getProperty("user.dir")));
         if (!f.exists()) {
-            boolean r = f.mkdirs();
-            if (!r) {
-                throw new RuntimeException("create production folder error!");
-            }
+            f.mkdirs();
+//            if (!r) {
+//                throw new RuntimeException("create production folder error!");
+//            }
         }
         return f;
     }

@@ -91,7 +91,6 @@ public class ScoreController {
     }
 
     @RequestMapping("/export/db")
-    @ResponseBody
     public void exportDb(HttpServletResponse response) {
         String s = scoreService.exportDb2Sql();
 

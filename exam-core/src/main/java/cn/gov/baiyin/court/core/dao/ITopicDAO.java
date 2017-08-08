@@ -20,4 +20,6 @@ public interface ITopicDAO {
     boolean edit(Topic topic);
 
     List<Topic> findByEid(Integer eid);
+
+    void addMulti(List<Topic> topics);
 }

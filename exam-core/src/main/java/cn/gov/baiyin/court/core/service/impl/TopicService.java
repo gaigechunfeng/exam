@@ -5,14 +5,24 @@ import cn.gov.baiyin.court.core.entity.Topic;
 import cn.gov.baiyin.court.core.exception.ServiceException;
 import cn.gov.baiyin.court.core.service.IExamineTopicService;
 import cn.gov.baiyin.court.core.service.ITopicService;
+import cn.gov.baiyin.court.core.util.DateUtil;
 import cn.gov.baiyin.court.core.util.FileUtil;
 import cn.gov.baiyin.court.core.util.PageInfo;
+import cn.gov.baiyin.court.core.util.Utils;
+import jxl.Sheet;
+import jxl.Workbook;
+import jxl.read.biff.BiffException;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StreamUtils;
 import org.springframework.util.StringUtils;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -135,6 +145,102 @@ public class TopicService implements ITopicService {
 
         List<Topic> topics = topicDAO.findByEid(eid);
         return topics.stream().map(Topic::getName).collect(Collectors.toList());
+    }
+
+    @Override
+    @Transactional
+    public void importTopics(MultipartFile file) throws ServiceException {
+
+        if (!file.getOriginalFilename().toUpperCase().endsWith(".ZIP")) {
+            throw new ServiceException("\u5bfc\u5165\u7684\u6587\u4ef6\u5fc5\u987b\u662fzip\u6587\u4ef6\uff01");
+        }
+
+        File zipFile = saveFile(file);
+        File folder = FileUtil.unzip(zipFile.getAbsolutePath());
+        File excelFile = findExcelFile(folder);
+        if (excelFile == null) {
+            throw new ServiceException("zip\u6587\u4ef6\u4e2d\u6ca1\u6709xls\u6587\u4ef6\uff0c\u5fc5\u987b\u5305\u542b\u4e00\u4e2axls\u6587\u4ef6\uff01");
+        }
+
+        try {
+            Workbook wb = Workbook.getWorkbook(excelFile);
+            Sheet sheet = wb.getSheet(0);
+
+            int rowCount = sheet.getRows();
+            List<Topic> topics = new ArrayList<>(rowCount - 1);
+            for (int i = 1; i < rowCount; i++) {
+
+                String name = sheet.getCell(0, i).getContents();
+                int score = Integer.parseInt(sheet.getCell(1, i).getContents());
+                int type = "对照附录".equals(sheet.getCell(2, i).getContents()) ? 1 : 2;
+                int period = Integer.parseInt(sheet.getCell(3, i).getContents());
+                String content = sheet.getCell(4, i).getContents();
+                String answer = type == 1 ? content : sheet.getCell(5, i).getContents();
+                String fileName = sheet.getCell(6, i).getContents();
+                int playtype = "是".equals(sheet.getCell(7, i).getContents()) ? 1 : 2;
+
+
+                Topic topic = new Topic();
+                topic.setName(name);
+                topic.setAnswer(answer);
+                if (type == 2) {
+                    File f = trySaveAudioFile(fileName, folder);
+                    topic.setContent(f.getName());
+                    topic.setPlaytype(playtype);
+                } else {
+                    topic.setContent(content);
+                }
+                topic.setPeriod(period);
+                topic.setScore(score);
+                topic.setType(type);
+
+                topics.add(topic);
+            }
+
+            topicDAO.addMulti(topics);
+        } catch (IOException | BiffException e) {
+            throw new ServiceException("解析xls文件失败！", e);
+        }
+
+    }
+
+    private File trySaveAudioFile(String fileName, File folder) throws ServiceException {
+        File[] files = folder.listFiles();
+
+        assert files != null;
+        for (File file : files) {
+            if (fileName.equalsIgnoreCase(file.getName())) {
+                return FileUtil.copyFile(file, FileService.getProductionFolder());
+            }
+        }
+        throw new ServiceException("\u6ca1\u6709\u627e\u5230\u97f3\u9891\u6587\u4ef6{" + fileName + "}");
+    }
+
+    private File findExcelFile(File folder) {
+
+        File[] files = folder.listFiles();
+
+        assert files != null;
+        for (File file : files) {
+            if (file.getName().toUpperCase().endsWith(".XLS")) {
+                return file;
+            }
+        }
+        return null;
+    }
+
+    private static File saveFile(MultipartFile file) throws ServiceException {
+
+        String folder = System.getProperty("java.io.tmpdir") + "\\exam";
+        File destFile = new File(folder, "topic-" + new Date().getTime() + ".zip");
+
+        FileUtil.createFile(destFile);
+        try (InputStream is = file.getInputStream(); FileOutputStream fos = new FileOutputStream(destFile)) {
+            StreamUtils.copy(is, fos);
+        } catch (IOException e) {
+            throw new ServiceException("保存zip文件失败！", e);
+        }
+        return destFile;
     }
 
     private static void moveAndSet(Topic topic) throws IOException {
