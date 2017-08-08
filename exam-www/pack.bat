@@ -1,8 +1,12 @@
 @cd /d %~dp0
 @set EXAM_HOME=%cd%\..
 @set JAVA_HOME=%EXAM_HOME%\jdk1.8.0_121
+@if exist set-java.bat call set-java.bat
+
 @set CLASS_PATH=%JAVA_HOME%\lib
 @set MAVEN_HOME=%EXAM_HOME%\apache-maven-3.3.9
+@if exist set-maven.bat call set-maven.bat
+
 @if exist lib rd /s /q lib
 
 call %MAVEN_HOME%\bin\mvn.cmd dependency:copy-dependencies -DoutputDirectory=%EXAM_HOME%\lib -DincludeScope=compile

@@ -1,0 +1,1 @@
+@set JAVA_HOME=D:\jdk1.8.0_74
