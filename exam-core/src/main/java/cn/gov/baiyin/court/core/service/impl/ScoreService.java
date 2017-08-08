@@ -191,17 +191,18 @@ public class ScoreService implements IScoreService {
     }
 
     @Override
-    public Map<String, Object> statistic(Integer eid) {
+    public Map<String, Double> statistic(Integer eid) {
 
-        List<Map<String, Object>> list = scoreDAO.statistic(eid);
-        Map<String, Object> map = new HashMap<>();
-
-        if (!CollectionUtils.isEmpty(list)) {
-            for (Map<String, Object> m : list) {
-                map.put(m.get("name").toString(), new BigDecimal((Double) m.get("score")).setScale(2, BigDecimal.ROUND_HALF_UP).floatValue());
-            }
-        }
-        return map;
+//        List<Map<String, Object>> list = scoreDAO.statistic(eid);
+//        Map<String, Object> map = new HashMap<>();
+//
+//        if (!CollectionUtils.isEmpty(list)) {
+//            for (Map<String, Object> m : list) {
+//                map.put(m.get("name").toString(), new BigDecimal((Double) m.get("score")).setScale(2, BigDecimal.ROUND_HALF_UP).floatValue());
+//            }
+//        }
+//        return map;
+        return scoreDAO.statistic(eid);
     }
 
     @Override

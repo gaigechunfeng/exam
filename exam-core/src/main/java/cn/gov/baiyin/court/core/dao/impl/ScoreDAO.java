@@ -4,16 +4,20 @@ import cn.gov.baiyin.court.core.dao.IScoreDAO;
 import cn.gov.baiyin.court.core.entity.Reply;
 import cn.gov.baiyin.court.core.entity.Score;
 import cn.gov.baiyin.court.core.entity.User;
+import cn.gov.baiyin.court.core.util.CodeUtil;
 import cn.gov.baiyin.court.core.util.PageInfo;
+import org.apache.commons.collections.MapUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * Created by WK on 2017/3/30.
@@ -74,14 +78,14 @@ public class ScoreDAO extends AbstractDAO implements IScoreDAO {
         Map<String, Object> m = new HashMap<>();
 
         for (Map<String, Object> map : list) {
-            m.put(map.get("name").toString(), map.get("score"));
+            m.put(map.get("name").toString(), CodeUtil.decrypt(map.get("score").toString()));
         }
         return m;
     }
 
     @Override
     public List<Map<String, Object>> detail(Integer uid, Integer eid) {
-        return jdbcTemplate.queryForList("select t2.id uid,t4.id eid,t2.name,t2.username,t5.startTime,t2.photo,t7.`name` topicname,t.score " +
+        List<Map<String, Object>> list = jdbcTemplate.queryForList("select t2.id uid,t4.id eid,t2.name,t2.username,t5.startTime,t2.photo,t7.`name` topicname,t.score " +
                 "from score t\n" +
                 "left join reply t1 on t.rid=t1.id\n" +
                 "left join user t2 on t1.uid=t2.id\n" +
@@ -90,17 +94,35 @@ public class ScoreDAO extends AbstractDAO implements IScoreDAO {
                 "left join examine t4 on t3.eid=t4.id\n" +
                 "left join esession t5 on t5.eid=t4.id\n" +
                 "where t2.id=? and t4.id=?", uid, eid);
+
+        //将分数解密
+        list.forEach(m -> {
+            String score = MapUtils.getString(m, "score", "");
+            if (!StringUtils.isEmpty(score)) {
+                m.put("score", CodeUtil.decrypt(score));
+            }
+        });
+        return list;
     }
 
     @Override
-    public List<Map<String, Object>> statistic(Integer eid) {
+    public Map<String, Double> statistic(Integer eid) {
 
-        return jdbcTemplate.queryForList("select t3.name,avg(t.score) score  from score t\n" +
+        List<Map<String, Object>> list = jdbcTemplate.queryForList("select t3.name,t.score  from score t\n" +
                 "left join reply t1 on t.rid=t1.id\n" +
                 "left join examine_topic t2 on t1.etid=t2.id\n" +
                 "left join topic t3 on t2.tid= t3.id\n" +
                 "left join user t4 on t1.uid= t4.id\n" +
-                "where t4.id is not null and t2.eid=? group by t3.name", eid);
+                "where t4.id is not null and t2.eid=? ", eid);
+
+        return list.stream()
+                .collect(Collectors.groupingBy(m -> m.get("name").toString(), Collectors.averagingDouble(m -> {
+                    String score = MapUtils.getString(m, "score", "0");
+                    if (!"0".equals(score)) {
+                        score = CodeUtil.decrypt(score);
+                    }
+                    return new BigDecimal(score).setScale(2, BigDecimal.ROUND_HALF_UP).floatValue();
+                })));
     }
 
     @Override
