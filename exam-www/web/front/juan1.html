@@ -1,0 +1,984 @@
+<html>
+
+<head>
+
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>书记员录入能力机考系统</title>
+    <style type="text/css">
+        <!--
+        body {
+            margin-left: 0px;
+            margin-top: 0px;
+            margin-right: 0px;
+            margin-bottom: 0px;
+        }
+
+        .bd1 {
+            border: 1px solid #2b68c2
+        }
+
+        .STYLE6 {
+            color: #0033CC;
+            font-size: 12px;
+        }
+
+        .STYLE7 {
+            color: #FFFFFF;
+            font-weight: bold;
+            font-size: 12px;
+        }
+
+        .STYLE8 {
+            color: #0033CC;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .STYLE4 {
+            font-size: 36px;
+            color: #FF0000;
+            line-height: 40px;
+            border: 1px solid #FF0000;
+            width: 180px;
+            display: block;
+            background: url(imges/bg2.jpg)
+        }
+
+        .STYLE9 {
+            color: #FFFFFF;
+            font-weight: bold;
+        }
+
+        .STYLE10 {
+            color: #FFFFFF;
+            font-size: 32px;
+            font-family: "黑体";
+        }
+
+        .STYLE10 {
+            color: #FFFFFF;
+            font-size: 32px;
+            font-family: "黑体";
+        }
+
+        .STYLE11 {
+            font-size: 12px;
+            font-weight: bold;
+            color: #E8E8E8;
+        }
+
+        .STYLE11 {
+            font-size: 12px;
+            font-weight: bold;
+            color: #E8E8E8;
+        }
+
+        .STYLE12 {
+            color: #CCCCCC
+        }
+
+        .STYLE13 {
+            font-size: 18px;
+            font-weight: bold;
+            color: #0033FF;
+        }
+
+        .STYLE16 {
+            font-size: 12px;
+            font-weight: bold;
+            color: #333333;
+        }
+
+        .STYLE17 {
+            color: #333333;
+            font-size: 12px;
+        }
+
+        .logout {
+            color: white;
+            cursor: pointer;
+            border: solid 1px red;
+            text-align: center;
+            background-color: red;
+            margin-right: 10px;
+        }
+
+        -->
+    </style>
+    <script language="javascript">
+
+        function m_over(m_num) {
+            var m_obj, objId, bgCl
+            objId = "btn" + m_num
+            m_obj = document.getElementById(objId)
+            m_obj.style.backgroundColor = "#FF0000"
+            m_obj.style.cursor = "hand"
+        }
+        function m_out(m_num) {
+            var m_obj, objId, bgCl
+            objId = "btn" + m_num
+            m_obj = document.getElementById(objId)
+            m_obj.style.backgroundColor = "#0698D1"
+        }
+
+    </script>
+</head>
+
+<body>
+
+<table width="100%" border="0" cellspacing="0" cellpadding="0" background="imges/bg3.jpg">
+    <tr>
+        <td width="50%" height="78">
+            <table width="658" height="42" border="0" cellpadding="0" cellspacing="0">
+                <tr>
+                    <td width="43">&nbsp;</td>
+                    <td width="69"><img src="imges/fahui.gif" alt="图标" width="60" height="60"/></td>
+                    <td width="546" align="left"><span class="STYLE10">书记员录入能力机考系统</span></td>
+                </tr>
+            </table>
+        </td>
+        <td width="50%" align="right" valign="bottom">
+            <table width="435" height="41" border="0" cellpadding="0" cellspacing="0">
+                <tr>
+                    <td width="277" class="STYLE11" id="currTime" style="text-indent:2em"></td>
+                    <td width="48" class="logout">退出</td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+    <tr>
+        <td height="4px" colspan="2" bgcolor="#b50000"></td>
+    </tr>
+    <tr>
+        <td colspan="2" height="2px"></td>
+    </tr>
+    <tr>
+        <td height="291" colspan="2" align="center" valign="top" bgcolor="#E0E0E0">
+            <table width="100%" height="497" border="0" cellpadding="0" cellspacing="0">
+                <tr>
+                    <td width="256" height="497" align="center" valign="top" bgcolor="#FFFFFF">
+                        <table width="92%" border="0" cellspacing="0" cellpadding="0">
+                            <tr>
+                                <td height="8"></td>
+                            </tr>
+                            <tr>
+                                <td height="30" align="center" valign="middle" bgcolor="#4FAEE8" class="STYLE7"
+                                    style="border:1px solid #CACACA">考生信息
+                                </td>
+                            </tr>
+                            <tr>
+                                <td height="103" bgcolor="#EFF2F5" style="border:1px solid #CACACA">
+                                    <table id="userInfo" width="230" border="0" cellspacing="0" cellpadding="0">
+                                        <tr>
+                                            <td width="100" rowspan="3" align="right" valign="middle"><img
+                                                    src="faces/moren.jpg" data-field="photo" alt="考生照片" width="86"
+                                                    height="86"
+                                                    style="border:solid 1px #69A3D1"/></td>
+                                            <td width="6" rowspan="3" align="right" valign="middle"></td>
+                                            <td width="124" height="34"><span
+                                                    class="STYLE6">考生姓名：<strong data-field="name"></strong></span></td>
+                                        </tr>
+                                        <tr>
+                                            <td height="28" class="STYLE6"> 考生性别：<strong data-field="sex"></strong></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="STYLE6">准考证号：<strong data-field="username"></strong></td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td height="6"></td>
+                            </tr>
+                            <tr>
+                                <td height="30" align="center" valign="middle" bgcolor="#4FAEE8" class="STYLE7"
+                                    style="border:1px solid #CACACA">卷<span data-field="topicIndex"></span>考试时间提醒
+                                </td>
+                            </tr>
+                            <tr id="timeCount">
+                                <td height="100" align="center" valign="top" bgcolor="#EFF2F5"
+                                    style="border:1px solid #CACACA">
+                                    <table width="77%" height="65" border="0" align="center" cellpadding="0"
+                                           cellspacing="0">
+                                        <tr>
+                                            <td colspan="3" height="5"></td>
+                                        </tr>
+                                        <tr>
+                                            <td width="104" height="26" align="center" valign="middle" bgcolor="#0698D1"
+                                                class="STYLE7">开始时间
+                                            </td>
+                                            <td width="15"></td>
+                                            <td width="58" class="STYLE6"><strong data-field="st"> </strong></td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="3" height="5"></td>
+                                        </tr>
+                                        <tr>
+                                            <td height="26" align="center" valign="middle" bgcolor="#0698D1"
+                                                class="STYLE7">结束时间
+                                            </td>
+                                            <td></td>
+                                            <td><strong class="STYLE6" data-field="et"></strong></td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="5"></td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="3" height="5"></td>
+                                        </tr>
+                                        <tr>
+                                            <td height="26" align="center" valign="middle" bgcolor="#0698D1"><span
+                                                    class="STYLE7">当前时间</span></td>
+                                            <td></td>
+                                            <td class="STYLE8" data-field="ct"></td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="3" height="5"></td>
+                                        </tr>
+                                        <tr>
+                                            <td height="26" align="center" valign="middle" bgcolor="#0698D1"><span
+                                                    class="STYLE7">已用时间</span></td>
+                                            <td></td>
+                                            <td class="STYLE8" data-field="rt"></td>
+                                        </tr>
+                                        <tbody id="writeSpeedTable" style="display: none">
+                                        <tr>
+                                            <td colspan="3" height="5"></td>
+                                        </tr>
+                                        <tr>
+                                            <td height="26" align="center" valign="middle" bgcolor="#FF6633"><span
+                                                    class="STYLE7">打字速度</span></td>
+                                            <td></td>
+                                            <td class="STYLE19" data-field="typeSpeed"></td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="3" height="5"></td>
+                                        </tr>
+                                        <tr>
+                                            <td height="26" align="center" valign="middle" bgcolor="#FF6633"><span
+                                                    class="STYLE7">正确率</span></td>
+                                            <td></td>
+                                            <td class="STYLE8 STYLE18" data-field="accuracy"></td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td height="6"></td>
+                            </tr>
+                            <tr>
+                                <td height="30" align="center" valign="middle" bgcolor="#4FAEE8" class="STYLE7"
+                                    style="border:1px solid #CACACA">本卷考试时间倒计时
+                                </td>
+                            </tr>
+                            <tr>
+                                <td height="82" align="center" valign="top" bgcolor="#EFF2F5"
+                                    style="border:1px solid #CACACA">
+                                    <table width="95%" height="59" border="0" cellpadding="0" cellspacing="0">
+                                        <tr>
+                                            <td height="10"></td>
+                                        </tr>
+                                        <tr>
+                                            <td align="center" valign="middle"><span class="STYLE4"
+                                                                                     data-field="remainTime"></span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td height="6"></td>
+                                        </tr>
+                                        <tr>
+                                            <td align="center" valign="middle" class="STYLE6">离本场考试结束剩余的时间</td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td height="10"></td>
+                            </tr>
+                            <tr>
+                                <td height="118" align="center" valign="middle">
+                                    <table width="80%" border="0" cellspacing="0" cellpadding="0">
+                                        <!--<tr>-->
+                                        <!--<td height="35" align="center" valign="middle" bgcolor="#0698D1"-->
+                                        <!--class="STYLE7" id="btn1" onclick="" onmouseover="m_over(1)"-->
+                                        <!--onmouseout="m_out(1)">提前交卷-->
+                                        <!--</td>-->
+                                        <!--</tr>-->
+                                        <tr>
+                                            <td height="10"></td>
+                                        </tr>
+                                        <tr>
+                                            <td height="35" align="center" valign="middle" bgcolor="#0698D1"
+                                                class="STYLE7" id="btn2" onclick="" onmouseover="m_over(2)"
+                                                onmouseout="m_out(2)">退出考试
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                    <td width="1048" align="center" valign="top" id="topicInfo">
+                        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                            <tr>
+                                <td height="14" colspan="2"></td>
+                            </tr>
+                            <tr>
+                                <td height="29" colspan="2" align="center"><span class="STYLE13">打字考试卷<span
+                                        data-field="topicIndex"></span> <span data-field="topic_name"></span></span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td height="23" colspan="2" align="center" valign="middle"><span
+                                        class="STYLE16">（考试用时：<span data-field="topic_period"></span>分钟，满分<span
+                                        data-field="topic_score"></span>分）</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td height="27" colspan="2" align="left" valign="middle" class="STYLE17"
+                                    style="text-indent:2em" data-field="topic_type">
+                                </td>
+                            </tr>
+                            <tbody id="read_topic" style="display: none;">
+
+                            <tr>
+                                <td width="25" height="200" align="left" valign="middle">&nbsp;</td>
+                                <td width="1023" height="200" align="left" valign="middle">
+                                    <div style="border:1px solid #CCCCCC;overflow-y:scroll; width:96%; height:410px;"
+                                         id="readAndWrite">
+
+                                    </div>
+                                </td>
+                            </tr>
+                            </tbody>
+                            <tbody id="listen_topic" style="display: none">
+                            <tr>
+                                <td height="19" width="20" align="left" valign="middle">
+                                    <table width="27" height="118" border="0" align="right" cellpadding="0"
+                                           cellspacing="0">
+                                        <tr>
+                                            <td align="center" valign="middle" bgcolor="#0698D1" class="STYLE7">输</td>
+                                        </tr>
+                                        <tr>
+                                            <td align="center" valign="middle" bgcolor="#0698D1" class="STYLE7">入</td>
+                                        </tr>
+                                        <tr>
+                                            <td align="center" valign="middle" bgcolor="#0698D1" class="STYLE7">框</td>
+                                        </tr>
+
+                                    </table>
+                                </td>
+                                <td height="19" align="left" valign="middle">
+                                    <textarea name="answer"
+                                              style="border:1px solid #CCCCCC; width:98%; height:400px;; ;overflow-y:scroll; color:#666666; font-size:12px; text-indent:2em; text-align:left; line-height:22px; padding:8px; background-color:#FFFFFF"
+                                              placeholder="请输入内容..."></textarea>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+    <tr>
+        <td colspan="2" height="50" align="center" valign="middle"><span
+                style="line-height:28px; font-size:12px; color:#999999"><span class="STYLE9">白银市中级人民法院</span><span
+                class="STYLE12">.信息办 版权所有 Tel:0943-8268673</span></span></td>
+    </tr>
+</table>
+<input type="button" id="fullScreenBtn">
+
+<script src="../back/imges/jquery.min.js"></script>
+<script src="../back/imges/common.js"></script>
+<script>
+
+    //    if (!window.opener) {
+    //        window.open(window.location.href, '_s', 'width=' + screen.width + 'px,height=' + screen.height + 'px,resizable=no')//.opener.close()
+    //    }
+
+    var currExam,//当前考试
+        allTopics = [],//当前考试的所有题目
+        currIndex,//当前题目序号（第几题）
+        currTopic,//当前题目
+        currTimeObj,//当前时间对象
+        lookTopicList = [],//看打题目句号分割后的list
+        lookScoreList = [],//看打题目每个句子对应的得分
+        lookWordList = [],//看打题目每个句子实际输入单词数
+        isBeginTyping = false,//是否已经开始打字
+        beginTypingTime,//开始打字的时间
+        TYPE = {
+            1: '对照如下材料，在其下方空白框中重新录入一遍，在考试规定时间里录入的内容越多、速度越快、正确率越高者得分越高。',
+            2: '根据播放的语音，将听到的内容完整的记录下来，并保持与录音的一致，用自己语言改写者，将会被扣分，如:将“星期三”输入为“周三”、“礼拜三”等，都将会被扣分。'
+        };
+    /**
+     * 格式化剩余时间
+     * @param v
+     * @returns {string}
+     */
+    function formatShowDate2(v) {
+
+        v = Math.floor(v / 1000);
+        var h = Math.floor(v / 3600),
+            m = Math.floor((v - 3600 * h) / 60),
+            s = (v - 3600 * h - 60 * m);
+
+        var hh = h < 10 ? '0' + h : h,
+            mm = m < 10 ? '0' + m : m,
+            ss = s < 10 ? '0' + s : s;
+
+        return hh + ':' + mm + ':' + ss;
+    }
+
+    /**
+     * 格式化一般时间
+     * @param v
+     * @returns {string}
+     */
+    function formatShowDate(v) {
+        var d = new Date(v),
+            h = d.getHours(),
+            m = d.getMinutes(),
+            s = d.getSeconds();
+
+        var hh = h < 10 ? '0' + h : h,
+            mm = m < 10 ? '0' + m : m,
+            ss = s < 10 ? '0' + s : s;
+
+        return hh + ':' + mm + ':' + ss;
+    }
+
+    /**
+     * 展示 考试时间提醒
+     * @param t
+     */
+    function showExmineCountDown(t) {
+
+        currTimeObj = t;
+
+//        $('#timeCount').find('[data-field]').each(function () {
+//            var f = $(this),
+//                fn = f.attr('data-field'),
+//                v = fn == 'rt' ? formatShowDate2(t[fn]) : formatShowDate(t[fn]);
+//
+//            f.html(v || '');
+//        })
+
+        for (var k in t) {
+            var f = $('#timeCount').find('[data-field=' + k + ']')
+
+            if (f.length > 0) {
+                var v = k == 'rt' ? formatShowDate2(t[k]) : formatShowDate(t[k]);
+                f.html(v)
+            }
+        }
+
+        $('[data-field=topicIndex]').html(currIndex);
+    }
+
+    /**
+     * 展示 剩余时间
+     * @param t
+     */
+    function showExmineCountDown2(t) {
+
+        $('[data-field=remainTime]').html(formatShowDate2(t))
+    }
+
+    /**
+     * 提交 考卷（题目）
+     * @param callback
+     */
+    function submitAnswer(callback) {
+
+        if (App.currUser && App.currUser.username.indexOf('musicPlayer') === 0) {
+
+            if (typeof callback === 'function') {
+                callback();
+            }
+        } else {
+            var p;
+            if (currTopic.type == 1) {
+                var speedObj = calculateSpeed(),
+                    vals = []
+                $('#readAndWrite input').prop('readonly', true).each(function () {
+                    var ip = $(this), d
+                    val = ip.val()
+                    vals.push(val || '')
+                })
+                p = {
+                    answer: vals.join(''),
+                    accuracy: speedObj.accuracy,
+                    speed: speedObj.speed,
+                    tid: currTopic.id,
+                    eid: currExam.id
+                }
+            } else {
+                p = {
+                    answer: $.trim($('[name=answer]').prop('readonly', true).val()),
+                    tid: currTopic.id,
+                    eid: currExam.id
+                }
+            }
+            $.post(App.basePath + '/front/submitAnswer.do', p, function (data) {
+
+                if (data && data.success) {
+
+                    var obj = data.obj,
+                        score = obj.score;
+//                alert('您本题的得分是：' + score + '分');
+                } else {
+                    alert('错误：' + data.errmsg)
+                }
+
+                if (typeof callback === 'function') {
+                    callback();
+                }
+            }, 'json');
+        }
+    }
+
+    /**
+     * 所有的考题时间已到
+     */
+    function allTopicAnswerTimePassed() {
+
+        throw '答题时间已过'
+    }
+
+    /**
+     * 开始倒计时考试
+     * @param st
+     * @param et
+     */
+    function examineCountDown(st, et) {
+
+//        var currTime = App.currTime;
+        var _f = function () {
+
+            showExmineCountDown({
+                st: st,
+                et: et,
+                ct: App.currTime,
+                rt: App.currTime - st
+            })
+
+            var remainTime = et - App.currTime;
+            if (remainTime <= 0) {
+
+                submitAnswer(function () {
+
+                    if (currIndex >= allTopics.length) {
+//                        alert("本次考试的所有题目答题时间已到，考试结束！");
+//                        allTopicAnswerTimePassed();
+                        self.location.assign(App.basePath + '/front/chengjidan.html?eid=' + currExam.id)
+                    } else {
+                        self.location.reload();
+                    }
+                });
+            } else {
+                showExmineCountDown2(remainTime);
+
+                setTimeout(arguments.callee, 1000);
+            }
+        }
+
+        _f();
+    }
+
+    function calculateSpeed(calAll) {
+
+        var allWord = lookWordList.length > 0 ? lookWordList.reduce(function (s1, s2) {
+                return parseInt(s1 || 0) + parseInt(s2 || 0)
+            }) : 0,
+            allRightWord = lookScoreList.length > 0 ? lookScoreList.reduce(function (s1, s2) {
+                return s1 + s2
+            }) : 0,
+            spendTime = (App.currTime - beginTypingTime) / 60000,
+            speed = spendTime ? Math.ceil(allWord / spendTime) : 0,
+            accuracy = allWord ? (allRightWord * 100 / (calAll ? currTopic.content.length : allWord) ).toFixed(2) : 0
+
+        return {
+            speed: speed,
+            accuracy: accuracy
+        }
+    }
+
+    function typingCountDown() {
+
+        var _fn = function () {
+
+            var speedObj = calculateSpeed();
+
+            $('[data-field=typeSpeed]').html(speedObj.speed + '字/分')
+            $('[data-field=accuracy]').html(speedObj.accuracy + '%')
+
+            setTimeout(arguments.callee, 2000)
+        }
+        setTimeout(_fn, 2000)
+
+    }
+
+    function gotoNext(ip, answer) {
+
+        var next = ip.parent().next().children('input'),
+            reply = ip.val()
+
+        if (reply.length > answer.length) {
+            ip.val(reply.substring(0, answer.length))
+        }
+        next.val(reply.substring(answer.length) || '').focus()
+    }
+
+    function listenTextChange(e) {
+
+        if (!isBeginTyping) {
+            beginTypingTime = App.currTime
+            isBeginTyping = true;
+
+            typingCountDown();
+        }
+
+        var ip = $(this),
+            div = ip.parent(),
+            index = div.index(),
+            span = ip.prev(),
+            answer = lookTopicList[index],
+            reply = ip.val(),
+            ct = [],
+            score = 0,
+            words = 0,
+            isLastRight = false
+
+        if (e.which == 13 && reply) {
+            gotoNext(ip, answer)
+            return
+        }
+
+        for (var i = 0, len = answer.length; i < len; i++) {
+            var w1 = answer[i],
+                w2 = reply[i]
+            if (w1 && w2) {
+                if (w1 == w2) {
+                    ct.push('<span style="color: green">' + w1 + '</span>');
+                    score++
+                } else {
+                    ct.push('<span style="color: red">' + w1 + '</span>');
+                }
+            } else {
+                ct.push(w1);
+            }
+
+            if (w2) {
+                words++
+            }
+            if (i == len - 1 && w1 == w2) {
+                isLastRight = true
+            }
+        }
+
+        span.html(ct.join(''));
+        lookScoreList[index] = score
+        lookWordList[index] = words
+
+        if (isLastRight) {
+            gotoNext(ip, answer)
+        }
+    }
+
+    function separatorString(con) {
+
+        var list = [], s = '', reg = /[,.;，。、]+/g
+
+        for (var index = 0, i = 0, len = con.length; index < len; index++, i++) {
+
+            var c = con.charAt(index)
+            s += c
+            if (i <= 24) {
+
+            } else if (i > 24 && i < 49) {
+
+                if (reg.test(c)) {
+                    list.push(s);
+                    s = ''
+                    i = 0
+                }
+            } else if (i == 49) {
+
+                list.push(s)
+                s = ''
+                i = 0
+            } else {
+
+                i = 0
+            }
+        }
+
+        return list;
+    }
+
+    /**
+     * 展示本次考题相关
+     */
+    function showTopic() {
+
+        $('#topicInfo').find('[data-field]').each(function () {
+            var f = $(this),
+                fn = f.attr('data-field');
+
+            if (fn.length <= 6) return;
+            fn = fn.substring(6);
+            var v = currTopic[fn];
+
+            if (fn === 'type') {
+                if (v === 1) {
+                    $('.read_topic').show();
+                }
+                v = TYPE[v];
+            }
+
+            f.html(v);
+        });
+
+        if (currTopic.type == 2) {//听音打字
+            $('#listen_topic').show();
+            if (currTopic.playtype == 1) {
+                if (App.currUser.username.indexOf('musicPlayer') == 0) {//仅针对特定用户开放播音
+                    App.audioplayer('topic-' + currTopic.id,
+                        {
+                            mp3: App.basePath + '/front/file/download.do?fullPath=' + encodeURIComponent(currTopic.content.replace(/\\/g, '\\\\'))
+                        });
+                }
+            } else {
+                App.audioplayer('topic-' + currTopic.id,
+                    {
+                        mp3: App.basePath + '/front/file/download.do?fullPath=' + encodeURIComponent(currTopic.content.replace(/\\/g, '\\\\'))
+                    });
+            }
+
+        } else {
+            $('#writeSpeedTable').show();
+            $('#read_topic').show();
+
+            var con = currTopic['content'] || '',
+//                conList = con.split('\n'),
+                conList = separatorString(con.replace(/[\n\s]/g, '')),
+                h = []
+
+            for (var i = 0, len = conList.length; i < len; i++) {
+
+                var c = $.trim(conList[i] || '')
+
+                if (!c) {
+                    continue
+                }
+                var slen = 50,
+                    sindex = Math.ceil(c.length / slen)
+
+                for (var j = 0; j < sindex; j++) {
+
+                    var ci = c.substring(j * slen, (j + 1) * slen)
+                    lookTopicList.push(ci)
+
+                    h.push('<div style="border:1px solid #CCCCCC; width:96%; min-height:70px;font-size:18px;text-align:left; ;                       ');
+                    h.push('    line-height:35px; background-color:#FAFAFA; text-align:left; margin-top:10px; margin-left:10px; padding:7px;">   ');
+                    h.push('    <span>' + ci + '</span>                                                              ');
+                    h.push('    <input class="inputAnswer" name="textfield" type="text"                                                                              ');
+                    h.push('           style=" height:30px; line-height:30px;   font-size:18px; width:100%; margin-top:2px;                      ');
+                    h.push('           background-color:#FFCC66; border:2px solid #40A5C1 "/>                                                    ');
+                    h.push('</div>                                                                                                               ');
+                }
+            }
+
+            $('#readAndWrite').html(h.join('')).find('.inputAnswer')
+                .on('keyup', listenTextChange).first().focus();
+
+        }
+
+        $('[name=answer]').focus()
+    }
+
+    /**
+     * 进行考试
+     * @param es
+     */
+    function doingExam(es) {
+
+        var exam = es.examine,
+            topics = exam ? exam.topics : null;
+        if (!exam) {
+            alert('您当前没有安排考试！');
+            return;
+        }
+        if (!topics || topics.length === 0) {
+            alert('当前考试没有任何题目！');
+            return;
+        }
+
+        currExam = exam;
+        allTopics = topics;
+
+        var st = parseInt(es.startTime),
+            et = parseInt(es.endTime);
+
+        var passedTime = App.currTime - st,
+            loopTime = passedTime,
+            startTime = st;
+
+        for (var i = 0, len = topics.length; i < len; i++) {
+            var topic = topics[i];
+            loopTime -= topic.period * 60 * 1000;
+
+            if (loopTime < 0) {
+                currTopic = topic;
+                currIndex = i + 1;
+                break;
+            }
+            startTime += topic.period * 60 * 1000;
+        }
+
+        if (!currTopic || !currIndex) {
+//            alert('所有题目答题时间已过！');
+//            allTopicAnswerTimePassed();
+            gotoWait('所有题目答题时间已过');
+            return;
+        }
+
+        $.post(App.basePath + '/front/checkHasDone.do', {tid: currTopic.id, eid: currExam.id}, function (r) {
+
+            if (r) {
+                if (r.success) {
+                    showTopic();
+                    examineCountDown(startTime, startTime + currTopic.period * 60 * 1000, currIndex);
+                }
+            }
+        }, 'JSON');
+
+    }
+
+    /**
+     * 展示用户信息
+     */
+    function showUserInfo() {
+
+        $('#userInfo').find('[data-field]').each(function () {
+            var f = $(this),
+                field = f.attr('data-field'),
+                val = App.currUser[field];
+
+            if (field == 'photo') {
+                if (val) {
+                    f.attr('src', App.basePath + '/front/file/download.do?fullPath=' + encodeURIComponent(val.replace(/\\/g, '\\\\')))
+                }
+            } else if (field == 'sex') {
+                f.html(val == 1 ? '男' : '女');
+            } else {
+                f.html(val);
+            }
+        })
+    }
+
+    /**
+     * 当前没有进行的考试，前往等待页
+     */
+    function gotoWait(msg) {
+        alert(msg || '您目前没有可进行的考试！');
+        App.logout(true);
+//        self.location.assign(App.basePath + '/front/wait.html');
+    }
+
+    /**
+     * 加载 当前用户 当前时间 的考试信息
+     */
+    function loadEsessions() {
+        $.get(App.basePath + '/front/getEsessions.do', {}, function (data) {
+
+            if (data && data.success) {
+
+                var esessions = data.obj;
+                if (!esessions || esessions.length == 0) {
+                    gotoWait();
+//                    self.location.assign(App.basePath + '/front/wait.html');
+                } else {
+
+                    var legals = [];
+                    for (var i = 0, len = esessions.length; i < len; i++) {
+                        var es = esessions[i],
+                            st = parseInt(es.startTime),
+                            et = parseInt(es.endTime)
+
+                        if (App.currTime >= st && App.currTime < et) {
+                            legals.push(es);
+                        }
+
+                    }
+                    if (legals.length === 0) {//没有正在进行的考试
+                        gotoWait();
+                        return;
+                    }
+
+                    doingExam(legals[0]);
+//                    $.post(App.basePath + '/front/checkHasDone.do', {}, function (r) {
+//                        if (r) {
+//                            if (r.success) {
+//                                doingExam(legals[0]);
+//                            } else {
+//                                gotoWait('您已经参过当前考试，不能重复考试！');
+//                            }
+//                        }
+//                    }, 'JSON');
+
+                }
+            }
+        }, 'json');
+    }
+
+    $(function () {
+
+        App.checkLogin().done(function (data) {
+            if (data && data.success) {
+
+                App.currTime = data.obj.time;
+                App.showTime('currTime');
+
+                loadEsessions();
+
+                showUserInfo()
+            }
+        })
+
+        $('.logout').on('click', App.logout);
+
+        document.onselectstart = App.stopEvent
+        document.oncontextmenu = App.stopEvent
+
+
+        $(window).on('keydown', function (e) {
+
+            e = e || window.event;
+            var keyCode = e.keyCode
+            if ((keyCode >= 112 && keyCode <= 123) || (keyCode == 82 && e.ctrlKey) || (keyCode == 78 && e.ctrlKey)
+                || (keyCode == 86 && e.ctrlKey) || (keyCode == 67 && e.ctrlKey)) {
+                App.stopEvent(e);
+            }
+        })
+
+        $('#btn1').on('click', function () {
+            submitAnswer()
+        })
+
+        $('#btn2').on('click', function () {
+            App.logout();
+        })
+
+//        $('#fullScreenBtn').on('click',App.requestFullScreen).click();
+    })
+</script>
+
+</body>
+</html>
+
+
+
+

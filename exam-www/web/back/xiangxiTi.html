@@ -1,0 +1,274 @@
+<html>
+
+<head>
+
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <style type="text/css">
+        <!--
+        .tit {
+            font-size: 12px;
+            color: #0022ff;
+            font-weight: bold;
+        }
+
+        .tit td {
+            border: 1px solid #0066ff
+        }
+
+        #chanel td {
+            border: 1px solid #0066ff;
+            font-size: 12px;
+            color: #000000
+        }
+
+        td {
+            font-size: 12px;
+        }
+
+        .sta td {
+            border: none;
+        }
+
+        .titbg td {
+            background: #e3fafd;
+            font-size: 12px;
+            color: #000000;
+            border: none;
+            border-bottom: 1px #0066ff solid;
+            border-top: 1px #0066ff solid;
+        }
+
+        td img {
+            display: block;
+        }
+
+        .bqta td {
+            font-size: 12px;
+            color: #666666;
+        }
+
+        body {
+            background-repeat: no-repeat;
+            margin-top: 50px;
+        }
+
+        a {
+            font-size: 12px;
+            color: #000055;
+            text-decoration: none;
+        }
+
+        a:hover {
+            color: #0033ff;
+            text-decoration: underline;
+        }
+
+        .fh a {
+            display: block;
+            background: #2b68c2;
+            color: #FFF;
+            font-size: 14px;
+            font-weight: bold;
+            width: 100px;
+            height: 26px;
+            line-height: 26px;
+            text-decoration: none;
+            border: 1px solid #0c4ba0;
+            float: left;
+            margin-left: 10px;
+            text-align: center;
+        }
+
+        .fh a:hover {
+            background: #FFFFFF;
+            color: #FF0000;
+            border: 1px solid #000000;
+        }
+
+        .btns {
+            height: 24px;
+            width: 90px;
+        }
+
+        .STYLE5 {
+            color: #0000FF
+        }
+
+        .STYLE6 {
+            color: #999999;
+            font-style: italic;
+        }
+
+        -->
+    </style>
+</head>
+
+<body>
+
+<table width="732" border="0" align="center" cellpadding="0" cellspacing="0" id="detailTable">
+    <tr class="tit">
+        <td height="36" colspan="5" align="center" bgcolor="#80FFFF">题目详情</td>
+    </tr>
+    <!--<tr>-->
+    <!--<td height="36" colspan="5" align="left" valign="middle" bgcolor="#FFFFFF"-->
+    <!--style="border:none;border-left:1px #0066ff solid; border-right:1px solid #0066ff; text-indent:2em"><span-->
+    <!--class="STYLE6">显示的样式上半部分就是考试时显示的样式 ，下半部分是参考答案和其它。 如下(可能是 选择题 等题目类型是 会更易理解，)：</span></td>-->
+    <!--</tr>-->
+    <!--<tr>-->
+    <!--<td height="2" colspan="5" align="center" style=" background:#0066FF"></td>-->
+    <!--</tr>-->
+    <!--<tr>-->
+    <!--<td height="121" colspan="5" align="left" valign="top" bgcolor="#FFFFFF"-->
+    <!--style="border:none;border-left:1px  #0066ff solid;border-right:1px  #0066ff solid; text-indent:2em; line-height:22px; ">-->
+    <!--<strong> </strong>对照如下材料，在其下方空白框中重新录入一遍，在考试规定时间里录入的内容越多、速度越快、正确率越高者得分越高。<br/>-->
+    <!--<div align="center" style="width:100%">-->
+    <!--<div style="border:1px #ccc solid;font-size:12px; line-height:22px; text-indent:2em; text-align:left; width:680px; height:80px;">-->
+    <!--需要录入的内容....考试时需要录入的内容......考试时需要输入的内容.....-->
+    <!--</div>-->
+    <!--</div>-->
+    <!--</td>-->
+    <!--</tr>-->
+    <tr>
+        <td height="2" colspan="5" align="center" style=" background:#0066FF"></td>
+    </tr>
+    <tr>
+        <td height="36" colspan="5" align="left" bgcolor="#FFFFFF"
+            style="border:none;border-left:1px #0066ff solid; border-right:1px solid #0066ff; text-indent:2em"><strong>[题目名称] </strong><span
+                class="name"></span>&nbsp;<strong>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[试题类型]</strong> <span class="type"></span>
+        </td>
+    </tr>
+    <tr>
+        <td height="36" colspan="5" align="left" bgcolor="#FFFFFF"
+            style="border:none;border-left:1px #0066ff solid; border-right:1px solid #0066ff; text-indent:2em"><strong>[题目作答时间] </strong><span
+                class="period"></span> &nbsp;<strong>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[题目分数]</strong> <span class="score"></span>
+        </td>
+    </tr>
+
+    <tr id="chanel">
+        <td width="95" height="13" align="right" valign="middle" bgcolor="#FFFFFF"
+            style="border:none;border-left:1px #0066ff solid;"></td>
+        <td width="637" height="13" colspan="4" align="left" bgcolor="#FFFFFF"
+            style="border:none;border-right:1px #0066ff solid;"></td>
+    </tr>
+
+    <tr>
+        <td height="40" align="right" valign="top" bgcolor="#FFFFFF"
+            style="border:none; border-left:1px #0066ff solid; line-height:40px;">题目内容：
+        </td>
+        <td colspan="4" align="left" valign="middle" bgcolor="#FFFFFF"
+            style="border:none; border-right:1px #0066ff solid;font-size:12px; ">
+            <div class="content"
+                 style="border:1px #ccc solid;font-size:12px; line-height:22px; text-indent:2em; text-align:left; width:680px; min-height:80px;">
+
+            </div>
+        </td>
+    </tr>
+
+    <tr>
+        <td height="40" align="right" valign="top" bgcolor="#FFFFFF"
+            style="border:none; border-left:1px #0066ff solid; line-height:40px;">参考答案：
+        </td>
+        <td colspan="4" align="left" valign="middle" bgcolor="#FFFFFF"
+            style="border:none; border-right:1px #0066ff solid;font-size:12px; ">
+            <div class="answer"
+                 style="border:1px #ccc solid;font-size:12px; line-height:22px; text-indent:2em; text-align:left; width:680px; min-height:80px;">
+
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <td align="right" valign="top" bgcolor="#FFFFFF"
+            style="border:none; border-left:1px #0066ff solid; line-height:40px;">附件：
+        </td>
+        <td colspan="4" align="left" valign="middle" bgcolor="#FFFFFF"
+            style="border:none; border-right:1px #0066ff solid; font-size:12px" class="appendix">
+        </td>
+    </tr>
+    <tr>
+        <td align="right" valign="top" bgcolor="#FFFFFF"
+            style="border:none; border-left:1px #0066ff solid; line-height:40px;">&nbsp;
+        </td>
+        <td colspan="4" align="left" valign="middle" bgcolor="#FFFFFF"
+            style="border:none; border-right:1px #0066ff solid; font-size:12px" class="playtype">
+        </td>
+    </tr>
+    <tr>
+        <td colspan="5" align="center" valign="middle" bgcolor="#FFFFFF"
+            style="border:1px #0066ff solid; line-height:40px;">
+            <table width="230" height="36" border="0" cellpadding="0" cellspacing="0">
+                <tr>
+                    <td width="230"><span class="fh"><a href="javascript:history.back()"
+                                                        target="_top">返&nbsp;回</a></span> <span class="fh"><a
+                            href="" id="modifyBtn" target="_self">修&nbsp;改</a></span></td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
+<script src="./imges/jquery.min.js"></script>
+<script src="./imges/common.js"></script>
+<script>
+
+    function downloadFile(fullPath) {
+
+        window.open(App.basePath + '/back/file/download.do?fullPath=' + encodeURIComponent(fullPath));
+    }
+
+    function premiumListen(fullPath) {
+
+        App.audioplayer('premiumListen', {mp3: App.basePath + '/back/file/download.do?fullPath=' + encodeURIComponent(fullPath)})
+    }
+
+    $(function () {
+
+        var id = App.getParam('id');
+        if (!id) {
+            alert('参数错误！');
+            return
+        }
+
+        $.get(App.basePath + '/back/topic/detail.do', {id: id}, function (data) {
+
+            if (!data) {
+                return
+            }
+            if (!data.success) {
+                alert('错误：' + data.errmsg);
+                return;
+            }
+            var div = $('#detailTable'),
+                obj = data.obj;
+            for (var k in obj) {
+
+                var span = $('.' + k, div);
+                if (span.length > 0) {
+                    var v = obj[k];
+
+                    if (k == 'type') {
+                        v = v == 1 ? '对照复录' : '听音打字';
+                    } else if (k == 'playtype') {
+                        v = obj.type == 2 ? (v == 1 ? '专门用户集中播放（适合考场使用音响广播等）' : '考试独立播放（适合每个考试终端有耳机）') : ''
+                    } else if (k == 'content') {
+                        v = obj['type'] == 1 ? v : '';
+                    }
+
+                    span.html(v);
+                }
+            }
+
+            if (obj['type'] == 2) {
+                $('.appendix').html('<a href="javascript:downloadFile(\'' + obj.content.replace(/\\/g, "\\\\") + '\')">' + App.parseFileName(obj.content) + '</a>&nbsp;&nbsp;<a href="javascript:premiumListen(\'' + obj.content.replace(/\\/g, "\\\\") + '\')">试听</a>');
+            }
+
+            $('#modifyBtn').attr('href', App.basePath + '/back/editTi.html?id=' + obj.id);
+        }, 'json');
+    })
+</script>
+</body>
+</html>
+
+
+
+

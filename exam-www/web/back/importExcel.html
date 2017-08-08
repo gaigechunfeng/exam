@@ -1,0 +1,55 @@
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>导入</title>
+</head>
+<body>
+
+<input name="file" type="file" id="fileupload">
+
+<script src="./imges/jquery.min.js"></script>
+<script src="./imges/jquery.ui.widget.js"></script>
+<script src="./imges/jquery.iframe-transport.js"></script>
+<script src="./imges/jquery.fileupload.js"></script>
+<script src="./imges/common.js"></script>
+<script>
+
+    $(function () {
+        var type = App.getParam('type');
+        if (!type) {
+            alert('参数错误！');
+            return;
+        }
+
+        var url;
+
+        switch (type) {
+            case 'importUser' :
+                url = '/back/user/import.do';
+                break;
+            default :
+                throw 'unknow type ' + type;
+        }
+
+        $('#fileupload')
+            .attr('data-url', App.basePath + url)
+            .fileupload({
+                dataType: 'json',
+                done: function (e, data) {
+                    var obj = data.result;
+                    if (obj && obj.success) {
+
+//                        $('input[name=filePath]').val(obj.obj);
+//                        $('#showUploaded').html(App.parseFileName(obj.obj));
+                        if (self.opener && typeof self.opener.importSuccess == 'function') {
+
+                            self.opener.importSuccess(obj.obj);
+                        }
+                    }
+                }
+            });
+    })
+</script>
+</body>
+</html>

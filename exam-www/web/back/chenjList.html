@@ -1,0 +1,350 @@
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <style type="text/css">
+        <!--
+        td {
+            font-size: 12px;
+        }
+
+        .sta td {
+            border: 1px solid #0099FF;
+        }
+
+        .titbg td {
+            background: #e3fafd;
+            font-size: 12px;
+            color: #000000;
+            border: none;
+            border-bottom: 1px #0066ff solid;
+            border-top: 1px #0066ff solid;
+        }
+
+        td img {
+            display: block;
+        }
+
+        .bqta td {
+            font-size: 12px;
+            color: #666666;
+        }
+
+        body {
+            background-image: url();
+            background-repeat: no-repeat;
+            margin-top: 20px;
+        }
+
+        .STYLE3 {
+            color: #0033FF;
+            font-weight: bold;
+        }
+
+        a {
+            font-size: 12px;
+            color: #0033FF;
+            text-decoration: none;
+        }
+
+        a:hover {
+            color: #FF0000;
+            text-decoration: underline;
+        }
+
+        .btns {
+            height: 30px;
+            width: 90px;
+        }
+
+        .STYLE10 {
+            color: #0000FF;
+            font-weight: bold;
+        }
+
+        .STYLE14 {
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .STYLE4 {
+            color: #011037;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .bd2 td {
+            border: 1px solid #0066FF
+        }
+
+        -->
+    </style>
+    <script type="text/javascript">
+        function Chref(url) {
+            window.location.href = url;
+        }
+    </script>
+</head>
+
+<body>
+
+<table align="center" border="0" cellpadding="0" cellspacing="0" width="709">
+    <tr>
+        <td width="200" height="41" align="left" valign="middle" style=" border-bottom:3px solid #0066FF">
+            <span style="font-size: 16px">选择试卷：</span>
+            <select name="examineSelection" onchange="selectExamine()">
+
+            </select>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <span style="font-size: 16px">选择法院：</span>
+            <select name="posSelect" id="posCode" onchange="selectExamine()">
+
+            </select>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        </td>
+
+    </tr>
+    <tr>
+        <td height="13" align="center" valign="top">&nbsp;</td>
+    </tr>
+    <tr>
+        <td width="709" height="41" align="right" valign="middle" style=" border-bottom:3px solid #0066FF"><input
+                type="button" name="show" value="刷   新" class="btns" id="refreshBtn1"/>
+            <input type="button" name="add" value="导出成绩单" class="btns" id="exportScoreBtn"/>
+            <!--style="width:120px;"/>-->
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        </td>
+    </tr>
+    <tr>
+        <td height="13" align="center" valign="top">&nbsp;</td>
+    </tr>
+    <tr>
+        <td height="32" align="center" valign="top">
+            <table width="100%" border="0" cellpadding="0" cellspacing="0" class="sta">
+                <tr bgcolor="#00FFFF">
+                    <td width="57" height="30" rowspan="2" align="center" valign="middle"><strong>名次</strong></td>
+                    <td width="89" rowspan="2" align="center" valign="middle"><strong>考生姓名</strong></td>
+                    <td width="136" rowspan="2" align="center" valign="middle"><strong>准考证号</strong></td>
+                    <td width="136" rowspan="2" align="center" valign="middle"><strong>岗位代码</strong></td>
+                    <td height="27" colspan="3" id="scoreTd" align="center" valign="middle"><strong>分数</strong></td>
+                    <td width="129" rowspan="2" align="center" valign="middle"><strong>查看</strong></td>
+                </tr>
+                <tr bgcolor="#00FFFF" id="topicField">
+                    <td height="18" align="center" valign="middle">对照复录</td>
+                    <td align="center" valign="middle">听音打字</td>
+                    <td align="center" valign="middle">总分</td>
+                </tr>
+                <tbody id="scoreTable">
+
+                </tbody>
+            </table>
+        </td>
+    </tr>
+    <tr>
+        <td height="37" align="center" valign="bottom">
+            <table width="558" height="27" border="0" cellpadding="0" cellspacing="0">
+                <tr>
+                    <td width="600" align="right" valign="bottom" id="pagination">
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+    <tr>
+        <td height="13" align="right" valign="bottom"></td>
+    </tr>
+    <tr>
+        <td height="40" align="right" valign="middle" style=" border-bottom:3px solid #0066FF">
+            <input type="button"
+                   name="show2"
+                   id="refreshBtn2"
+                   value="刷   新"
+                   class="btns"
+            />
+            <!--<input type="button" name="add2" value="导出统计表" class="btns" onclick="Chref('daochu2.html')"-->
+            <!--style="width:120px;"/>-->
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        </td>
+    </tr>
+    <tr>
+        <td height="13" align="center" valign="bottom"></td>
+    </tr>
+    <tr>
+        <td height="100" align="center" valign="middle">
+            <table width="581" height="118" border="0" cellpadding="0" cellspacing="0" class="bd2">
+
+                <tr>
+                    <td height="26" colspan="4" align="center" valign="middle" bordercolor="#0066FF" bgcolor="#00FFFF"
+                        class="STYLE14" style="text-indent:0em;">平均成绩统计
+                    </td>
+                </tr>
+                <tbody id="statisticTable">
+
+                </tbody>
+            </table>
+        </td>
+    </tr>
+</table>
+<script src="./imges/jquery.min.js"></script>
+<script src="./imges/common.js"></script>
+<script>
+
+    var currExmaineId;
+    var posObj = App.getPosCode();
+    function renderScoreFields(fields) {
+        var h = [];
+
+        for (var i = 0, len = fields.length; i < len; i++) {
+            var f = fields[i];
+            h.push('<td height="18" align="center" valign="middle">' + f + '</td>');
+        }
+        h.push('<td height="18" align="center" valign="middle">总分</td>')
+
+        $('#topicField').html(h.join(''))
+        $('#scoreTd').attr('colspan', fields.length + 1);
+    }
+
+    function loadStatistic() {
+        $.get(App.basePath + '/back/score/statistic.do', {eid: currExmaineId}, function (data) {
+
+            if (data && data.success) {
+
+                var obj = data.obj,
+                    allscore = 0,
+                    h1 = ['<tr><td width="147" height="45" align="center" valign="middle" bordercolor="#0066FF" style="text-indent:0em;"><span class="STYLE14">科目</span></td>'],
+                    h2 = ['<td height="37" align="center" valign="middle" bordercolor="#0066FF" class="STYLE14" style="text-indent:0em;">平均成绩</td>']
+
+                for (var k in obj) {
+
+                    var v = obj[k] || 0;
+                    allscore += v;
+                    h1.push('<td width="221" align="center" valign="middle" bordercolor="#0066FF" class="STYLE4" style="text-indent:0em;">' + k + '</td>');
+                    h2.push('<td align="center" valign="middle" bordercolor="#0066FF" style="text-indent:0em;"><span class="STYLE10">' + v + '</span></td>')
+                }
+                h1.push('<td width="221" align="center" valign="middle" bordercolor="#0066FF" class="STYLE4" style="text-indent:0em;">双科总分</td></tr>');
+                h2.push('<td align="center" valign="middle" bordercolor="#0066FF" style="text-indent:0em;"><span class="STYLE10">' + allscore + '</span></td></tr>')
+
+                $('#statisticTable').html(h1.join('') + h2.join(''));
+            }
+        }, 'json');
+    }
+
+    function deleteScore(uid) {
+        if (confirm('您确认要指定该用户重考吗？')) {
+            $.post(App.basePath + '/back/score/reExam.do', {uid: uid, eid: currExmaineId}, function (msg) {
+
+                if (msg && msg.success) {
+                    $('#refreshBtn1').click();
+                }
+            })
+        }
+    }
+
+    function refreshTableList() {
+
+        var posCode = $('#posCode').val();
+        $.get(App.basePath + '/back/topic/listFields.do', {eid: currExmaineId}, function (data) {
+
+            if (data && data.success) {
+                renderScoreFields(data.obj);
+                App.renderTable('scoreTable', '/back/score/list.do?pos=' + posCode + '&eid=' + currExmaineId, function (r, i, pageInfo) {
+
+                    var h = [];
+                    h.push("<tr>                                                                                                     ");
+                    h.push("    <td height='30' width='57' align='center'>" + (pageInfo.pageSize * (pageInfo.currPage - 1) + i + 1) + "</td>                                                     ");
+                    h.push("    <td height='30' width='89' align='center'>" + r.name + "</td>                                                    ");
+                    h.push("    <td width='136' align='center' style='color:#333333'>" + r.username + "</td>                           ");
+                    h.push("    <td width='136' align='center' style='color:#333333'>" + (posObj[r.pos] + '-' + r.pos) + "</td>                           ");
+
+                    var size = r.fieldSize;
+                    for (var j = 0; j < size; j++) {
+                        h.push("    <td width='62' align='center'>" + r['score_' + j] + "</td>                                                                ");
+                    }
+
+                    h.push("    <td width='51' align='center'>" + r.allscore + "</td>                                                               ");
+                    h.push("    <td width='129' align='center'><a href='chengjidan.html?uid=" + r.id + "&eid=" + currExmaineId + "' target='_self'>查看详细成绩单</a>&nbsp;|&nbsp;" +
+                        "<a href='javascript:deleteScore(" + r.id + ");' >指定重考</a> </td>             ");
+                    h.push("</tr>                                                                                                    ");
+
+                    return h.join('');
+                }, 'pagination');
+            }
+        }, 'json');
+    }
+
+    function selectExamine(v) {
+
+        currExmaineId = $('[name=examineSelection]').val();
+        refreshTableList();
+        loadStatistic();
+    }
+    $(function () {
+
+        App.renderPosSelect('posCode', true);
+
+        var renderExamineSelection = function (examines) {
+
+            if (examines && examines.length > 0) {
+                var h = [];
+
+                for (var i = 0, len = examines.length; i < len; i++) {
+                    var e = examines[i];
+                    h.push('<option value="' + e.id + '">' + e.name + '</option>');
+                }
+
+                var firstId = examines[0].id;
+                $('[name=examineSelection]').html(h.join('')).val(firstId);
+                selectExamine(firstId);
+
+            } else {
+                alert('当前没有任何考试（试卷）分数可以查询！');
+            }
+        }
+        $.get(App.basePath + '/back/examine/list.do', {currPage: 1, pageSize: 1000}, function (data) {
+
+            if (data && data.success) {
+
+                renderExamineSelection(data.obj.list);
+            }
+        }, 'json');
+
+        $('#refreshBtn1').on('click', refreshTableList);
+        $('#refreshBtn2').on('click', loadStatistic);
+
+        $('#exportScoreBtn').on('click', function () {
+            var pos = $('#posCode').val();
+            self.open(App.basePath + '/back/score/export/detail.do?pos=' + pos + '&pageSize=1000&eid=' + currExmaineId)
+        })
+
+//          var loadData = function () {
+//
+//              App.renderTable('dataTable', '/back/score/list.do', function (r, i) {
+//                  var h = [];
+//
+//                  html.push("<tr>                                                                                                                              ")//
+//                  html.push("<td height='30' width='58' align='center'>" + (i + 1) + "</td>                                                                                  ")//
+//                  html.push("    <td height='30' width='112' align='center'>" + (r.type == 1 ? '对照复录' : '听音打字') + "</td>                                                                           ")//
+//                  html.push("    <td  width='213' align='center' style='color:#333333'>" + r.name + "</td>                                                               ")//
+//                  html.push("    <td  width='230' align='center'><a href='xiangxiTi.html?id=" + r.id + "' target='_self'>查看详细</a>|<a href='editTi.html?id=" + r.id + "' target='_self'>修改</a>| ")//
+//                  html.push(" <a href='javascript:;' target='_self'>删除</a></td>                                                                                 ")//
+//                  html.push("    </tr>                                                                                                                         ")//
+//
+//
+//                  return h.join('');
+//              }, 'pagination');
+//          }
+//          App.checkAdminLogin().done(App.check2AdminLogin)
+//              .success(function (data) {
+//                  if (data && data.success) {
+//                      loadData();
+//                  }
+//              });
+//
+//          $('#refreshBtn').on('click', loadData);
+
+    })
+</script>
+</body>
+</html>
+
+

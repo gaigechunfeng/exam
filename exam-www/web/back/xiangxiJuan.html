@@ -1,0 +1,256 @@
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>成绩报告单</title>
+    <style type="text/css">
+        <!--
+        body {
+            margin-top: 30px;
+            background-color: #BEEDED;
+        }
+
+        .STYLE3 {
+            color: #011037;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .fh a {
+            display: block;
+            background: #2b68c2;
+            color: #FFF;
+            font-size: 14px;
+            font-weight: bold;
+            width: 100px;
+            height: 26px;
+            line-height: 26px;
+            text-decoration: none;
+            border: 1px solid #0c4ba0;
+            float: left;
+            margin-left: 10px;
+            text-align: center;
+        }
+
+        a:hover {
+            background: #FFFFFF;
+            color: #FF0000;
+            border: 1px solid #000000;
+        }
+
+        .sta td {
+            border: 1px solid #0099FF;
+            font-size: 12px;
+        }
+
+        .STYLE1 {
+            color: #000000;
+            font-size: 29px;
+            font-family: "黑体";
+        }
+
+        .bd1 {
+            border: 1px solid #2b68c2
+        }
+
+        .bd1 td {
+            border: none
+        }
+
+        ;
+        .bd2 {
+            border: none
+        }
+
+        .bd2 td {
+            border: 1px solid #2b68c2;
+        }
+
+        .STYLE16 {
+            color: #333333;
+            font-size: 12px;
+        }
+
+        .STYLE17 {
+            font-size: 12px;
+            color: #000000;
+        }
+
+        .STYLE21 {
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .es_style {
+            border: 1px solid green;
+        }
+
+        -->
+    </style>
+</head>
+
+<body>
+
+<table width="694" border="0" align="center" cellpadding="0" cellspacing="0" bgcolor="#FFFFFF">
+    <tr>
+        <td width="694" height="120" align="left" valign="bottom" class="STYLE2">
+            <table width="521" height="105" border="0" align="center" cellpadding="0" cellspacing="0">
+                <tr>
+                    <td height="62" align="center" valign="middle"><span class="STYLE1" data-field="name"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td height="30" align="center" valign="middle" class="STYLE17">（分值 <span
+                            data-field="score"></span> 分）
+                    </td>
+                </tr>
+                <tbody id="esessionTable">
+                </tbody>
+
+            </table>
+        </td>
+    </tr>
+
+    <tr>
+        <td height="12" align="center" valign="middle" class="STYLE3"></td>
+    </tr>
+    <tr>
+        <td height="21" align="center" valign="middle" background="imges/fg.gif" class="STYLE3">&nbsp;</td>
+    </tr>
+    <tr>
+        <td height="15" align="center" valign="top" class="bq">&nbsp;</td>
+    </tr>
+    <tbody id="topicTables">
+    </tbody>
+
+    <tr>
+        <td height="48" align="center" valign="bottom" class="bq">
+            <table width="230" height="36" border="0" cellpadding="0" cellspacing="0">
+                <tr>
+                    <td width="230"><span class="fh"><a href="javascript:history.back()"
+                                                        target="_top">返&nbsp;回</a></span> <span class="fh"><a
+                            href="" id="modifyBtn" target="_self">修&nbsp;改</a></span></td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+
+    <tr>
+        <td height="20" align="left" valign="middle" class="bq"></td>
+    </tr>
+    <tr>
+        <td height="21" align="left" valign="middle" background="imges/fg.gif"></td>
+    </tr>
+    <tr>
+        <td height="29" align="right" valign="middle" class="STYLE16">
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+    </tr>
+    <tr>
+        <td width="694" height="13" align="center" valign="middle" bgcolor="#BEEDED">&nbsp;</td>
+    </tr>
+</table>
+
+<script src="./imges/jquery.min.js"></script>
+<script src="./imges/common.js"></script>
+<script>
+
+    $(function () {
+
+        var id = App.getParam("id");
+        if (!id) {
+            alert('参数错误！');
+            return
+        }
+
+        $.get(App.basePath + '/back/examine/detail.do', {id: id}, function (data) {
+
+            if (data && data.success) {
+                renderHtml(data.obj);
+            }
+        })
+
+        $('#modifyBtn').attr('href', App.basePath + '/back/editJuan.html?id=' + id)
+    })
+
+    function startOrStop(btn) {
+        btn = $(btn);
+        var status = btn.attr('data-status'),
+            id = btn.attr('data-id'),
+            mp3 = btn.attr('data-mp3');
+        id = 'audio-' + id;
+        if (status == '0') {
+            App.audioplayer(id, {
+                mp3: App.basePath + '/back/file/download.do?fullPath=' + encodeURIComponent(mp3.replace(/\\/g, '\\\\'))
+            }, false)
+            btn.val('停止播放').attr('data-status', '1');
+        } else {
+            App.audioplayer(id);
+            btn.val('开始播放').attr('data-status', '0');
+        }
+    }
+
+    function renderHtml(obj) {
+
+        var examine = obj.examine,
+            topics = obj.topics,
+            esessions = obj.esessions
+
+        for (var key in examine) {
+            var dom = $('[data-field=' + key + ']'),
+                val = examine[key];
+            if (dom.length > 0) {
+                dom.html(val);
+            }
+        }
+
+        var html = [];
+
+        if (topics && topics.length > 0) {
+
+            for (var i = 0, len = topics.length; i < len; i++) {
+                var t = topics[i];
+                html.push('<tr>                                                                                                           ')//
+                html.push('    <td height="13" align="center" valign="top" class="bq">                                                    ')//
+                html.push('        <table width="640" border="0" cellspacing="0" cellpadding="0">                                         ')//
+                html.push('        <tr>                                                                                                   ')//
+                html.push('        <td width="556" height="19" class="STYLE21">' + (i + 1) + '.' + (t.type == 1 ? '对照复录' : '听音打字') + '(' + t.score + '分）</td>                                         ')//
+                html.push('    </tr>                                                                                                      ')//
+                html.push('    <tr>                                                                                                       ')//
+                html.push('    <td height="49" align="left" valign="top" style=" text-indent:2em; line-height:22px;">                     ')//
+                html.push('        ' + t.name + '<br/>                                            ')//
+                html.push('    <div align="center" style="width:100%">                                                                    ')//
+                html.push('    ' + (t.type == 1 ? t.content : '<input type="button" value="开始播放" data-id="' + t.id + '" data-status="0" data-mp3="' + t.content + '" onclick="startOrStop(this)">') + '                                                                ')//
+                html.push('    </div>                                                                                                     ')//
+                html.push('    </td>                                                                                                      ')//
+                html.push('    </tr>                                                                                                      ')//
+                html.push('    <tr>                                                                                                       ')//
+                html.push('    <td>&nbsp;</td>                                                                                            ')//
+                html.push('    </tr>                                                                                                      ')//
+                html.push('    </table>                                                                                                   ')//
+                html.push('    </td>                                                                                                      ')//
+                html.push('   </tr>                                                                                                       ')//
+            }
+        }
+
+        $('#topicTables').html(html.join(''));
+
+        var h2 = [];
+        if (esessions && esessions.length > 0) {
+            for (i = 0, len = esessions.length; i < len; i++) {
+                var e = esessions[i];
+                h2.push('<tr class="es_style">                                                                               ');
+                h2.push('    <td height="13" align="center" valign="middle" class="STYLE3">考试场次' + (i + 1) + '&nbsp;&nbsp;&nbsp;&nbsp;     ');
+                h2.push('        场次名称：' + e.name + '&nbsp;&nbsp;&nbsp;&nbsp;考试开始时间：<span                                                   ');
+                h2.push('                >' + e.startTime + '</span>&nbsp;&nbsp;&nbsp;                                    ');
+                h2.push('        考试结束时间：<span >' + e.endTime + '</span></td>                                              ');
+                h2.push('</tr>                                                                                               ');
+            }
+        }
+
+        $('#esessionTable').html(h2.join(''));
+
+    }
+</script>
+</body>
+</html>
+

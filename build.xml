@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<project default="main">
+
+    <target name="main" depends="clean,init,copy,zip">
+        <echo>Success</echo>
+    </target>
+
+    <target name="clean">
+        <delete dir="_tmp"/>
+    </target>
+
+    <target name="init">
+        <mkdir dir="_tmp"/>
+    </target>
+
+    <target name="copy">
+        <copy todir="_tmp">
+            <fileset dir=".">
+                <include name="bin/**"/>
+                <include name="lib/**"/>
+                <include name="init-database.sql"/>
+                <include name="readme.md"/>
+            </fileset>
+        </copy>
+        <copy todir="_tmp/resources">
+            <fileset dir="exam-www/src/main/resources"/>
+        </copy>
+        <copy todir="_tmp/conf">
+            <fileset dir="exam-www/conf"/>
+        </copy>
+        <copy todir="_tmp/web">
+            <fileset dir="exam-www/web"/>
+        </copy>
+        <copy todir="_tmp/work">
+            <fileset dir="exam-www/work"/>
+        </copy>
+        <copy todir="_tmp/jre">
+            <fileset dir="jdk1.8.0_121/jre"/>
+        </copy>
+        <copy todir="_tmp/mysql">
+            <fileset dir="MySQL Server 5.0"/>
+        </copy>
+    </target>
+
+    <target name="zip">
+        <delete dir="dist"/>
+        <mkdir dir="dist"/>
+        <zip destfile="dist/baiyin-exam.zip">
+            <zipfileset dir="_tmp"/>
+        </zip>
+        <delete dir="_tmp"/>
+    </target>
+</project>

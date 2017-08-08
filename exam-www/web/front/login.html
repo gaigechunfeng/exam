@@ -1,0 +1,321 @@
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>书记员录入能力机考系统</title>
+    <style type="text/css">
+        <!--
+        body {
+            background-color: #FFFFFF;
+            margin-left: 0px;
+            margin-top: 0px;
+            margin-right: 0px;
+            margin-bottom: 0px;
+        }
+
+        .STYLE1 {
+            color: #000000;
+            font-size: 36px;
+            font-family: "黑体";
+        }
+
+        .STYLE2 {
+            color: #FFFFFF;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .STYLE3 {
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .STYLE4 {
+            color: #666666;
+            font-weight: bold;
+        }
+
+        .STYLE6 {
+            color: #EDFAFA;
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        #submitBtn, #resetBtn {
+            cursor: pointer;
+        }
+
+        -->
+    </style>
+    <script language="javascript">
+        function m_over(m_num) {
+            var m_obj, objId, bgCl
+            objId = "btn" + m_num
+            m_obj = document.getElementById(objId)
+            m_obj.style.backgroundColor = "#FF0000"
+            m_obj.style.cursor = "hand"
+        }
+        function m_out(m_num) {
+            var m_obj, objId, bgCl
+            objId = "btn" + m_num
+            m_obj = document.getElementById(objId)
+            if (m_num == 1 || m_num == 2) {
+                m_obj.style.backgroundColor = "#0698D1"
+            }
+            if (m_num == 3) {
+                m_obj.style.backgroundColor = "#FF6600"
+            }
+        }
+        function openWin(url, name, iWidth, iHeight) {
+            //获得窗口的垂直位置
+            var iTop = (window.screen.availHeight - 30 - iHeight) / 2;
+            //获得窗口的水平位置
+            var iLeft = (window.screen.availWidth - 10 - iWidth) / 2;
+            window.open(url, name, 'height=' + iHeight + ',,innerHeight=' + iHeight + ',width=' + iWidth + ',innerWidth=' + iWidth + ',top=' + iTop + ',left=' + iLeft + ',status=no,toolbar=no,menubar=no,location=no,resizable=no,scrollbars=0,titlebar=no');
+        }
+        function m_clik(str) {
+
+            if (str == "xuzhi") {
+                openWin('xuzhi.htm', "考生须知", 800, 880)
+            }
+
+
+        }
+
+    </script>
+</head>
+
+<body>
+
+<form id="loginForm" onsubmit="return false;">
+    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+        <tr>
+            <td height="117" align="center" valign="bottom" style="background-repeat:repeat-x">
+                <table width="521" height="42" border="0" cellpadding="0" cellspacing="0">
+                    <tr>
+                        <td width="20">&nbsp;</td>
+                        <td width="69"><img src="imges/fahui.gif" alt="图标" width="69" height="69"/></td>
+                        <td width="432" align="left"><span class="STYLE1">书记员录入能力机考系统</span></td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td height="29" align="center" style="background-repeat:repeat-x">&nbsp;</td>
+        </tr>
+        <tr>
+            <td height="438" align="center" valign="top" background="imges/bg.jpg" style="background-repeat:repeat-x">
+                <form id="form1" name="form1" method="post" action="">
+                    <table width="520" border="0" cellpadding="0" cellspacing="0">
+                        <tr>
+                            <td height="431" style="border:1px solid #CCCCCC">
+                                <table width="520" border="0" cellspacing="0" cellpadding="0">
+                                    <tr>
+                                        <td width="520" height="193" align="right" valign="bottom"
+                                            background="imges/login.jpg">
+                                            <table width="159" height="38" border="0" cellpadding="0" cellspacing="0">
+                                                <tr>
+                                                    <td align="center" valign="middle"><span class="STYLE6">考生登录平台&gt;&gt;</span>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td height="243" valign="top" bgcolor="#EAEBED">
+                                            <table id="__01" width="520" height="204" border="0" cellpadding="0"
+                                                   cellspacing="0">
+                                                <tr>
+                                                    <td colspan="5" height="23">&nbsp;</td>
+                                                </tr>
+                                                <tr>
+                                                    <td rowspan="9" width="67" height="177">&nbsp;</td>
+                                                    <td width="282" height="33" bgcolor="#0698D1">
+                                                        <table width="282" height="27" border="0" cellpadding="0"
+                                                               cellspacing="0">
+                                                            <tr>
+                                                                <td width="93" align="center" valign="middle"><span
+                                                                        class="STYLE2">考生姓名</span></td>
+                                                                <td width="187" style=" background-color:#FFFFFF"><input
+                                                                        type="text" name="name"
+                                                                        style="border:none; width:187; height:27; text-indent:0.5em"/>
+                                                                </td>
+                                                                <td width="2"></td>
+                                                            </tr>
+                                                        </table>
+                                                    </td>
+                                                    <td rowspan="3" width="9" height="80"></td>
+                                                    <td width="91" rowspan="5" align="center" bgcolor="#0698D1"
+                                                        id="btn1" onMouseOver="m_over(1)" onMouseOut="m_out(1)"
+                                                        onclick="m_clik('xuzhi')" style="color:#FFFFFF"><span
+                                                            class="STYLE3">考生<br/></span>
+                                                        <p class="STYLE3">须知</p></td>
+                                                    <td rowspan="7" width="71" height="177">&nbsp;</td>
+                                                </tr>
+                                                <tr>
+                                                    <td height="11"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td height="33" bgcolor="#0698D1">
+                                                        <table width="282" height="27" border="0" cellpadding="0"
+                                                               cellspacing="0">
+                                                            <tr>
+                                                                <td width="93" align="center" valign="middle"><span
+                                                                        class="STYLE2">准考证号</span></td>
+                                                                <td width="187" style=" background-color:#FFFFFF"><input
+                                                                        type="text" name="username"
+                                                                        style="border:none; width:187; height:27; text-indent:0.5em"/>
+                                                                </td>
+                                                                <td width="2"></td>
+                                                            </tr>
+                                                        </table>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td height="11"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td height="33" bgcolor="#0698D1">
+                                                        <table width="282" height="27" border="0" cellpadding="0"
+                                                               cellspacing="0">
+                                                            <tr>
+                                                                <td width="93" align="center" valign="middle"><span
+                                                                        class="STYLE2">身份证号码</span></td>
+                                                                <td width="187" style=" background-color:#FFFFFF"><input
+                                                                        type="text" name="idcard"
+                                                                        style="border:none; width:187; height:27; text-indent:0.5em"/>
+                                                                </td>
+                                                                <td width="2"></td>
+                                                            </tr>
+                                                        </table>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="3" height="18">&nbsp;</td>
+                                                </tr>
+                                                <tr>
+                                                    <td height="40" colspan="3" align="center" bgcolor="#0698D1"
+                                                        id="submitBtn" style="color:#FFFFFF"><span
+                                                            class="STYLE3">登&nbsp;&nbsp;陆</span></td>
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="3" height="8"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td height="40" colspan="3" align="center" bgcolor="#FF6600"
+                                                        class="STYLE3" id="resetBtn" style="color:#FFFFFF">重&nbsp;&nbsp;置
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="3" height="28">&nbsp;</td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                    </table>
+                </form>
+            </td>
+        </tr>
+        <tr>
+            <td height="60" align="center" valign="middle" style="line-height:28px; font-size:12px; color:#999999"><span
+                    class="STYLE4">白银市中级人民法院</span>.信息办 版权所有 Tel:0943-8268673
+            </td>
+        </tr>
+    </table>
+</form>
+
+<script src="../back/imges/jquery.min.js"></script>
+<script src="../back/imges/common.js"></script>
+<script>
+
+    //    if (!window.opener) {
+    //        var frontWin = window.open(window.location.href, '_self', "height=" + screen.availHeight + ",width=" + screen.availWidth + ",menubar=no,resizable=no,toolbar=no,fullscreen=yes,location=no")
+    ////        frontWin.opener.close();
+    //    }
+
+    function loginSuccess(user) {
+
+        self.location.assign(App.basePath + '/front/wait.html');
+    }
+    $(function () {
+
+        App.checkLogin().done(function (data) {
+            if (data && data.success) {
+                self.location.assign(App.basePath + '/front/wait.html');
+            }
+        })
+
+        $('#submitBtn')
+            .on('mouseover', function () {
+                $(this).css({
+                    backgroundColor: '#FF0000'
+                })
+            })
+            .on('mouseout', function () {
+                $(this).css({
+                    backgroundColor: '#0698D1'
+                })
+            })
+            .on('click', function () {
+
+                var btn = $(this),
+                    form = btn.parents('form'),
+                    nameIn = $('[name=name]', form),
+                    usernameIn = $('[name=username]', form),
+                    idcardIn = $('[name=idcard]', form)
+
+                var nameVal = $.trim(nameIn.val()),
+                    usernameVal = $.trim(usernameIn.val()),
+                    idcardVal = $.trim(idcardIn.val())
+
+                if (!nameVal) {
+                    alert('请输入姓名！');
+                    return false;
+                }
+                if (!usernameVal) {
+                    alert('请输入准考证号！');
+                    return false;
+                }
+                if (!idcardVal) {
+                    alert('请输入身份证号码！');
+                    return false;
+                }
+                var p = {
+                    name: nameVal,
+                    username: usernameVal,
+                    idcard: idcardVal
+                }
+                $.post(App.basePath + '/front/login.do', p, function (data) {
+
+                    if (data && data.success) {
+                        loginSuccess(data.obj);
+                    } else {
+                        alert('错误：' + data ? data.errmsg : '未知');
+                    }
+                }, 'json');
+            });
+
+        $('#resetBtn')
+            .on('mouseover', function () {
+                $(this).css({
+                    backgroundColor: '#FF0000'
+                })
+            })
+            .on('mouseout', function () {
+                $(this).css({
+                    backgroundColor: '#FF6600'
+                })
+            })
+            .on('click', function () {
+                $(this).parents('form').find(':text,:password').val('')
+            })
+    })
+</script>
+</body>
+</html>
+
+

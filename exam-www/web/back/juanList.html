@@ -1,0 +1,203 @@
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <style type="text/css">
+        <!--
+        td {
+            font-size: 12px;
+        }
+
+        .sta td {
+            border: 1px solid #0099FF;
+        }
+
+        .titbg td {
+            background: #e3fafd;
+            font-size: 12px;
+            color: #000000;
+            border: none;
+            border-bottom: 1px #0066ff solid;
+            border-top: 1px #0066ff solid;
+        }
+
+        td img {
+            display: block;
+        }
+
+        .bqta td {
+            font-size: 12px;
+            color: #666666;
+        }
+
+        body {
+            background-image: url();
+            background-repeat: no-repeat;
+            margin-top: 20px;
+        }
+
+        .STYLE3 {
+            color: #0033FF;
+            font-weight: bold;
+        }
+
+        a {
+            font-size: 12px;
+            color: #0033FF;
+            text-decoration: none;
+        }
+
+        a:hover {
+            color: #FF0000;
+            text-decoration: underline;
+        }
+
+        .btns {
+            height: 30px;
+            width: 90px;
+        }
+
+        .choose_cls {
+            display: none;
+        }
+
+        -->
+    </style>
+    <script type="text/javascript">
+        function Chref(url) {
+            window.location.href = url;
+        }
+    </script>
+</head>
+
+<body>
+
+<table align="center" border="0" cellpadding="0" cellspacing="0" width="709">
+    <tr>
+        <td width="709" height="41" align="right" valign="middle" style=" border-bottom:3px solid #0066FF"><input
+                type="button" name="show" value="刷   新" class="btns" id="refreshBtn"/>
+            <input type="button" name="add" value="新增考试" class="btns" onclick="Chref('addJuan.html')"/>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+    </tr>
+    <tr>
+        <td height="13" align="center" valign="top">&nbsp;</td>
+    </tr>
+    <tr>
+        <td height="32" align="center" valign="top">
+            <table width="843" border="0" cellpadding="0" cellspacing="0" class="sta">
+                <tr bgcolor="#00FFFF">
+                    <td class="choose_cls" width="58" height="30" align="center" valign="middle"><strong>选 择</strong>
+                    </td>
+                    <td width="58" height="30" align="center" valign="middle"><strong>序 号</strong></td>
+                    <td width="277" align="center" valign="middle"><strong>试卷名称</strong></td>
+                    <td width="97" align="center" valign="middle"><strong>分值</strong></td>
+                    <td width="181" align="center" valign="middle"><strong>考试时间</strong></td>
+                    <td width="230" align="center" valign="middle"><strong>编辑</strong></td>
+                </tr>
+                <tbody id="dataTable">
+
+                </tbody>
+            </table>
+        </td>
+    </tr>
+    <tr>
+        <td height="32" align="center" valign="bottom">
+            <table width="558" height="27" border="0" cellpadding="0" cellspacing="0">
+                <tr>
+                    <td width="600" align="right" valign="bottom" id="pagination">
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+    <tr class="choose_cls">
+        <td height="13" align="center" valign="top">
+            <div style="">
+                <input id="chooseBtn" type="button" value="确定选择">
+            </div>
+        </td>
+    </tr>
+</table>
+
+<script src="./imges/jquery.min.js"></script>
+<script src="./imges/common.js"></script>
+<script>
+
+    var isChoose = App.getParam('isChoose');
+    var mainData = [];
+    function deleteById(id) {
+        if (confirm('您确认要删除该条试卷吗？')) {
+            $.post(App.basePath + '/back/examine/delete.do', {id: id}, function (data) {
+                if (data && data.success) {
+
+                    $('#refreshBtn').click();
+//                    self.location.reload();
+                }
+            })
+        }
+    }
+
+    $(function () {
+
+        var loadData = function () {
+
+            App.renderTable('dataTable', '/back/examine/list.do', function (r, i) {
+                var html = [], ess = [];
+
+                if (r.eSessions && r.eSessions.length > 0) {
+                    for (var j = 0, len = r.eSessions.length; j < len; j++) {
+                        var es = r.eSessions[j];
+                        ess.push(es.name + ':从' + es.startTime + '到' + es.endTime + '<br/>');
+                    }
+                }
+
+                html.push("<tr>                                                                                         ")//
+                html.push("<td class='choose_cls' height='30' width='58' align='center'><input class='choose_checkbox' type='checkbox' value='" + i + "'></td>                                             ")//
+                html.push("<td height='30' width='58' align='center'>" + (i + 1) + "</td>                                             ")//
+                html.push("    <td height='30' width='277' align='center'>" + r.name + "</td>                   ")//
+                html.push("<td width='97' align='center' style='color:#333333'>" + r.score + "</td>                                 ")//
+                html.push("    <td width='181' align='center'>" + ess.join('') + "</td>                                ")//
+                html.push("<td width='230' align='center'><a href='xiangxiJuan.html?id=" + r.id + "' target='_self'>查看详细</a>|<a         ")//
+                html.push("href='editJuan.html?id=" + r.id + "' target='_self'>修改</a>|<a href='javascript:deleteById(" + r.id + ");' target='_self'>删除</a></td>  ")//
+                html.push("    </tr>                                                                                    ")//
+
+
+                return html.join('');
+            }, 'pagination', function (data) {
+                if (data && data.obj) {
+                    mainData = data.obj.list;
+                }
+
+                if (isChoose) {
+                    $('.choose_cls').show();
+                }
+            });
+        }
+
+        loadData();
+
+        $('#refreshBtn').on('click', loadData);
+
+        $('#chooseBtn').on('click', function () {
+
+            var checked = $('.choose_checkbox:checked')
+//            if (checked.length == 0) {
+//                alert('请选择题目！');
+//                return;
+//            }
+            var selectedRs = [];
+            checked.each(function () {
+                selectedRs.push(mainData[this.value]);
+            })
+
+            if (self.opener && typeof self.opener.setTopics === 'function') {
+                self.opener.setTopics(selectedRs);
+                self.close();
+            }
+        })
+    });
+</script>
+</body>
+</html>
+
+

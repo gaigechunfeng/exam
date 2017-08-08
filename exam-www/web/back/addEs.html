@@ -1,0 +1,195 @@
+<html>
+
+<head>
+
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <style type="text/css">
+        <!--
+        .tit {
+            font-size: 12px;
+            color: #0022ff;
+            font-weight: bold;
+        }
+
+        .tit td {
+            border: 1px solid #0066ff
+        }
+
+        #chanel td {
+            border: 1px solid #0066ff;
+            font-size: 12px;
+            color: #000000
+        }
+
+        td {
+            font-size: 12px;
+        }
+
+        .sta td {
+            border: none;
+        }
+
+        .titbg td {
+            background: #e3fafd;
+            font-size: 12px;
+            color: #000000;
+            border: none;
+            border-bottom: 1px #0066ff solid;
+            border-top: 1px #0066ff solid;
+        }
+
+        td img {
+            display: block;
+        }
+
+        .bqta td {
+            font-size: 12px;
+            color: #666666;
+        }
+
+        body {
+            background-repeat: no-repeat;
+            margin-top: 50px;
+        }
+
+        a {
+            font-size: 12px;
+            color: #000055;
+            text-decoration: none;
+        }
+
+        a:hover {
+            color: #0033ff;
+            text-decoration: underline;
+        }
+
+        .STYLE4 {
+            color: #FFFFFF;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .btns {
+            height: 24px;
+            width: 90px;
+        }
+
+        .STYLE5 {
+            color: #0000FF
+        }
+
+        -->
+    </style>
+</head>
+
+<body>
+
+<form id="addTopicForm" onsubmit="return false;">
+
+    <table width="732" border="0" align="center" cellpadding="0" cellspacing="0">
+        <tr class="tit">
+            <td height="30" colspan="5" align="center" bgcolor="#80FFFF">新增考试场次(*项为必填项）</td>
+        </tr>
+        <tr>
+            <td width="95" height="35" align="right" valign="middle" bgcolor="#FFFFFF"
+                style="border:none; line-height:28px;border-left:1px #0066ff solid;">场次名称[<span class="STYLE5">*</span>]：
+            </td>
+            <td height="35" colspan="3" align="left" bgcolor="#FFFFFF" style="border:none;"><span
+                    style="border:none; border-right:1px #0066ff solid;">
+      <input type="text" name="name" value=" " style="height:26px; width:580px;  border:1px solid #666666">
+    </span></td>
+            <td width="15" align="left" bgcolor="#FFFFFF" style="border:none; border-right:1px #0066ff solid;">
+                &nbsp;
+            </td>
+        </tr>
+        <tr>
+            <td height="35" align="right" valign="middle" bgcolor="#FFFFFF"
+                style="border:none; line-height:28px;border-left:1px #0066ff solid;">开始时间[<span class="STYLE5">*</span>]：
+            </td>
+            <td width="280" height="35" align="left" bgcolor="#FFFFFF" style="border:none;">
+                <input type="text"
+                       name="startTime"
+                       value="" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm'})"
+                       style="height:26px; width:200px;  border:1px solid #666666">
+                分
+            </td>
+            <td width="98" align="right" bgcolor="#FFFFFF" style="border:none">结束时间[<span class="STYLE5">*</span>]：</td>
+            <td width="244" align="left" bgcolor="#FFFFFF" style="border:none;">
+                <input type="text"
+                       name="endTime"
+                       value="" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm'})"
+                       style="height:26px; width:200px;  border:1px solid #666666"></td>
+            <td align="left" bgcolor="#FFFFFF" style="border:none; border-right:1px #0066ff solid;">&nbsp;</td>
+        </tr>
+        <tr>
+            <td height="33" colspan="5" align="center" bgcolor="#FFFFFF" style="border:1px solid #0066ff;"><input
+                    type="button" name="add" value="保 存" id="saveBtn">
+                &nbsp;
+                <input type="button" name="Cancel" value="取 消"
+                       onClick="javascript:self.history.back();"></td>
+        </tr>
+    </table>
+</form>
+
+<script src="./imges/jquery.min.js"></script>
+<script src="./imges/My97DatePicker/WdatePicker.js"></script>
+
+<script src="./imges/common.js"></script>
+<script>
+    $(function () {
+
+        $('#saveBtn').on('click', function () {
+
+            var btn = $(this),
+                form = btn.parents('form'),
+                nameInput = $('[name=name]', form),
+                startTimeIn = $('[name=startTime]', form),
+                endTimeIn = $('[name=endTime]', form);
+
+            var nameVal = $.trim(nameInput.val()),
+                startTimeVal = $.trim(startTimeIn.val()),
+                endTimeVal = $.trim(endTimeIn.val()),
+                content;
+
+            if (!nameVal) {
+                alert("场次名称不能为空！")
+                return false;
+            }
+
+            if (!startTimeVal) {
+                alert("开始时间不能为空！")
+                return false;
+            }
+            if (!endTimeVal) {
+                alert("结束时间不能为空！")
+                return false;
+            }
+
+
+            var params = {
+                name: nameVal,
+                startTime: startTimeVal,
+                endTime: endTimeVal
+            }
+
+            $.post(App.basePath + '/back/esession/add.do', params, function (data) {
+                if (!data) {
+                    return;
+                }
+                if (data.success) {
+                    alert('添加场次成功！');
+//                    self.history.back();
+                    self.location.assign(App.basePath + '/back/esList.html' + self.location.search);
+                } else {
+                    alert('发生错误：' + data.errmsg);
+                }
+            }, 'json');
+        })
+    })
+</script>
+</body>
+</html>
+
+
+
+

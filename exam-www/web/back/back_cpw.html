@@ -1,0 +1,192 @@
+<html>
+
+<head>
+
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <style type="text/css">
+        <!--
+        .fh a {
+            display: block;
+            background: #2b68c2;
+            color: #FFF;
+            font-size: 14px;
+            font-weight: bold;
+            width: 100px;
+            height: 26px;
+            line-height: 26px;
+            text-decoration: none;
+            border: 1px solid #0c4ba0;
+        }
+
+        a:hover {
+            background: #FFFFFF;
+            color: #FF0000;
+            border: 1px solid #000000;
+        }
+
+        .STYLE2 {
+            color: #FFFFFF;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .STYLE3 {
+            color: #FFFFFF;
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        -->
+    </style>
+    <script language="javascript">
+        function m_over() {
+            var m_obj
+            m_obj = document.getElementById("saveBtn")
+            m_obj.style.backgroundColor = "#FF0000"
+            m_obj.style.cursor = "hand"
+        }
+        function m_out() {
+            var m_obj
+            m_obj = document.getElementById("saveBtn")
+            m_obj.style.backgroundColor = "#0698D1"
+        }
+    </script>
+</head>
+
+<body>
+
+<form id="modifyPwdForm" onsubmit="return false;">
+    <table width="792" border="0" align="center" cellpadding="0" cellspacing="0">
+        <tr>
+            <td width="792" height="124" align="center" valign="middle" class="STYLE3">&nbsp;</td>
+        </tr>
+        <tr>
+            <td height="352" align="center" valign="middle" class="STYLE3">
+                <table width="100%" cellspacing="0" cellpadding="0" class="bd1">
+
+                    <tr>
+                        <td height="48" align="center" style="font-size:12px; line-height:30px; "><span
+                                style="font-size:16px; font-weight:bold; color:#0c4ba0; line-height:40px;">管理员密码修改</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td height="189" align="center" valign="top">
+                            <table id="__01" width="509" height="232" border="0" cellpadding="0" cellspacing="0">
+                                <tr>
+                                    <td height="23" colspan="3">&nbsp;</td>
+                                </tr>
+
+                                <tr>
+                                    <td width="94" height="33">&nbsp;</td>
+                                    <td width="304" bgcolor="#0698D1">
+                                        <table width="300" height="27" border="0" cellpadding="0" cellspacing="0">
+                                            <tr>
+                                                <td width="87" align="center" valign="middle"><span
+                                                        class="STYLE2">原始密码</span></td>
+                                                <td width="211" style=" background-color:#FFFFFF"><input type="text"
+                                                                                                         name="oldPwd"
+                                                                                                         style="border:none; width:211; height:27; text-indent:0.5em"/>
+                                                </td>
+                                                <td width="2"></td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                    <td width="111">&nbsp;</td>
+                                </tr>
+                                <tr>
+                                    <td height="11" colspan="3"></td>
+                                </tr>
+                                <tr>
+                                    <td height="33">&nbsp;</td>
+                                    <td bgcolor="#0698D1">
+                                        <table width="300" height="27" border="0" cellpadding="0" cellspacing="0">
+                                            <tr>
+                                                <td width="87" align="center" valign="middle"><span
+                                                        class="STYLE2">新的密码</span></td>
+                                                <td width="211" style=" background-color:#FFFFFF"><input type="password"
+                                                                                                         name="newPwd"
+                                                                                                         style="border:none; width:211; height:27; text-indent:0.5em"/>
+                                                </td>
+                                                <td width="2"></td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                    <td>&nbsp;</td>
+                                </tr>
+                                <tr>
+                                    <td height="11" colspan="3"></td>
+                                </tr>
+                                <tr>
+                                    <td height="33">&nbsp;</td>
+                                    <td bgcolor="#0698D1">
+                                        <table width="300" height="27" border="0" cellpadding="0" cellspacing="0">
+                                            <tr>
+                                                <td width="87" align="center" valign="middle"><span
+                                                        class="STYLE2">确认新密码</span></td>
+                                                <td width="211" style=" background-color:#FFFFFF"><input type="password"
+                                                                                                         name="newPwda"
+                                                                                                         style="border:none; width:211; height:27; text-indent:0.5em"/>
+                                                </td>
+                                                <td width="2"></td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                    <td>&nbsp;</td>
+                                </tr>
+                                <tr>
+                                    <td height="18" colspan="3"></td>
+                                </tr>
+                                <tr>
+                                    <td height="33"></td>
+                                    <td height="40" align="center" bgcolor="#0698D1" class="STYLE3" id="saveBtn">保 存
+                                    </td>
+                                    <td height="33"></td>
+                                </tr>
+                                <tr>
+                                    <td height="28" colspan="3">&nbsp;</td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+
+
+                </table>
+            </td>
+        </tr>
+    </table>
+</form>
+
+<script src="./imges/jquery.min.js"></script>
+<script src="./imges/common.js"></script>
+<script>
+
+    $(function () {
+
+//        App.checkAdminLogin().done(App.check2AdminLogin)
+
+        var toRed = function () {
+            $(this).css({
+                backgroundColor: '#FF0000'
+            })
+        }
+
+        $('#modifyPwdForm').find(':text,:password').on('keydown', function (e) {
+
+            if (e.keyCode === 13) {
+                App.changePwd.call(this);
+            }
+        })
+
+        $('#saveBtn').on('mouseover', toRed)
+            .on('mouseout', function () {
+                $(this).css({
+                    backgroundColor: '#0698D1'
+                })
+            })
+            .on('click', App.changePwd);
+    })
+</script>
+</body>
+</html>
+
+

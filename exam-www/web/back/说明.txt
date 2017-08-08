@@ -1,0 +1,12 @@
+
+    
+
+前台页只有：  login.html 、 juan1.html 、 juan2.html 、 wait.html 、 xuzhi.html 
+其它的全部是后台的页面   
+
+
+后台页可以打开 back_main.html   其它页面有链接进去   可以全部预览
+
+后台页面:  名字中  add开头的，edit开头的，back开头的，xiangxi开头的，结尾是xiangxi.html，结尾是List.html结尾的都是
+           
+                   

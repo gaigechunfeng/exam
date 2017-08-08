@@ -1,0 +1,210 @@
+<?xml version="1.0"?>
+<?mso-application progid="Excel.Sheet"?>
+<Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet"
+          xmlns:o="urn:schemas-microsoft-com:office:office"
+          xmlns:x="urn:schemas-microsoft-com:office:excel"
+          xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet"
+          xmlns:html="http://www.w3.org/TR/REC-html40">
+    <DocumentProperties xmlns="urn:schemas-microsoft-com:office:office">
+        <Author>gaige</Author>
+        <LastAuthor>gaige</LastAuthor>
+        <Created>2017-04-19T01:39:28Z</Created>
+        <Version>11.5606</Version>
+    </DocumentProperties>
+    <ExcelWorkbook xmlns="urn:schemas-microsoft-com:office:excel">
+        <WindowHeight>8970</WindowHeight>
+        <WindowWidth>17235</WindowWidth>
+        <WindowTopX>120</WindowTopX>
+        <WindowTopY>105</WindowTopY>
+        <ProtectStructure>False</ProtectStructure>
+        <ProtectWindows>False</ProtectWindows>
+    </ExcelWorkbook>
+    <Styles>
+        <Style ss:ID="Default" ss:Name="Normal">
+            <Alignment ss:Vertical="Center"/>
+            <Borders/>
+            <Font ss:FontName="宋体" x:CharSet="134" ss:Size="12"/>
+            <Interior/>
+            <NumberFormat/>
+            <Protection/>
+        </Style>
+        <Style ss:ID="m61736132">
+            <Alignment ss:Horizontal="Center" ss:Vertical="Center" ss:WrapText="1"/>
+            <Borders>
+             <Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="2"
+            ss:Color="#00CCFF"/>
+            <Border ss:Position="Left" ss:LineStyle="Continuous" ss:Weight="2"
+            ss:Color="#00CCFF"/>
+            <Border ss:Position="Right" ss:LineStyle="Continuous" ss:Weight="2"
+            ss:Color="#00CCFF"/>
+            <Border ss:Position="Top" ss:LineStyle="Continuous" ss:Weight="2"
+            ss:Color="#00CCFF"/>
+            </Borders>
+              <Font ss:FontName="Microsoft YaHei" x:CharSet="134" x:Family="Swiss" ss:Size="9"
+            ss:Color="#000000" ss:Bold="1"/>
+            <Interior ss:Color="#00FFFF" ss:Pattern="Solid"/>
+        </Style>
+        <Style ss:ID="m61736142">
+            <Alignment ss:Horizontal="Center" ss:Vertical="Center" ss:WrapText="1"/>
+            <Borders>
+             <Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="2"
+            ss:Color="#00CCFF"/>
+            <Border ss:Position="Left" ss:LineStyle="Continuous" ss:Weight="2"
+            ss:Color="#00CCFF"/>
+            <Border ss:Position="Right" ss:LineStyle="Continuous" ss:Weight="2"
+            ss:Color="#00CCFF"/>
+            <Border ss:Position="Top" ss:LineStyle="Continuous" ss:Weight="2"
+            ss:Color="#00CCFF"/>
+            </Borders>
+              <Font ss:FontName="Microsoft YaHei" x:CharSet="134" x:Family="Swiss" ss:Size="9"
+            ss:Color="#000000" ss:Bold="1"/>
+            <Interior ss:Color="#00FFFF" ss:Pattern="Solid"/>
+        </Style>
+        <Style ss:ID="m61736152">
+            <Alignment ss:Horizontal="Center" ss:Vertical="Center" ss:WrapText="1"/>
+            <Borders>
+             <Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="2"
+            ss:Color="#00CCFF"/>
+            <Border ss:Position="Left" ss:LineStyle="Continuous" ss:Weight="2"
+            ss:Color="#00CCFF"/>
+            <Border ss:Position="Right" ss:LineStyle="Continuous" ss:Weight="2"
+            ss:Color="#00CCFF"/>
+            <Border ss:Position="Top" ss:LineStyle="Continuous" ss:Weight="2"
+            ss:Color="#00CCFF"/>
+            </Borders>
+              <Font ss:FontName="Microsoft YaHei" x:CharSet="134" x:Family="Swiss" ss:Size="9"
+            ss:Color="#000000" ss:Bold="1"/>
+            <Interior ss:Color="#00FFFF" ss:Pattern="Solid"/>
+        </Style>
+        <Style ss:ID="m61736162">
+            <Alignment ss:Horizontal="Center" ss:Vertical="Center" ss:WrapText="1"/>
+            <Borders>
+             <Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="2"
+            ss:Color="#00CCFF"/>
+            <Border ss:Position="Left" ss:LineStyle="Continuous" ss:Weight="2"
+            ss:Color="#00CCFF"/>
+            <Border ss:Position="Right" ss:LineStyle="Continuous" ss:Weight="2"
+            ss:Color="#00CCFF"/>
+            <Border ss:Position="Top" ss:LineStyle="Continuous" ss:Weight="2"
+            ss:Color="#00CCFF"/>
+            </Borders>
+              <Font ss:FontName="Microsoft YaHei" x:CharSet="134" x:Family="Swiss" ss:Size="9"
+            ss:Color="#000000" ss:Bold="1"/>
+            <Interior ss:Color="#00FFFF" ss:Pattern="Solid"/>
+        </Style>
+        <Style ss:ID="s29">
+            <Alignment ss:Horizontal="Center" ss:Vertical="Center" ss:WrapText="1"/>
+            <Borders>
+             <Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="2"
+            ss:Color="#00CCFF"/>
+            <Border ss:Position="Left" ss:LineStyle="Continuous" ss:Weight="2"
+            ss:Color="#00CCFF"/>
+            <Border ss:Position="Right" ss:LineStyle="Continuous" ss:Weight="2"
+            ss:Color="#00CCFF"/>
+            <Border ss:Position="Top" ss:LineStyle="Continuous" ss:Weight="2"
+            ss:Color="#00CCFF"/>
+            </Borders>
+              <Font ss:FontName="Microsoft YaHei" x:CharSet="134" x:Family="Swiss" ss:Size="9"
+            ss:Color="#000000"/>
+            <Interior ss:Color="#00FFFF" ss:Pattern="Solid"/>
+        </Style>
+        <Style ss:ID="s30">
+            <Alignment ss:Horizontal="Center" ss:Vertical="Center" ss:WrapText="1"/>
+            <Borders>
+             <Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="2"
+            ss:Color="#00CCFF"/>
+            <Border ss:Position="Left" ss:LineStyle="Continuous" ss:Weight="2"
+            ss:Color="#00CCFF"/>
+            <Border ss:Position="Right" ss:LineStyle="Continuous" ss:Weight="2"
+            ss:Color="#00CCFF"/>
+            <Border ss:Position="Top" ss:LineStyle="Continuous" ss:Weight="2"
+            ss:Color="#00CCFF"/>
+            </Borders>
+              <Font ss:FontName="Microsoft YaHei" x:CharSet="134" x:Family="Swiss" ss:Size="9"
+            ss:Color="#000000"/>
+        </Style>
+        <Style ss:ID="s32">
+            <Alignment ss:Horizontal="Center" ss:Vertical="Center" ss:WrapText="1"/>
+            <Borders>
+             <Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="2"
+            ss:Color="#00CCFF"/>
+            <Border ss:Position="Left" ss:LineStyle="Continuous" ss:Weight="2"
+            ss:Color="#00CCFF"/>
+            <Border ss:Position="Right" ss:LineStyle="Continuous" ss:Weight="2"
+            ss:Color="#00CCFF"/>
+            <Border ss:Position="Top" ss:LineStyle="Continuous" ss:Weight="2"
+            ss:Color="#00CCFF"/>
+            </Borders>
+              <Font ss:FontName="Microsoft YaHei" x:CharSet="134" x:Family="Swiss" ss:Size="9"
+            ss:Color="#333333"/>
+        </Style>
+    </Styles>
+    <Worksheet ss:Name="Sheet1">
+        <Table ss:ExpandedColumnCount="6" ss:ExpandedRowCount="3" x:FullColumns="1"
+               x:FullRows="1" ss:DefaultColumnWidth="54" ss:DefaultRowHeight="14.25">
+            <Row ss:Height="15">
+                <Cell ss:MergeDown="1" ss:StyleID="m61736132"><Data ss:Type="String">名次</Data></Cell>
+                <Cell ss:MergeDown="1" ss:StyleID="m61736142"><Data ss:Type="String">考生姓名</Data></Cell>
+                <Cell ss:MergeDown="1" ss:StyleID="m61736152"><Data ss:Type="String">准考证号</Data></Cell>
+                <Cell ss:MergeAcross="2" ss:StyleID="m61736162"><Data ss:Type="String">分数</Data></Cell>
+            </Row>
+            <Row ss:Height="15">
+                #foreach( $field in $fields)
+                    #if($velocityCount==1)
+                        <Cell ss:Index="4" ss:StyleID="s29"><Data ss:Type="String">${field}</Data></Cell>
+                    #else
+                        <Cell ss:StyleID="s29"><Data ss:Type="String">${field}</Data></Cell>
+                    #end
+                #end
+                <Cell ss:StyleID="s29"><Data ss:Type="String">总分</Data></Cell>
+            </Row>
+            #foreach( $obj in $list)
+                <Row ss:Height="15">
+                    <Cell ss:StyleID="s30"><Data ss:Type="Number">${velocityCount}</Data></Cell>
+                    <Cell ss:StyleID="s30"><Data ss:Type="String">$!{obj.name}</Data></Cell>
+                    <Cell ss:StyleID="s32"><Data ss:Type="String">$!{obj.username}</Data></Cell>
+                    #foreach($field in $fields)
+                        #set($index=${velocityCount} - 1)
+                        <Cell ss:StyleID="s30"><Data ss:Type="Number">$!{obj.get("score_${index}")}</Data></Cell>
+                    #end
+                    <Cell ss:StyleID="s30"><Data ss:Type="Number">$!{obj.allscore}</Data></Cell>
+                </Row>
+            #end
+
+        </Table>
+        <WorksheetOptions xmlns="urn:schemas-microsoft-com:office:excel">
+            <Print>
+                <ValidPrinterInfo/>
+                <PaperSizeIndex>9</PaperSizeIndex>
+                <HorizontalResolution>600</HorizontalResolution>
+                <VerticalResolution>600</VerticalResolution>
+            </Print>
+            <Selected/>
+            <Panes>
+                <Pane>
+                    <Number>3</Number>
+                    <ActiveRow>5</ActiveRow>
+                    <ActiveCol>7</ActiveCol>
+                </Pane>
+            </Panes>
+            <ProtectObjects>False</ProtectObjects>
+            <ProtectScenarios>False</ProtectScenarios>
+        </WorksheetOptions>
+    </Worksheet>
+    <Worksheet ss:Name="Sheet2">
+        <Table ss:ExpandedColumnCount="0" ss:ExpandedRowCount="0" x:FullColumns="1"
+               x:FullRows="1" ss:DefaultColumnWidth="54" ss:DefaultRowHeight="14.25"/>
+        <WorksheetOptions xmlns="urn:schemas-microsoft-com:office:excel">
+            <ProtectObjects>False</ProtectObjects>
+            <ProtectScenarios>False</ProtectScenarios>
+        </WorksheetOptions>
+    </Worksheet>
+    <Worksheet ss:Name="Sheet3">
+        <Table ss:ExpandedColumnCount="0" ss:ExpandedRowCount="0" x:FullColumns="1"
+               x:FullRows="1" ss:DefaultColumnWidth="54" ss:DefaultRowHeight="14.25"/>
+        <WorksheetOptions xmlns="urn:schemas-microsoft-com:office:excel">
+            <ProtectObjects>False</ProtectObjects>
+            <ProtectScenarios>False</ProtectScenarios>
+        </WorksheetOptions>
+    </Worksheet>
+</Workbook>

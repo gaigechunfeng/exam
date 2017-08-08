@@ -1,0 +1,254 @@
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>成绩报告单</title>
+    <style type="text/css">
+        <!--
+        body {
+            margin-top: 30px;
+            background-color: #BEEDED;
+        }
+
+        .STYLE3 {
+            color: #011037;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .fh a {
+            display: block;
+            background: #2b68c2;
+            color: #FFF;
+            font-size: 14px;
+            font-weight: bold;
+            width: 100px;
+            height: 26px;
+            line-height: 26px;
+            text-decoration: none;
+            border: 1px solid #0c4ba0;
+            float: left;
+            margin-left: 10px;
+            text-align: center;
+        }
+
+        a:hover {
+            background: #FFFFFF;
+            color: #FF0000;
+            border: 1px solid #000000;
+        }
+
+        .sta td {
+            border: 1px solid #0099FF;
+            font-size: 12px;
+        }
+
+        .STYLE1 {
+            color: #000000;
+            font-size: 29px;
+            font-family: "黑体";
+        }
+
+        .bd1 {
+            border: 1px solid #2b68c2
+        }
+
+        .bd1 td {
+            border: none
+        }
+
+        ;
+        .bd2 {
+            border: none
+        }
+
+        .bd2 td {
+            border: 1px solid #2b68c2;
+        }
+
+        .STYLE16 {
+            color: #333333;
+            font-size: 12px;
+        }
+
+        -->
+    </style>
+</head>
+
+<body>
+
+<table width="694" border="0" align="center" cellpadding="0" cellspacing="0" bgcolor="#FFFFFF">
+    <tr>
+        <td width="694" height="120" align="left" valign="bottom" class="STYLE2">
+            <table width="521" height="113" border="0" align="center" cellpadding="0" cellspacing="0">
+                <tr>
+                    <td height="62" align="center" valign="middle">
+                        <table width="428" height="42" border="0" cellpadding="0" cellspacing="0">
+                            <tr>
+                                <td width="20">&nbsp;</td>
+                                <td width="69" align="right" valign="middle"><img src="imges/fahui.gif" alt="图标"
+                                                                                  width="62" height="62"/></td>
+                                <td width="432" align="left"><span class="STYLE1">书记员录入能力上机考试</span></td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td height="51" align="center" valign="middle"><span class="STYLE1">考 生 信 息 表</span></td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+
+    <tr>
+        <td height="12" align="center" valign="middle" class="STYLE3"></td>
+    </tr>
+    <tr>
+        <td height="21" align="center" valign="middle" background="imges/fg.gif" class="STYLE3">&nbsp;</td>
+    </tr>
+    <tr>
+        <td height="32" align="center" valign="top" class="bq">&nbsp;</td>
+    </tr>
+    <tr>
+        <td height="13" align="center" valign="top" class="bq">
+            <table width="607" height="309" border="0" cellpadding="0" cellspacing="0" class="sta">
+                <tr bgcolor="#00FFFF">
+                    <td height="30" colspan="5" align="center" valign="middle"><strong>基本信息</strong><strong></strong>
+                    </td>
+                </tr>
+                <tr>
+                    <td width="80" height='65' align='center' class="STYLE3"><strong>姓名</strong>：</td>
+                    <td width="141" align='center' class="STYLE16" data-field="name"></td>
+                    <td width="77" align='center' class="STYLE3" style='color:#333333'><strong>准考证号：</strong></td>
+                    <td width="179" align='center' class="STYLE16" style='color:#333333' data-field="username"></td>
+                    <td width='130' rowspan="2" align='center'><img data-field="photo" src="faces/moren.jpg" width="119"
+                                                                    height="120"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td height='30' align='center' class="STYLE3"><span
+                            style="color:#333333"><strong> 性别：</strong></span></td>
+                    <td height='30' align='center' class="STYLE16"><span style="color:#333333" data-field="sex"></span>
+                    </td>
+                    <td align='center' class="STYLE3" style='color:#333333'><strong>身份证号：</strong></td>
+                    <td align='center' class="STYLE16" style='color:#333333' data-field="idcard"></td>
+                </tr>
+                <tr>
+                    <td height='30' align='center' class="STYLE3"><span
+                            style="color:#333333"><strong> 岗位代码：</strong></span></td>
+                    <td height='30' align='center' class="STYLE16"><span style="color:#333333" data-field="pos"></span>
+                    </td>
+                </tr>
+                <tr bgcolor="#00FFFF">
+                    <td height='30' colspan="5" align='center'><strong>考试信息</strong></td>
+                </tr>
+
+
+                <tr>
+                    <td height='127' colspan="5" align='left' class="STYLE16" style="line-height:26px;"
+                        id="examineInfo"><br/>
+                        <table style="display: none;" width="535" border="0" align="center" cellpadding="0"
+                               cellspacing="0" class="sta">
+                            <tr bgcolor="#00FFFF">
+                                <td width="45" height="30" align="center" valign="middle"><strong>序 号</strong></td>
+                                <td width="288" align="center" valign="middle"><strong>考试名称--场次名称</strong></td>
+                                <td width="202" align="center" valign="middle"><strong>考试时间</strong></td>
+                            </tr>
+                            <tbody id="examineTable">
+
+                            </tbody>
+
+                        </table>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+    <tr>
+        <td height="48" align="center" valign="bottom" class="bq">
+            <table width="230" height="36" border="0" cellpadding="0" cellspacing="0">
+                <tr>
+                    <td width="230"><span class="fh"><a href="javascript:history.back()"
+                                                        target="_top">返&nbsp;回</a></span> <span class="fh"><a
+                            href="" id="modifyBtn" target="_self">修&nbsp;改</a></span></td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+
+    <tr>
+        <td height="20" align="left" valign="middle" class="bq"></td>
+    </tr>
+    <tr>
+        <td height="21" align="left" valign="middle" background="imges/fg.gif"></td>
+    </tr>
+    <tr>
+        <td height="29" align="right" valign="middle" class="STYLE16">
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+    </tr>
+    <tr>
+        <td width="694" height="13" align="center" valign="middle" bgcolor="#BEEDED">&nbsp;</td>
+    </tr>
+</table>
+
+<script src="./imges/jquery.min.js"></script>
+<script src="./imges/common.js"></script>
+<script>
+    $(function () {
+        var id = App.getParam("id");
+        if (!id) {
+            alert('参数错误！');
+            return;
+        }
+
+        $.post(App.basePath + '/back/user/detail.do', {id: id}, function (data) {
+            if (data && data.success) {
+                renderHtml(data.obj);
+            }
+        }, 'json');
+
+        $('#modifyBtn').attr('href', App.basePath + '/back/editKS.html?id=' + id);
+    })
+
+    function renderHtml(obj) {
+        var user = obj.user,
+            examines = obj.esessions;
+
+        $('[data-field]').each(function () {
+            var f = $(this),
+                fn = f.attr('data-field'),
+                v = user[fn];
+
+            if (fn == 'sex') {
+                v = v == 1 ? '男' : '女'
+            }
+            if (fn == 'photo') {
+                if (v) {
+                    f.attr('src', App.basePath + '/back/file/download.do?fullPath=' + encodeURIComponent(v));
+                }
+            } else {
+                f.html(v || '');
+            }
+        })
+
+        if (examines && examines.length > 0) {
+
+            var html = [];
+            for (var i = 0, len = examines.length; i < len; i++) {
+                var e = examines[i],
+                    ee = e.examine;
+                html.push("<tr>                                                                                        ");
+                html.push("    <td height='30' width='45' align='center'>" + (i + 1) + "</td>                                        ");
+                html.push("    <td height='30' width='288' align='center'>"+ee.name+"--" + e.name + "</td>                  ");
+                html.push("    <td width='202' align='center'>" + e.startTime + "到<br/>" + e.endTime + "</td>                               ");
+                html.push("</tr>                                                                                       ");
+            }
+            $('#examineTable').html(html.join('')).parents('table').show();
+        } else {
+            $('#examineInfo').html('&nbsp;&nbsp;&nbsp;&nbsp;未指定考试信息！');
+        }
+    }
+</script>
+</body>
+</html>
+

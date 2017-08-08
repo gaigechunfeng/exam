@@ -1,0 +1,330 @@
+<html>
+
+<head>
+
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <style type="text/css">
+        <!--
+        .tit {
+            font-size: 12px;
+            color: #0022ff;
+            font-weight: bold;
+        }
+
+        .tit td {
+            border: 1px solid #0066ff
+        }
+
+        #chanel td {
+            border: 1px solid #0066ff;
+            font-size: 12px;
+            color: #000000
+        }
+
+        td {
+            font-size: 12px;
+        }
+
+        .sta td {
+            border: none;
+        }
+
+        .titbg td {
+            background: #e3fafd;
+            font-size: 12px;
+            color: #000000;
+            border: none;
+            border-bottom: 1px #0066ff solid;
+            border-top: 1px #0066ff solid;
+        }
+
+        td img {
+            display: block;
+        }
+
+        .bqta td {
+            font-size: 12px;
+            color: #666666;
+        }
+
+        body {
+            background-repeat: no-repeat;
+            margin-top: 50px;
+        }
+
+        a {
+            font-size: 12px;
+            color: #000055;
+            text-decoration: none;
+        }
+
+        a:hover {
+            color: #0033ff;
+            text-decoration: underline;
+        }
+
+        .STYLE4 {
+            color: #FFFFFF;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .btns {
+            height: 24px;
+            width: 90px;
+        }
+
+        .STYLE5 {
+            color: #0000FF
+        }
+
+        .appendix_con {
+            display: none;
+        }
+
+        -->
+    </style>
+</head>
+
+<body>
+
+<form id="addTopicForm" onsubmit="return false;">
+
+    <table width="732" border="0" align="center" cellpadding="0" cellspacing="0">
+        <tr class="tit">
+            <td height="30" colspan="5" align="center" bgcolor="#80FFFF">新增题目(*项为必填项）</td>
+        </tr>
+        <tr>
+            <td width="95" height="35" align="right" valign="middle" bgcolor="#FFFFFF"
+                style="border:none; line-height:28px;border-left:1px #0066ff solid;">题目名称[<span class="STYLE5">*</span>]：
+            </td>
+            <td height="35" colspan="3" align="left" bgcolor="#FFFFFF" style="border:none;"><span
+                    style="border:none; border-right:1px #0066ff solid;">
+      <input type="text" name="name" value=" " style="height:26px; width:580px;  border:1px solid #666666">
+    </span></td>
+            <td width="15" align="left" bgcolor="#FFFFFF" style="border:none; border-right:1px #0066ff solid;">
+                &nbsp;
+            </td>
+        </tr>
+        <tr>
+            <td height="35" align="right" valign="middle" bgcolor="#FFFFFF"
+                style="border:none; line-height:28px;border-left:1px #0066ff solid;">题目分值[<span class="STYLE5">*</span>]：
+            </td>
+            <td width="280" height="35" align="left" bgcolor="#FFFFFF" style="border:none;"><input type="text"
+                                                                                                   name="score"
+                                                                                                   value=""
+                                                                                                   style="height:26px; width:80px;  border:1px solid #666666">
+                分
+            </td>
+            <td width="98" align="right" bgcolor="#FFFFFF" style="border:none">试题类型[<span class="STYLE5">*</span>]：</td>
+            <td width="244" align="left" bgcolor="#FFFFFF" style="border:none;">
+                <select name="type" onchange="toggleContent(this.value)" style="width:140px; height:26px; margin:0px;">
+                    <option value="1">对照复录</option>
+                    <option value="2">听音打字</option>
+                </select></td>
+            <td align="left" bgcolor="#FFFFFF" style="border:none; border-right:1px #0066ff solid;">&nbsp;</td>
+        </tr>
+        <tr>
+            <td width="95" height="35" align="right" valign="middle" bgcolor="#FFFFFF"
+                style="border:none; line-height:28px;border-left:1px #0066ff solid;">答题时间[<span class="STYLE5">*</span>]：
+            </td>
+            <td height="35" colspan="3" align="left" bgcolor="#FFFFFF" style="border:none;"><span
+                    style="border:none; border-right:1px #0066ff solid;">
+      <input type="text" name="period" value=" " style="height:26px; width:200px;  border:1px solid #666666">
+    </span></td>
+            <td width="55" align="left" bgcolor="#FFFFFF" style="border:none; border-right:1px #0066ff solid;">
+                分钟&nbsp;
+            </td>
+        </tr>
+        <tr>
+            <td height="13" align="right" valign="middle" bgcolor="#FFFFFF"
+                style="border:none;border-left:1px #0066ff solid;"></td>
+            <td height="13" colspan="4" align="left" bgcolor="#FFFFFF"
+                style="border:none;border-right:1px #0066ff solid;"></td>
+        </tr>
+        <tr class="text_con">
+            <td height="67" align="right" valign="top" bgcolor="#FFFFFF"
+                style="border:none; line-height:28px;border-left:1px #0066ff solid;">试题内容[<span class="STYLE5">*</span>]：
+            </td>
+            <td height="150" colspan="4" align="left" valign="top" bgcolor="#FFFFFF"
+                style="border:none; border-right:1px #0066ff solid;"><span style="border:none">
+      <textarea name="content" id="neirong" class="ckeditor"
+                style="border:1px solid #999999; width:600px; height:140px;"></textarea>
+    </span></td>
+        </tr>
+        <tr class="appendix_con">
+            <td height="160" align="right" valign="top" bgcolor="#FFFFFF"
+                style="border:none; border-left:1px #0066ff solid; line-height:40px;">参考答案[<span class="STYLE5">*</span>]：
+            </td>
+            <td colspan="4" align="left" valign="top" bgcolor="#FFFFFF"
+                style="border:none; border-right:1px #0066ff solid; font-size:12px; line-height:22px;">
+        <textarea name="answer" id="textarea" class="ckeditor"
+                  style="border:1px solid #999999; width:600px; height:140px;"></textarea>
+                <br> &nbsp;&nbsp;&nbsp;&nbsp;对于打字类题目，答案即也为题目一部分，题目中不再重复录入
+            </td>
+        </tr>
+        <tr class="appendix_con">
+            <td align="right" valign="top" bgcolor="#FFFFFF"
+                style="border:none; border-left:1px #0066ff solid; line-height:40px;">附件：
+            </td>
+            <td colspan="4" align="left" valign="middle" bgcolor="#FFFFFF"
+                style="border:none; border-right:1px #0066ff solid; font-size:12px"><input id="fileupload" type="file"
+                                                                                           name="file"
+                                                                                           style="width:500px; height:30px;">
+                <input type="hidden" name="filePath">
+            </td>
+        </tr>
+
+        <tr class="appendix_con">
+            <td align="right" valign="top" bgcolor="#FFFFFF"
+                style="border:none; border-left:1px #0066ff solid; line-height:40px;">已添加附件：
+            </td>
+            <td colspan="4" align="left" valign="middle" bgcolor="#FFFFFF"
+                style="border:none; border-right:1px #0066ff solid; font-size:12px" id="showUploaded">
+
+            </td>
+        </tr>
+        <tr class="appendix_con">
+            <td align="right" valign="top" bgcolor="#FFFFFF"
+                style="border:none; border-left:1px #0066ff solid; line-height:40px;">&nbsp;
+            </td>
+            <td colspan="4" align="left" valign="middle" bgcolor="#FFFFFF"
+                style="border:none; border-right:1px #0066ff solid; font-size:12px">
+                <label>
+                    <input type="radio" name="playtype" value="1" checked>
+                </label>专门用户集中播放（适合考场使用音响广播等）
+                <label>
+                    <input type="radio" name="playtype" value="2">
+                </label>考试独立播放（适合每个考试终端有耳机）
+            </td>
+        </tr>
+        <tr>
+            <td height="33" colspan="5" align="center" bgcolor="#FFFFFF" style="border:1px solid #0066ff;"><input
+                    type="button" name="add" value="保 存" id="saveBtn">
+                &nbsp;
+                <input type="button" name="Cancel" value="取 消"
+                       onClick="javascript:self.history.back();"></td>
+        </tr>
+    </table>
+</form>
+
+<script src="./imges/jquery.min.js"></script>
+<script src="./imges/jquery.ui.widget.js"></script>
+<script src="./imges/jquery.iframe-transport.js"></script>
+<script src="./imges/jquery.fileupload.js"></script>
+<script src="./imges/common.js"></script>
+<script>
+
+    function toggleContent(v) {
+        if (v == 1) {
+            $('.text_con').show();
+            $('.appendix_con').hide();
+        } else {
+            $('.text_con').hide();
+            $('.appendix_con').show();
+        }
+    }
+    $(function () {
+
+
+        $('#fileupload')
+            .attr('data-url', App.basePath + '/back/file/upload.do')
+            .fileupload({
+                dataType: 'json',
+                done: function (e, data) {
+                    var obj = data.result;
+                    if (obj && obj.success) {
+
+                        $('input[name=filePath]').val(obj.obj);
+                        $('#showUploaded').html(App.parseFileName(obj.obj));
+                    }
+                }
+            });
+
+        $('#saveBtn').on('click', function () {
+
+            var btn = $(this),
+                form = btn.parents('form'),
+                typeInput = $('[name=type]', form),
+                nameInput = $('[name=name]', form),
+                scoreInput = $('[name=score]', form),
+                contentInput = $('[name=content]', form),
+                periodInput = $('[name=period]', form),
+                answerInput = $('[name=answer]', form),
+                filePathInput = $('[name=filePath]', form);
+
+            var nameVal = $.trim(nameInput.val()),
+                scoreVal = $.trim(scoreInput.val()),
+                typeVal = typeInput.val(),
+                contentVal = $.trim(contentInput.val()),
+                periodVal = $.trim(periodInput.val()),
+                filePathVal = $.trim(filePathInput.val()),
+                answerVal = $.trim(answerInput.val()),
+                playtypeVal = $.trim(form[0].playtype.value),
+                content;
+
+            if (!nameVal) {
+                alert("题目名称不能为空！")
+                return false;
+            }
+
+            if (!scoreVal || isNaN(scoreVal)) {
+                alert("分数不能为空且必须是数字！");
+                return false;
+            }
+            if (!periodVal || isNaN(periodVal)) {
+                alert("答题时间不能为空且必须是数字！");
+                return false;
+            }
+
+            if (typeVal == 1) {
+                if (!contentVal) {
+                    alert("选择[对照复录]类型题目必须输入[试题内容]！");
+                    return false;
+                }
+
+                content = contentVal;
+            }
+            if (typeVal == 2) {
+                if (!filePathVal) {
+                    alert('选择[听音打字]类型题目必须先上传音频文件！');
+                    return false;
+                }
+                if (!answerVal) {
+                    alert('选择[听音打字]类型题目必须填写参考答案！');
+                    return false;
+                }
+
+                content = filePathVal;
+            }
+
+            var params = {
+                name: nameVal,
+                type: typeVal,
+                score: scoreVal,
+                period: periodVal,
+                content: content,
+                playtype: playtypeVal,
+                answer: typeVal == 1 ? content : answerVal
+            }
+
+            $.post(App.basePath + '/back/topic/add.do', params, function (data) {
+                if (!data) {
+                    return;
+                }
+                if (data.success) {
+                    alert('添加试题成功！');
+                    window.self.location.assign(App.basePath + '/back/tiList.html');
+                } else {
+                    alert('发生错误：' + data.errmsg);
+                }
+            }, 'json');
+        })
+    })
+</script>
+</body>
+</html>
+
+
+
+

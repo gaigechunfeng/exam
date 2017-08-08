@@ -1,0 +1,434 @@
+<html>
+
+<head>
+
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>成绩报告单</title>
+    <style type="text/css">
+        <!--
+        body {
+            margin-top: 30px;
+            background-color: #FFFFFF;
+        }
+
+        .fh a {
+            display: block;
+            background: #2b68c2;
+            color: #FFF;
+            font-size: 14px;
+            font-weight: bold;
+            width: 100px;
+            height: 26px;
+            line-height: 26px;
+            text-decoration: none;
+            border: 1px solid #0c4ba0;
+            float: left;
+            margin-left: 10px;
+            text-align: center;
+        }
+
+        a:hover {
+            background: #FFFFFF;
+            color: #FF0000;
+            border: 1px solid #000000;
+        }
+
+        .sta td {
+            border: 1px solid #0099FF;
+        }
+
+        .bd1 {
+            border: 1px solid #2b68c2
+        }
+
+        .bd1 td {
+            border: none
+        }
+
+        ;
+        .bd2 {
+            border: none;
+        }
+
+        .bd2 td {
+            border: 1px solid #2b68c2;
+        }
+
+        .btns {
+            height: 30px;
+            width: 90px;
+        }
+
+        .STYLE2 {
+            color: #FFFFFF;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .STYLE19 {
+            color: #FF0000;
+            font-weight: bold;
+        }
+
+        .STYLE20 {
+            color: #FF0000
+        }
+
+        .STYLE21 {
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        -->
+    </style>
+</head>
+
+<body>
+
+<form id="addUserForm" onSubmit="return false">
+    <table align="center" border="0" cellpadding="0" cellspacing="0" width="683">
+        <tr>
+            <td width="683" height="41" align="left" valign="middle">&nbsp;</td>
+        </tr>
+        <tr>
+            <td height="13" align="center" valign="top">&nbsp;</td>
+        </tr>
+        <tr>
+            <td height="33" align="center" valign="middle">
+                <table width="690" height="285" border="0" cellpadding="0" cellspacing="0">
+                    <tr>
+                        <td height="33" colspan="3" align="center"
+                            style="  border:1px solid #0066FF;border-bottom:3px solid #0066FF"><strong>基本信息(<span
+                                class="STYLE20">*</span>为必填项目）</strong></td>
+                        <td>&nbsp;</td>
+                        <td width="119" rowspan="7" align="center" valign="top" style="border:1px solid #0066FF">
+                            <table width="119" height="100" border="0" cellpadding="0" cellspacing="0">
+                                <tr>
+                                    <td height="7"></td>
+                                </tr>
+                                <tr>
+                                    <td align="center" width="130"><span style="line-height:10px;"><img id="photoImg"
+                                                                                                        src="faces/moren.jpg"
+                                                                                                        width="119"
+                                                                                                        height="120"
+                                                                                                        style="border:1px solid #CCCCCC"/></span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td height="10"></td>
+                                </tr>
+                                <tr>
+                                    <td align="center"><span style="line-height:10px;">
+              <input id="fileupload" type="file" name="file" value="上传照片"
+                     style="height:26px;width:130px; overflow:hidden"/>
+                                        <input type="hidden" name="photo">
+                                        <input type="hidden" name="examineIds">
+                                        <input type="hidden" name="id">
+            </span></td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td height="13" colspan="3"></td>
+                        <td>&nbsp;</td>
+                    </tr>
+                    <tr>
+                        <td width="228" height="32" bgcolor="#0698D1">
+                            <table width="228" height="27" border="0" cellpadding="0" cellspacing="0">
+                                <tr>
+                                    <td width="82" align="center" valign="middle"><span class="STYLE2">姓 名</span></td>
+                                    <td width="140" style=" background-color:#FFFFFF"><input type="text" name="name"
+                                                                                             style="border:none; width:140; height:27; text-indent:0.5em"/>
+                                    </td>
+                                    <td width="4"></td>
+                                </tr>
+                            </table>
+                        </td>
+                        <td><span class="STYLE19">* </span></td>
+                        <td width="300" bgcolor="#0698D1">
+                            <table width="300" height="27" border="0" cellpadding="0" cellspacing="0">
+                                <tr>
+                                    <td width="87" align="center" valign="middle"><span class="STYLE2">准考证号</span></td>
+                                    <td width="211" style=" background-color:#FFFFFF"><input type="text" name="username"
+                                                                                             style="border:none; width:211; height:27; text-indent:0.5em"/>
+                                    </td>
+                                    <td width="2"></td>
+                                </tr>
+                            </table>
+                        </td>
+                        <td width="5"><span class="STYLE19">*</span></td>
+                    </tr>
+                    <tr>
+                        <td height="13">&nbsp;</td>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                    </tr>
+                    <tr>
+                        <td height="33" bgcolor="#0698D1">
+                            <table width="227" height="27" border="0" cellpadding="0" cellspacing="0">
+                                <tr>
+                                    <td width="83" align="center" valign="middle"><span class="STYLE2">性 别 </span></td>
+                                    <td width="140" style=" background-color:#FFFFFF"><select name="sex"
+                                                                                              style="border:none; width:140px; height:30px;">
+                                        <option value="1" selected="selected" style="border:none; height:30px;">男
+                                        </option>
+                                        <option value="2" style="border:none; height:30px;">女</option>
+                                    </select></td>
+                                    <td width="4"></td>
+                                </tr>
+                            </table>
+                        </td>
+                        <td>&nbsp;</td>
+                        <td bgcolor="#0698D1">
+                            <table width="300" height="27" border="0" cellpadding="0" cellspacing="0">
+                                <tr>
+                                    <td width="87" align="center" valign="middle"><span class="STYLE2">身份证号</span></td>
+                                    <td width="211" style=" background-color:#FFFFFF"><input type="text" name="idcard"
+                                                                                             style="border:none; width:211; height:27; text-indent:0.5em"/>
+                                    </td>
+                                    <td width="2"></td>
+                                </tr>
+                            </table>
+                        </td>
+                        <td>&nbsp;</td>
+                    </tr>
+                    <tr>
+                        <td height="13" colspan="3" align="center"></td>
+                        <td>&nbsp;</td>
+                    </tr>
+                    <tr>
+                        <td height="33" bgcolor="#0698D1">
+                            <table width="227" height="27" border="0" cellpadding="0" cellspacing="0">
+                                <tr>
+                                    <td width="83" align="center" valign="middle"><span class="STYLE2">岗位代码 </span></td>
+                                    <td width="140" style=" background-color:#FFFFFF"><select id="posCode" name="pos"
+                                                                                              style="border:none; width:140px; height:30px;">
+                                    </select></td>
+                                    <td width="4"></td>
+                                </tr>
+                            </table>
+                        </td>
+                        <td>&nbsp;</td>
+                    </tr>
+                    <tr>
+                        <td height="13" colspan="3" align="center"></td>
+                        <td>&nbsp;</td>
+                    </tr>
+                    <tr>
+                        <td height="33" colspan="3" align="center"
+                            style=" border:1px solid #0066FF;border-bottom:3px solid #0066FF"><strong>指定考试信息</strong>
+                        </td>
+                        <td>&nbsp;</td>
+                    </tr>
+                    <tr>
+                        <td height="5" colspan="3" align="center" valign="middle" style=" border-bottom:none;"></td>
+                        <td height="111" rowspan="3" align="center" valign="middle">&nbsp;</td>
+                        <td height="111" rowspan="3" align="left" valign="middle" class="bd2"
+                            style="text-indent:2em; line-height:20px; font-size:12px;">不添加考试信息时，即该考生可以参加所有未过期的考试。默认不添加。
+                        </td>
+                    </tr>
+                    <tr>
+                        <td height="90" colspan="3" align="center" valign="middle" style=" border-top:none;">
+                            <table width="540" border="0" align="center" cellpadding="0" cellspacing="0" class="sta">
+                                <tr bgcolor="#00FFFF">
+                                    <td width="288" height="30" align="center" valign="middle"><span
+                                            class="STYLE21">考试名称--场次名称</span></td>
+                                    <td width="202" align="center" valign="middle"><strong class="STYLE21">考试时间</strong>
+                                    </td>
+                                </tr>
+                                <tbody id="examineTable">
+
+                                </tbody>
+                                <tr>
+                                    <td height="30" colspan="2" align="center" valign="middle">&nbsp;</td>
+                                </tr>
+                                <tr>
+                                    <td height="30" colspan="2" align="center" valign="bottom"
+                                        style="border:none;"><span
+                                            style="line-height:10px;">
+              <input id="addExamineBtn" type="button" name="Submit2" value="添加考试信息" style="height:26px;"/>
+            </span></td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td height="5" colspan="3" align="center" valign="middle" style=" border-top:none"></td>
+                    </tr>
+
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td height="46" align="center" valign="bottom">
+                <table width="230" height="36" border="0" cellpadding="0" cellspacing="0">
+                    <tr>
+                        <td width="230"><span class="fh"><a href="javascript:self.history.back()"
+                                                            target="_top">返&nbsp;回</a></span> <span class="fh"><a
+                                href="javascript:void(0);"
+                                id="submitBtn">保&nbsp;存</a></span>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td height="2" align="center" valign="top"></td>
+        </tr>
+    </table>
+</form>
+
+<script src="./imges/jquery.min.js"></script>
+<script src="./imges/jquery.ui.widget.js"></script>
+<script src="./imges/jquery.iframe-transport.js"></script>
+<script src="./imges/jquery.fileupload.js"></script>
+<script src="./imges/common.js"></script>
+<script>
+
+    function showPhoto(pic) {
+        $('#photoImg').attr('src', App.basePath + '/back/file/download.do?fullPath=' + encodeURIComponent(pic.replace(/\\/g, '\\\\')));
+    }
+
+    function setTopics(rs) {
+        if (rs) {
+            var html = [];
+            var eids = [];
+            for (var i = 0, len = rs.length; i < len; i++) {
+                var r = rs[i],
+                    e = r.examine;
+                eids.push(r.id);
+                html.push('<tr>                                                                       ');
+                html.push('    <td width="288" height="30" align="center" valign="middle"><span                         ');
+                html.push('            class="STYLE21">' + e.name + '--' + r.name + '</span></td>                                                 ');
+                html.push('    <td width="202" align="center" valign="middle"><strong class="STYLE21">' + r.startTime + '到<br>' +
+                    '' + r.endTime + '</strong>     ');
+                html.push('    </td>                                                                                    ');
+                html.push('</tr>                                                                                        ');
+            }
+            $('#examineTable').html(html.join(''));
+            $('input[name=examineIds]').val(eids.join(','));
+        }
+    }
+
+    function renderHtml(obj) {
+        var user = obj.user,
+            examines = obj.esessions;
+
+        $('input,select').not(':button,:file').each(function () {
+            var ip = $(this),
+                fn = ip.attr('name'),
+                val = user[fn];
+
+            this.value = val;
+        });
+        if (user.photo) {
+            showPhoto(user.photo);
+        }
+
+        if (examines) {
+            setTopics(examines);
+        }
+    }
+
+    $(function () {
+        var id = App.getParam("id");
+        if (!id) {
+            alert('参数错误！');
+            return;
+        }
+        App.renderPosSelect('posCode');
+
+        $.post(App.basePath + '/back/user/detail.do', {id: id}, function (data) {
+
+            if (data && data.success) {
+                renderHtml(data.obj);
+            }
+        }, 'json');
+
+        $('#addExamineBtn').on('click', function () {
+            if (self.frames.length == 0) {
+                self.open(App.basePath + '/back/esList.html?isChoose=1&eid=1&method=setTopics', '_choose', 'width=700,height=400');
+            }
+        });
+
+        $('#fileupload')
+            .attr('data-url', App.basePath + '/back/file/upload.do')
+            .fileupload({
+                dataType: 'json',
+                done: function (e, data) {
+                    var obj = data.result;
+                    if (obj && obj.success) {
+
+                        $('input[name=photo]').val(obj.obj);
+                        showPhoto(obj.obj);
+                    }
+                }
+            });
+
+        $('#submitBtn').on('click', function () {
+
+            var btn = $(this),
+                form = btn.parents('form'),
+                idIn = $('input[name=id]', form),
+                nameIn = $('input[name=name]', form),
+                usernameIn = $('input[name=username]', form),
+                sexIn = $('[name=sex]', form),
+                posIn = $('[name=pos]', form),
+                idcardIn = $('input[name=idcard]', form),
+                examineIdsIn = $('input[name=examineIds]', form),
+                photoIn = $('input[name=photo]', form);
+
+            var nameVal = $.trim(nameIn.val()),
+                idVal = $.trim(idIn.val()),
+                usernameVal = $.trim(usernameIn.val()),
+                sexVal = $.trim(sexIn.val()),
+                posVal = $.trim(posIn.val()),
+                idcardVal = $.trim(idcardIn.val()),
+                examineIdsVal = $.trim(examineIdsIn.val()),
+                photoVal = $.trim(photoIn.val());
+
+            if (!nameVal) {
+                alert('考生姓名不能为空！');
+                return false;
+            }
+            if (!usernameVal) {
+                alert("考生准考证号码不能为空！");
+                return false;
+            }
+            if (!posVal) {
+                alert("考生岗位代码不能为空！");
+                return false;
+            }
+
+            var params = {
+                id: idVal,
+                name: nameVal,
+                username: usernameVal,
+                sex: sexVal,
+                idcard: idcardVal,
+                pos: posVal,
+                photo: photoVal,
+                examineIds: examineIdsVal
+            }
+            $.post(App.basePath + '/back/user/edit.do', params, function (data) {
+
+                if (data && data.success) {
+
+                    alert('修改考生成功！');
+                    self.location.assign(App.basePath + '/back/ksList.html');
+                } else {
+                    if (data && data.errmsg) {
+                        alert('发生错误：' + data.errmsg);
+                    }
+                }
+            }, 'json')
+
+        });
+    });
+</script>
+</body>
+</html>
+
