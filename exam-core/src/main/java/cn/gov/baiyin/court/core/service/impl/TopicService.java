@@ -115,11 +115,7 @@ public class TopicService implements ITopicService {
         if (originTopic.getType() == Topic.Type.LISTEN.getTypeVal()
                 && !StringUtils.isEmpty(originTopic.getContent())
                 && (topic.getType() != Topic.Type.LISTEN.getTypeVal() || !originTopic.getContent().equals(topic.getContent()))) {
-            try {
-                FileUtil.deleteFile(originTopic.getContent());
-            } catch (IOException e) {
-                throw new RuntimeException("remove origin file error!", e);
-            }
+            FileUtil.deleteFile(new File(FileService.getTempFolder(), originTopic.getContent()));
         }
 
         if (topic.getType() == Topic.Type.LISTEN.getTypeVal() && FileService.isTempFile(topic.getContent())) {
@@ -129,7 +125,6 @@ public class TopicService implements ITopicService {
             } catch (java.io.IOException e) {
                 throw new ServiceException("move file from temp dir to production dir error", e);
             }
-
         }
 
         BeanUtils.copyProperties(originTopic, topic, "name", "score", "type", "period", "content", "answer", "playtype");
@@ -213,8 +208,9 @@ public class TopicService implements ITopicService {
 
         long timestamp = System.currentTimeMillis();
         File tmpFolder = new File(System.getProperty("java.io.tmpdir") + "\\exam\\" + timestamp);
-        FileUtil.createFile(tmpFolder);
+        FileUtil.creatFolder(tmpFolder);
         File xlsFile = new File(tmpFolder, "topics-" + timestamp + ".xls");
+        FileUtil.createFile(xlsFile);
 
         WritableWorkbook workbook = null;
         List<String> audios = new ArrayList<>();
@@ -244,9 +240,9 @@ public class TopicService implements ITopicService {
                     sheet.addCell(new Label(4, index, type == 1 ? content : ""));
                     sheet.addCell(new Label(5, index, type == 1 ? "" : answer));
                     sheet.addCell(new Label(6, index, type == 1 ? "" : content));
-                    sheet.addCell(new Label(7, index, playtype != null ? (playtype == 1 ? "是" : "否") : ""));
+                    sheet.addCell(new Label(7, index, type == 1 ? "" : (playtype != null && playtype == 2 ? "否" : "是")));
 
-                    if (type == 1) {
+                    if (type == 2) {
                         audios.add(content);
                     }
                     index++;
@@ -276,7 +272,7 @@ public class TopicService implements ITopicService {
         File proFolder = FileService.getProductionFolder();
         for (String audio : audios) {
             File f = new File(proFolder, audio);
-            File destFile = new File(tmpFolder, audio);
+            File destFile = new File(tmpFolder, f.getName());
 
             try (FileInputStream fis = new FileInputStream(f); FileOutputStream fos = new FileOutputStream(destFile)) {
                 StreamUtils.copy(fis, fos);
@@ -338,6 +334,6 @@ public class TopicService implements ITopicService {
 
     private static void moveAndSet(Topic topic) throws IOException {
         File productionFile = FileUtil.moveTemp2Pro(topic.getContent());
-        topic.setContent(productionFile.getAbsolutePath());
+        topic.setContent(productionFile.getName());
     }
 }

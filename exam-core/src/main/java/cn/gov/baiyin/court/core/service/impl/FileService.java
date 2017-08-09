@@ -36,17 +36,17 @@ public class FileService implements IFileService {
         }
 
         File destFile = getTempFolder();
-        File saveFile = new File(destFile, file.getOriginalFilename());
+        File saveFile = new File(destFile, "temp-" + System.currentTimeMillis() + "." + FileUtil.getFileExt(file.getOriginalFilename()));
 
         try {
             FileUtil.saveFile(file.getInputStream(), new FileOutputStream(saveFile));
         } catch (IOException e) {
             throw new ServiceException("save file error");
         }
-        return saveFile.getAbsolutePath();
+        return saveFile.getName();
     }
 
-    private static File getTempFolder() {
+    public static File getTempFolder() {
         File f = new File(Utils.getApp().getString("temp.path", System.getProperty("java.io.tmpdir")));
         if (!f.exists()) {
             boolean r = f.mkdirs();
@@ -98,12 +98,12 @@ public class FileService implements IFileService {
         return f;
     }
 
-    public static boolean isTempFile(String fullPath) {
+    public static boolean isTempFile(String fileName) {
 
-        File tf = getTempFolder();
-        File f = new File(fullPath);
+//        File tf = getTempFolder();
+//        File f = new File(tf, fileName);
 
-        return f.exists() && f.getParentFile().equals(tf);
+        return fileName.startsWith("temp-");
     }
 
     public static int cleanTempFolder() {

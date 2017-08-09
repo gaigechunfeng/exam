@@ -27,7 +27,7 @@ import java.io.IOException;
 @RequestMapping("/back/file")
 public class FileController {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(FileController.class);
+//    private static final Logger LOGGER = LoggerFactory.getLogger(FileController.class);
 
     private IFileService fileService;
 

@@ -72,19 +72,31 @@ public class FileUtil {
     }
 
     public static File moveTemp2Pro(String content) throws IOException {
-        String fileName = FileUtil.parseFileName(content);
-        File productionFile = new File(FileService.getProductionFolder(), fileName);
-        FileUtil.saveFile(new FileInputStream(new File(content)),
+//        String fileName = FileUtil.parseFileName(content);
+        File tempFile = new File(FileService.getTempFolder(), content);
+        File productionFile = new File(FileService.getProductionFolder(), "file-" + System.currentTimeMillis() + "." + FileUtil.getFileExt(content));
+        FileUtil.saveFile(new FileInputStream(tempFile),
                 new FileOutputStream(productionFile));
-        FileUtil.deleteFile(content);
+        FileUtil.deleteFile(tempFile);
         return productionFile;
     }
 
+    public static void deleteFile(File tempFile) {
+
+        if (tempFile.exists()) {
+            try {
+                Files.delete(tempFile.toPath());
+            } catch (IOException e) {
+                LOGGER.error("", e);
+            }
+        }
+    }
+
     public static void tryWriteFileToResponse(String fullPath, HttpServletResponse response) {
-        File f = new File(fullPath);
+        File f = new File(FileService.getProductionFolder(), fullPath);
         if (f.exists()) {
             response.setCharacterEncoding("utf-8");
-            response.setHeader("Content-Disposition", "attachment; filename=" + FileUtil.parseFileName(fullPath) + "");
+            response.setHeader("Content-Disposition", "attachment; filename=" + fullPath + "");
 
             try (FileInputStream fis = new FileInputStream(f);) {
                 FileUtil.saveFile(fis, response.getOutputStream());
@@ -92,7 +104,7 @@ public class FileUtil {
                 LOGGER.error("download file error!", e);
             }
         } else {
-            LOGGER.error("file not found~~ [" + fullPath + "]");
+            LOGGER.error("file not found~~ [" + f + "]");
         }
     }
 
@@ -191,8 +203,8 @@ public class FileUtil {
         return savedFile;
     }
 
-    private static void creatFolder(File savedFile) {
-        if (!savedFile.exists()) {
+    public static void creatFolder(File savedFile) {
+        if (!savedFile.exists() || !savedFile.isDirectory()) {
             savedFile.mkdirs();
         }
     }
@@ -214,8 +226,11 @@ public class FileUtil {
         }
     }
 
-    private static String getFileExt(File file) {
-        String fileName = file.getName();
+    public static String getFileExt(File file) {
+        return getFileExt(file.getName());
+    }
+
+    public static String getFileExt(String fileName) {
         return fileName.contains(".") ? fileName.substring(fileName.lastIndexOf(".") + 1) : "";
     }
 
@@ -279,4 +294,5 @@ public class FileUtil {
             }
         }
     }
+
 }
