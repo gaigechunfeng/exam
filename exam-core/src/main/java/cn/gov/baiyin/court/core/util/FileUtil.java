@@ -3,6 +3,7 @@ package cn.gov.baiyin.court.core.util;
 import cn.gov.baiyin.court.core.service.impl.FileService;
 import org.apache.tools.zip.ZipEntry;
 import org.apache.tools.zip.ZipFile;
+import org.apache.tools.zip.ZipOutputStream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.StreamUtils;
@@ -18,6 +19,7 @@ import java.util.Enumeration;
  */
 public class FileUtil {
     private static final Logger LOGGER = LoggerFactory.getLogger(FileUtil.class);
+    private static final byte[] _byte = new byte[2048];
 
     public static void saveFile(InputStream is, OutputStream os) {
 
@@ -215,5 +217,66 @@ public class FileUtil {
     private static String getFileExt(File file) {
         String fileName = file.getName();
         return fileName.contains(".") ? fileName.substring(fileName.lastIndexOf(".") + 1) : "";
+    }
+
+    /**
+     * 压缩文件或路径
+     *
+     * @param zip    压缩的目的地址
+     * @param folder 压缩的文件夹
+     */
+    public static void zipFile(String zip, File folder) {
+        try {
+            File[] srcFiles = folder.listFiles();
+            if (zip.endsWith(".zip") || zip.endsWith(".ZIP")) {
+                ZipOutputStream _zipOut = new ZipOutputStream(new FileOutputStream(new File(zip)));
+                _zipOut.setEncoding("GBK");
+                assert srcFiles != null;
+                for (File _f : srcFiles) {
+                    handlerFile(zip, _zipOut, _f, "");
+                }
+                _zipOut.close();
+            } else {
+                System.out.println("target file[" + zip + "] is not .zip type file");
+            }
+        } catch (IOException e) {
+            LOGGER.error("", e);
+        }
+    }
+
+    /**
+     * @param zip     压缩的目的地址
+     * @param zipOut
+     * @param srcFile 被压缩的文件信息
+     * @param path    在zip中的相对路径
+     * @throws IOException
+     */
+    private static void handlerFile(String zip, ZipOutputStream zipOut, File srcFile, String path) throws IOException {
+        System.out.println(" begin to compression file[" + srcFile.getName() + "]");
+        if (!"".equals(path) && !path.endsWith(File.separator)) {
+            path += File.separator;
+        }
+        if (!srcFile.getPath().equals(zip)) {
+            if (srcFile.isDirectory()) {
+                File[] _files = srcFile.listFiles();
+                if (_files.length == 0) {
+                    zipOut.putNextEntry(new ZipEntry(path + srcFile.getName() + File.separator));
+                    zipOut.closeEntry();
+                } else {
+                    for (File _f : _files) {
+                        handlerFile(zip, zipOut, _f, path + srcFile.getName());
+                    }
+                }
+            } else {
+                InputStream _in = new FileInputStream(srcFile);
+                zipOut.putNextEntry(new ZipEntry(path + srcFile.getName()));
+                int len = 0;
+                while ((len = _in.read(_byte)) > 0) {
+                    zipOut.write(_byte, 0, len);
+                }
+                _in.close();
+                zipOut.closeEntry();
+            }
+        }
     }
 }

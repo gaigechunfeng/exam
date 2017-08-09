@@ -6,6 +6,7 @@ import cn.gov.baiyin.court.core.exception.ServiceException;
 import cn.gov.baiyin.court.core.util.PageInfo;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.util.List;
 
 /**
@@ -27,4 +28,6 @@ public interface ITopicService {
     List<String> listFieldsByEid(Integer eid);
 
     void importTopics(MultipartFile file) throws ServiceException;
+
+    File exportAll() throws ServiceException;
 }

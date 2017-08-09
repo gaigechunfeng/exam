@@ -12,6 +12,14 @@ public class PageInfo {
     private int pageSize = 10;
     private int allPage;
 
+    public PageInfo() {
+    }
+
+    public PageInfo(int currPage, int pageSize) {
+        this.currPage = currPage;
+        this.pageSize = pageSize;
+    }
+
     public List<?> getList() {
         return list;
     }

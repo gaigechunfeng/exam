@@ -63,11 +63,13 @@
         }
 
         -->
+
     </style>
     <script type="text/javascript">
         function Chref(url) {
             window.location.href = url;
         }
+
     </script>
 </head>
 
@@ -79,6 +81,7 @@
                 type="button" name="show" value="刷   新" class="btns" id="refreshBtn"/>
             <input type="button" id="downTemplateBtn" value="导入模块下载" class="btns"/>
             <input type="button" id="importTopicBtn" value="导入" class="btns"/>
+            <input type="button" id="exportAllBtn" value="导出所有题目" class="btns"/>
             <input type="button" name="add" value="新增题目" class="btns" onclick="Chref('addTi.html')"/>
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         </td>
@@ -208,7 +211,12 @@
 
             importWin = self.open(App.basePath + '/back/importExcel.html?type=importTopic', '_import', 'width=600px,height=200px');
         })
+
+        $('#exportAllBtn').on('click',function(){
+            self.open(App.basePath+'/back/topic/exportAll.do');
+        });
     })
+
 </script>
 </body>
 </html>

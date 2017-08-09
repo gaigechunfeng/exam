@@ -7,10 +7,18 @@ import cn.gov.baiyin.court.core.util.Msg;
 import cn.gov.baiyin.court.core.util.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.StreamUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+
+import javax.servlet.http.HttpServletResponse;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.Date;
 
 /**
  * Created by WK on 2017/3/26.
@@ -97,5 +105,20 @@ public class TopicController {
             return Msg.error(e);
         }
         return Msg.SUCCESS;
+    }
+
+    @RequestMapping("/exportAll")
+    public void exportAll(HttpServletResponse response) throws ServiceException {
+
+        File exported = topicService.exportAll();
+
+        response.setCharacterEncoding("utf-8");
+        response.setHeader("Content-Disposition", "attachment; filename=" + exported.getName());
+        try (FileInputStream fis = new FileInputStream(exported)) {
+
+            StreamUtils.copy(fis, response.getOutputStream());
+        } catch (IOException e) {
+            throw new RuntimeException("download score excel error", e);
+        }
     }
 }

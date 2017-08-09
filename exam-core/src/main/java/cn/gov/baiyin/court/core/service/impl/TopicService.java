@@ -12,10 +12,14 @@ import cn.gov.baiyin.court.core.util.Utils;
 import jxl.Sheet;
 import jxl.Workbook;
 import jxl.read.biff.BiffException;
+import jxl.write.*;
+import jxl.write.Number;
+import jxl.write.biff.RowsExceededException;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.StreamUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
@@ -202,6 +206,95 @@ public class TopicService implements ITopicService {
             throw new ServiceException("解析xls文件失败！", e);
         }
 
+    }
+
+    @Override
+    public File exportAll() throws ServiceException {
+
+        long timestamp = System.currentTimeMillis();
+        File tmpFolder = new File(System.getProperty("java.io.tmpdir") + "\\exam\\" + timestamp);
+        FileUtil.createFile(tmpFolder);
+        File xlsFile = new File(tmpFolder, "topics-" + timestamp + ".xls");
+
+        WritableWorkbook workbook = null;
+        List<String> audios = new ArrayList<>();
+        try {
+            workbook = Workbook.createWorkbook(xlsFile);
+            WritableSheet sheet = workbook.createSheet("Sheet0", 0);
+            addHeader(sheet);
+
+            PageInfo pageInfo = topicDAO.listPagination(new PageInfo(1, 1000));
+            if (!CollectionUtils.isEmpty(pageInfo.getList())) {
+                int index = 1;
+                for (Object o : pageInfo.getList()) {
+                    Topic topic = (Topic) o;
+
+                    String name = topic.getName();
+                    Integer score = topic.getScore();
+                    Integer type = topic.getType();
+                    Integer period = topic.getPeriod();
+                    String content = topic.getContent();
+                    String answer = topic.getAnswer();
+                    Integer playtype = topic.getPlaytype();
+
+                    sheet.addCell(new Label(0, index, name));
+                    sheet.addCell(new Number(1, index, score));
+                    sheet.addCell(new Label(2, index, type == 1 ? "对照附录" : "听音打字"));
+                    sheet.addCell(new Number(3, index, period));
+                    sheet.addCell(new Label(4, index, type == 1 ? content : ""));
+                    sheet.addCell(new Label(5, index, type == 1 ? "" : answer));
+                    sheet.addCell(new Label(6, index, type == 1 ? "" : content));
+                    sheet.addCell(new Label(7, index, playtype != null ? (playtype == 1 ? "是" : "否") : ""));
+
+                    if (type == 1) {
+                        audios.add(content);
+                    }
+                    index++;
+                }
+            }
+            workbook.write();
+        } catch (IOException | WriteException e) {
+            throw new ServiceException("导出题目失败！", e);
+        } finally {
+            if (workbook != null) {
+                try {
+                    workbook.close();
+                } catch (IOException | WriteException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        File zipFile = new File(tmpFolder.getAbsoluteFile() + ".zip");
+        copyAudios(audios, tmpFolder);
+        FileUtil.zipFile(zipFile.getAbsolutePath(), tmpFolder);
+        return zipFile;
+    }
+
+    private static void copyAudios(List<String> audios, File tmpFolder) throws ServiceException {
+
+        File proFolder = FileService.getProductionFolder();
+        for (String audio : audios) {
+            File f = new File(proFolder, audio);
+            File destFile = new File(tmpFolder, audio);
+
+            try (FileInputStream fis = new FileInputStream(f); FileOutputStream fos = new FileOutputStream(destFile)) {
+                StreamUtils.copy(fis, fos);
+            } catch (IOException e) {
+                throw new ServiceException("copy file error", e);
+            }
+        }
+    }
+
+    private static void addHeader(WritableSheet sheet) throws ServiceException {
+        String[] headers = {"题目名称", "题目分值", "试题类型", "答题时间", "试题内容", "参考答案", "附加名称", "是否集中播放"};
+        for (int i = 0; i < headers.length; i++) {
+            try {
+                sheet.addCell(new Label(i, 0, headers[i]));
+            } catch (WriteException e) {
+                throw new ServiceException("生成xls表头失败！", e);
+            }
+        }
     }
 
     private File trySaveAudioFile(String fileName, File folder) throws ServiceException {
