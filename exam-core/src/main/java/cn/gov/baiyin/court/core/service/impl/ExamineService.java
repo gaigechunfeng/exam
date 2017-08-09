@@ -16,6 +16,7 @@ import org.springframework.util.StringUtils;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * Created by WK on 2017/3/26.
@@ -89,10 +90,19 @@ public class ExamineService implements IExamineService {
         if (!StringUtils.isEmpty(topicIds)) {
             List<Topic> topics = topicService.findByIds(topicIds);
             if (!CollectionUtils.isEmpty(topics)) {
-                score = topics.stream()
-                        .map(Topic::getScore)
-                        .reduce((i1, i2) -> i1 + i2)
-                        .orElse(0);
+                boolean isRandom = examine.getType() != null && examine.getType() == 2;
+                if (isRandom) {
+                    score = topics.stream()
+                            .collect(Collectors.toMap(Topic::getType, Topic::getScore, Integer::max))
+                            .values().stream()
+                            .reduce((v1, v2) -> v1 + v2)
+                            .orElse(0);
+                } else {
+                    score = topics.stream()
+                            .map(Topic::getScore)
+                            .reduce((i1, i2) -> i1 + i2)
+                            .orElse(0);
+                }
             }
         }
         examine.setScore(score);
