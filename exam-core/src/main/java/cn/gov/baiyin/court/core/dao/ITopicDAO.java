@@ -22,4 +22,6 @@ public interface ITopicDAO {
     List<Topic> findByEid(Integer eid);
 
     void addMulti(List<Topic> topics);
+
+    List<Topic> findByIds(String topicIds);
 }

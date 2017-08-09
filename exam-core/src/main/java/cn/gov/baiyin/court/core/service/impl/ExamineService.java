@@ -10,6 +10,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 import java.util.HashMap;
@@ -70,6 +71,8 @@ public class ExamineService implements IExamineService {
         if (examineDAO.findByName(examine.getName()) != null) {
             throw new ServiceException("名称为[" + examine.getName() + "]的考试已存在！");
         }
+        autoCalculateScore(examine, topicIds);
+
         boolean r = examineDAO.add(examine);
         if (!r) {
             throw new ServiceException("操作结果为0！");
@@ -78,6 +81,21 @@ public class ExamineService implements IExamineService {
         Examine added = examineDAO.findByName(examine.getName());
         addTopicRelation(added.getId(), topicIds);
         addEsessionRelation(added.getId(), esessionIds);
+    }
+
+    private void autoCalculateScore(Examine examine, String topicIds) {
+        int score = 0;
+
+        if (!StringUtils.isEmpty(topicIds)) {
+            List<Topic> topics = topicService.findByIds(topicIds);
+            if (!CollectionUtils.isEmpty(topics)) {
+                score = topics.stream()
+                        .map(Topic::getScore)
+                        .reduce((i1, i2) -> i1 + i2)
+                        .orElse(0);
+            }
+        }
+        examine.setScore(score);
     }
 
     private void addEsessionRelation(int eid, String esessionIds) throws ServiceException {
@@ -160,8 +178,9 @@ public class ExamineService implements IExamineService {
 
         Examine persist = examineDAO.findById(examine.getId());
 
-        BeanUtils.copyProperties(persist, examine, "name", "score");
+        BeanUtils.copyProperties(persist, examine, "name", "score", "type");
 
+        autoCalculateScore(examine, topicIds);
         int r = examineDAO.edit(examine);
         if (r == 0) {
             throw new ServiceException("操作结果为空！");

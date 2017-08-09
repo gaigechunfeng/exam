@@ -70,6 +70,12 @@ public class TopicDAO extends AbstractDAO implements ITopicDAO {
         }
     }
 
+    @Override
+    public List<Topic> findByIds(String topicIds) {
+
+        return super.queryList("select * from topic where id in (" + topicIds + ")", Topic.class);
+    }
+
 //    public static void main(String[] args) {
 //
 //        for (Object o : System.getProperties().keySet()) {

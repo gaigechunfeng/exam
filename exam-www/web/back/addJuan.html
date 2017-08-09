@@ -83,6 +83,9 @@
         }
 
         -->
+
+
+
     </style>
 </head>
 
@@ -98,38 +101,36 @@
             <td width="95" height="40" align="right" valign="middle" bgcolor="#FFFFFF"
                 style="border:none; line-height:28px;border-left:1px #0066ff solid;">试卷名称[<span class="STYLE5">*</span>]：
             </td>
-            <td width="346" height="40" align="left" bgcolor="#FFFFFF" style="border:none;"><span
+            <td width="346" colspan="4" height="40" align="left" bgcolor="#FFFFFF" style="border:none;"><span
                     style="border:none; border-right:1px #0066ff solid;">
       <input type="text" name="name" value="" style="height:26px; width:340px;  border:1px solid #666666">
                 <input name="topicIds" type="hidden">
                 <input name="esessionIds" type="hidden">
     </span></td>
-            <td width="111" align="right" bgcolor="#FFFFFF" style="border:none">分值：</td>
-            <td width="165" align="left" bgcolor="#FFFFFF" style="border:none;"><input type="text"
-                                                                                       name="score"
-                                                                                       value=""
-                                                                                       style="height:26px; width:100px;  border:1px solid #666666">
-            </td>
-            <td width="15" align="left" bgcolor="#FFFFFF" style="border:none; border-right:1px #0066ff solid;">
-                &nbsp;</td>
+            <!--<td width="111" align="right" bgcolor="#FFFFFF" style="border:none">分值：</td>-->
+            <!--<td width="165" align="left" bgcolor="#FFFFFF" style="border:none;"><input type="text"-->
+                                                                                       <!--name="score"-->
+                                                                                       <!--value=""-->
+                                                                                       <!--style="height:26px; width:100px;  border:1px solid #666666">-->
+            <!--</td>-->
+            <!--<td width="15" align="left" bgcolor="#FFFFFF" style="border:none; border-right:1px #0066ff solid;">-->
+                <!--&nbsp;-->
+            <!--</td>-->
         </tr>
-        <!--<tr>-->
-        <!--<td height="38" align="right" valign="middle" bgcolor="#FFFFFF"-->
-        <!--style="border:none;border-left:1px #0066ff solid;">考试时间[<span class="STYLE5">*</span>]：-->
-        <!--</td>-->
-        <!--<td height="38" colspan="4" align="left" bgcolor="#FFFFFF"-->
-        <!--style="border:none;border-right:1px #0066ff solid;"><span-->
-        <!--style="border:none; border-right:1px #0066ff solid;">-->
-        <!--<input type="text" name="startTime" value="" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm'})"-->
-        <!--style="height:26px; width:120px; text-align:center; border:1px solid #666666">-->
-        <!--至-->
-        <!--<input type="text" name="endTime" value="" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm'})"-->
-        <!--style="height:26px; width:120px;  border:1px solid #666666; text-align:center">-->
-        <!--&lt;!&ndash;用时<span style="border:none;">&ndash;&gt;-->
-        <!--&lt;!&ndash;<input type="text" name="fz2" value="20" style="height:26px; width:80px;  border:1px solid #666666">&ndash;&gt;-->
-        <!--&lt;!&ndash;分钟</span>&ndash;&gt;-->
-        <!--</span></td>-->
-        <!--</tr>-->
+        <tr>
+            <td height="38" align="right" valign="middle" bgcolor="#FFFFFF"
+                style="border:none;border-left:1px #0066ff solid;">考试模式[<span class="STYLE5">*</span>]：
+            </td>
+            <td height="38" colspan="4" align="left" bgcolor="#FFFFFF"
+                style="border:none;border-right:1px #0066ff solid;"><span
+                    style="border:none; border-right:1px #0066ff solid;">
+                <select name="type"
+                        style=" width:140px; height:30px;">
+                                        <option value="1">普通模式</option>
+                                        <option value="2">随机模式</option>
+                                    </select>
+        </span></td>
+        </tr>
         <tr>
             <td height="28" colspan="5" align="center" valign="top" bgcolor="#FFFFFF" class="STYLE21"
                 style=" line-height:28px;border:1px #0066ff solid;border-bottom:3px solid #0066FF">添加试题（*）
@@ -313,7 +314,7 @@
             var btn = $(this),
                 form = btn.parents('form'),
                 nameIn = $('[name=name]', form),
-                scoreIn = $('[name=score]', form),
+                typeIn = $('[name=type]', form),
 //                startTimeIn = $('[name=startTime]', form),
                 topicIdsIn = $('[name=topicIds]', form),
                 esessionIdsIn = $('[name=esessionIds]', form)
@@ -321,7 +322,7 @@
 
             var nameVal = $.trim(nameIn.val()),
 //                startTimeVal = $.trim(startTimeIn.val()),
-                scoreVal = $.trim(scoreIn.val()),
+                typeVal = $.trim(typeIn.val()),
                 esessionIdsVal = $.trim(esessionIdsIn.val()),
                 topicIdsVal = $.trim(topicIdsIn.val())
 //                endTimeVal = $.trim(endTimeIn.val())
@@ -342,16 +343,12 @@
 //                alert('请选择考试结束时间！');
 //                return false;
 //            }
-            if (!scoreVal || isNaN(scoreVal)) {
-                alert('试卷分值不能为空且必须是数字！');
-                return false;
-            }
 
             var params = {
                 name: nameVal,
 //                startTime: startTimeVal,
 //                endTime: endTimeVal,
-                score: scoreVal,
+                type: typeVal,
                 esessionIds: esessionIdsVal,
                 topicIds: topicIdsVal || ''
             }
@@ -367,6 +364,9 @@
 
         })
     })
+
+
+
 </script>
 </body>
 </html>

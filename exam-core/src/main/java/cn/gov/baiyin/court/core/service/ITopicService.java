@@ -30,4 +30,7 @@ public interface ITopicService {
     void importTopics(MultipartFile file) throws ServiceException;
 
     File exportAll() throws ServiceException;
+
+    List<Topic> findByIds(String topicIds);
+
 }

@@ -17,6 +17,7 @@ CREATE TABLE `reply` (
 CREATE TABLE `examine` (
   `id`        INT(11) NOT NULL AUTO_INCREMENT,
   `name`      VARCHAR(200)     DEFAULT NULL,
+  `type`      INT(11)          DEFAULT NULL,
   `cruser`    VARCHAR(200)     DEFAULT NULL,
   `crtime`    VARCHAR(100)     DEFAULT NULL,
   `starttime` VARCHAR(100)     DEFAULT NULL,

@@ -86,6 +86,8 @@
         }
 
         -->
+
+
     </style>
 </head>
 
@@ -101,7 +103,7 @@
                 </tr>
                 <tr>
                     <td height="30" align="center" valign="middle" class="STYLE17">（分值 <span
-                            data-field="score"></span> 分）
+                            data-field="score"></span> 分，模式：<span data-field="type">普通模式</span>）
                     </td>
                 </tr>
                 <tbody id="esessionTable">
@@ -143,7 +145,8 @@
     </tr>
     <tr>
         <td height="29" align="right" valign="middle" class="STYLE16">
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        </td>
     </tr>
     <tr>
         <td width="694" height="13" align="center" valign="middle" bgcolor="#BEEDED">&nbsp;</td>
@@ -199,7 +202,11 @@
             var dom = $('[data-field=' + key + ']'),
                 val = examine[key];
             if (dom.length > 0) {
-                dom.html(val);
+                if(key === 'type') {
+                    dom.html(val === 1?'普通模式':'随机模式');
+                }else {
+                    dom.html(val);
+                }
             }
         }
 
@@ -250,6 +257,8 @@
         $('#esessionTable').html(h2.join(''));
 
     }
+
+
 </script>
 </body>
 </html>

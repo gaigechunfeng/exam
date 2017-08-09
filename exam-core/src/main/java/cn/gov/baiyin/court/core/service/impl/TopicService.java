@@ -267,6 +267,11 @@ public class TopicService implements ITopicService {
         return zipFile;
     }
 
+    @Override
+    public List<Topic> findByIds(String topicIds) {
+        return topicDAO.findByIds(topicIds);
+    }
+
     private static void copyAudios(List<String> audios, File tmpFolder) throws ServiceException {
 
         File proFolder = FileService.getProductionFolder();

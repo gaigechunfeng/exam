@@ -17,6 +17,8 @@ public class Examine extends BaseEntity {
 //    private String endTime;//考试结束时间，形如：2017-3-25 15:27:29
     private Integer score;//考试总分
 
+    private Integer type; // 出题模式 1：普通模式；2：随机模式（从不同类型的试题中随机抽取一道）
+
     private List<ESession> eSessions;
 
     private List<Topic> topics;
@@ -47,7 +49,15 @@ public class Examine extends BaseEntity {
         this.name = name;
     }
 
-//    public String getStartTime() {
+    public Integer getType() {
+        return type;
+    }
+
+    public void setType(Integer type) {
+        this.type = type;
+    }
+
+    //    public String getStartTime() {
 //        return startTime;
 //    }
 //
