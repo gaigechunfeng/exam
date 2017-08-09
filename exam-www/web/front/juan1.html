@@ -547,6 +547,22 @@
         throw '答题时间已过'
     }
 
+    function examOver(cb) {
+
+        if (App.currUser && App.currUser.username.indexOf('musicPlayer') == 0) {
+            if (cb) {
+                cb();
+            }
+        } else {
+            $.post(App.basePath + '/front/examOver.do', {eid: currExam.id}, function (d) {
+                if (cb) {
+                    cb();
+                }
+            }, "JSON");
+        }
+
+    }
+
     /**
      * 开始倒计时考试
      * @param st
@@ -572,7 +588,9 @@
                     if (currIndex >= allTopics.length) {
 //                        alert("本次考试的所有题目答题时间已到，考试结束！");
 //                        allTopicAnswerTimePassed();
-                        self.location.assign(App.basePath + '/front/chengjidan.html?eid=' + currExam.id)
+                        examOver(function () {
+                            self.location.assign(App.basePath + '/front/chengjidan.html?eid=' + currExam.id)
+                        })
                     } else {
                         self.location.reload();
                     }
@@ -697,6 +715,10 @@
             s += c
             if (i <= 24) {
 
+                if (i === len - 1) {
+                    list.push(s)
+                    s = ''
+                }
             } else if (i > 24 && i < 49) {
 
                 if (reg.test(c)) {
@@ -851,6 +873,9 @@
                 if (r.success) {
                     showTopic();
                     examineCountDown(startTime, startTime + currTopic.period * 60 * 1000, currIndex);
+                } else {
+                    alert(r.errmsg);
+                    App.logout(true);
                 }
             }
         }, 'JSON');

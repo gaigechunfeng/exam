@@ -126,7 +126,7 @@
                     style="border:none; border-right:1px #0066ff solid;">
                 <select name="type"
                         style=" width:140px; height:30px;">
-                                        <option value="1">普通模式</option>
+                                        <option value="1" selected>普通模式</option>
                                         <option value="2">随机模式</option>
                                     </select>
         </span></td>
@@ -374,6 +374,7 @@
                 form = btn.parents('form'),
                 idIn = $('[name=id]', form),
                 nameIn = $('[name=name]', form),
+                typeIn = $('[name=type]', form),
 //                startTimeIn = $('[name=startTime]', form),
                 topicIdsIn = $('[name=topicIds]', form),
                 esessionIdsIn = $('[name=esessionIds]', form)
@@ -381,6 +382,7 @@
 
             var nameVal = $.trim(nameIn.val()),
                 idVal = $.trim(idIn.val()),
+                typeVal = $.trim(typeIn.val()),
 //                startTimeVal = $.trim(startTimeIn.val()),
                 esessionIdsVal = $.trim(esessionIdsIn.val()),
                 topicIdsVal = $.trim(topicIdsIn.val())
@@ -406,6 +408,7 @@
             var params = {
                 id: idVal,
                 name: nameVal,
+                type: typeVal,
 //                startTime: startTimeVal,
 //                endTime: endTimeVal,
                 esessionIds: esessionIdsVal,

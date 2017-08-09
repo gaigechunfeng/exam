@@ -2,6 +2,7 @@ package cn.gov.baiyin.court.core.service;
 
 import cn.gov.baiyin.court.core.entity.Examine;
 import cn.gov.baiyin.court.core.entity.ExamineInfo;
+import cn.gov.baiyin.court.core.entity.ExamineUser;
 import cn.gov.baiyin.court.core.exception.ServiceException;
 import cn.gov.baiyin.court.core.util.PageInfo;
 
@@ -24,4 +25,6 @@ public interface IExamineService {
     void changeKsxz(String ksxz, String kssm) throws ServiceException;
 
     ExamineInfo findKsxz();
+
+    ExamineUser findEUByEidAndUname(Integer eid, String username);
 }

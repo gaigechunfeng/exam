@@ -47,10 +47,12 @@ public class FrontController {
 
     @RequestMapping("/checkHasDone")
     @ResponseBody
-    public Msg checkHasDone(Integer tid, Integer eid) {
+    public Msg checkHasDone(Integer tid, Integer eid) throws ServiceException {
 
-        Boolean r = esessionService.checkHasDone(tid, eid);
-        return new Msg(r, "\u60a8\u5df2\u7ecf\u53c2\u52a0\u8fc7\u672c\u6b21\u8003\u8bd5\uff0c\u4e0d\u80fd\u91cd\u590d\u53c2\u52a0\uff01", null);
+        esessionService.checkHasDone(tid, eid);
+        //您已经参加过本次考试，不能重复参加！
+        return Msg.SUCCESS;
+//        return new Msg(r, "\u60a8\u5df2\u7ecf\u53c2\u52a0\u8fc7\u672c\u6b21\u8003\u8bd5\uff0c\u4e0d\u80fd\u91cd\u590d\u53c2\u52a0\uff01", null);
     }
 
     @RequestMapping("/getEsessions")
@@ -91,6 +93,14 @@ public class FrontController {
         } catch (ServiceException e) {
             return Msg.error(e);
         }
+    }
+
+    @RequestMapping("/examOver")
+    @ResponseBody
+    public Msg examOver(Integer eid) {
+
+        esessionService.examOver(eid);
+        return Msg.SUCCESS;
     }
 
     @RequestMapping("/file/download")

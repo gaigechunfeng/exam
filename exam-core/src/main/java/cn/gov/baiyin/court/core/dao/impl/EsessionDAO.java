@@ -1,11 +1,9 @@
 package cn.gov.baiyin.court.core.dao.impl;
 
 import cn.gov.baiyin.court.core.dao.IEsessionDAO;
-import cn.gov.baiyin.court.core.entity.BaseEntity;
-import cn.gov.baiyin.court.core.entity.ESession;
-import cn.gov.baiyin.court.core.entity.Examine;
-import cn.gov.baiyin.court.core.entity.Topic;
+import cn.gov.baiyin.court.core.entity.*;
 import cn.gov.baiyin.court.core.util.PageInfo;
+import org.apache.commons.lang.math.RandomUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -13,6 +11,7 @@ import org.springframework.util.CollectionUtils;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.stream.Collectors;
 
 /**
@@ -110,8 +109,28 @@ public class EsessionDAO extends AbstractDAO implements IEsessionDAO {
 
     private void addTopicRelation(Examine e) {
 
-        e.setTopics(queryList("select t2.* from examine_topic t left join examine t1 on t.eid=t1.id " +
-                "left join topic t2 on t.tid=t2.id where t2.id is not null and t1.id=?", Topic.class, e.getId()));
+        List<Topic> topics;
+
+        List<Topic> topicList = queryList("select t2.* from examine_topic t left join examine t1 on t.eid=t1.id " +
+                "left join topic t2 on t.tid=t2.id where t2.id is not null and t1.id=?", Topic.class, e.getId());
+
+        //random
+        if (e.getType() != null && e.getType() == 2) {
+
+            topics = topicList.stream()
+                    .collect(Collectors.groupingBy(Topic::getType))
+                    .values().stream().map(this::getRandomOne)
+                    .collect(Collectors.toList());
+        } else {
+            topics = topicList;
+        }
+        e.setTopics(topics);
+    }
+
+    private Topic getRandomOne(List<Topic> topics1) {
+        int len = topics1.size();
+
+        return topics1.get(RandomUtils.nextInt(len));
     }
 
     @Override
@@ -172,5 +191,11 @@ public class EsessionDAO extends AbstractDAO implements IEsessionDAO {
                 "left join user t1 on t.uid=t1.id\n" +
                 "left join examine_topic t2 on t.etid=t2.id\n" +
                 "where t2.eid=? and t2.tid=? and t1.username=?", Integer.class, eid, tid, username) > 0;
+    }
+
+    @Override
+    public void saveExamineUser(ExamineUser examineUser) {
+
+        super.modify(examineUser);
     }
 }

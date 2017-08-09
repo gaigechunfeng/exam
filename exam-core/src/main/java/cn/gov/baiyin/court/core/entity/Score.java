@@ -12,13 +12,13 @@ public class Score extends BaseEntity {
 
     private Integer rid;//reply id
     private Float accuracy;//正确率，保留小数点后两位
-    private String score;//得分，加密的
+    private Float score;//得分，
 
     public Score(Integer rid, float accuracy, float score) {
         this.rid = rid;
         this.accuracy = new BigDecimal(accuracy).setScale(2, BigDecimal.ROUND_HALF_UP).floatValue();
-//        this.score = new BigDecimal(score).setScale(2, BigDecimal.ROUND_HALF_UP).floatValue();
-        this.score = CodeUtil.encrypt(String.valueOf(score));
+        this.score = new BigDecimal(score).setScale(2, BigDecimal.ROUND_HALF_UP).floatValue();
+//        this.score = CodeUtil.encrypt(String.valueOf(score));
     }
 
     public Integer getRid() {
@@ -37,11 +37,11 @@ public class Score extends BaseEntity {
         this.accuracy = accuracy;
     }
 
-    public String getScore() {
+    public Float getScore() {
         return score;
     }
 
-    public void setScore(String score) {
+    public void setScore(Float score) {
         this.score = score;
     }
 

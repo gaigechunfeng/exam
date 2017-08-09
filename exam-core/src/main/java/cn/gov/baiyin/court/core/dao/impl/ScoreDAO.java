@@ -95,13 +95,13 @@ public class ScoreDAO extends AbstractDAO implements IScoreDAO {
                 "left join esession t5 on t5.eid=t4.id\n" +
                 "where t2.id=? and t4.id=?", uid, eid);
 
-        //将分数解密
-        list.forEach(m -> {
-            String score = MapUtils.getString(m, "score", "");
-            if (!StringUtils.isEmpty(score)) {
-                m.put("score", CodeUtil.decrypt(score));
-            }
-        });
+//        //将分数解密
+//        list.forEach(m -> {
+//            String score = MapUtils.getString(m, "score", "");
+//            if (!StringUtils.isEmpty(score)) {
+//                m.put("score", CodeUtil.decrypt(score));
+//            }
+//        });
         return list;
     }
 
@@ -160,6 +160,12 @@ public class ScoreDAO extends AbstractDAO implements IScoreDAO {
                     }).reduce((s1, s2) -> s1 + "\r\n" + s2).orElse("");
         }
         return "";
+    }
+
+    @Override
+    public void removeByEtidAndUid(Integer etid, Integer uid) {
+
+        jdbcTemplate.update("delete from reply where etid=? and uid=?", etid, uid);
     }
 
     private static String map2Sql(String tableName, Map<String, Object> sm) {

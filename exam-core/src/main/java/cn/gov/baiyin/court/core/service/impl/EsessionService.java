@@ -3,11 +3,15 @@ package cn.gov.baiyin.court.core.service.impl;
 import cn.gov.baiyin.court.core.authc.Authc;
 import cn.gov.baiyin.court.core.dao.IEsessionDAO;
 import cn.gov.baiyin.court.core.entity.ESession;
+import cn.gov.baiyin.court.core.entity.ExamineUser;
 import cn.gov.baiyin.court.core.exception.ServiceException;
 import cn.gov.baiyin.court.core.service.IEsessionService;
+import cn.gov.baiyin.court.core.service.IExamineService;
 import cn.gov.baiyin.court.core.util.DateUtil;
 import cn.gov.baiyin.court.core.util.PageInfo;
 import cn.gov.baiyin.court.core.util.Utils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
@@ -21,8 +25,17 @@ import java.util.List;
 @Service
 public class EsessionService implements IEsessionService {
 
+    private static final Logger LOG = LoggerFactory.getLogger(EsessionService.class);
+
     private IEsessionDAO esessionDAO;
+    private IExamineService examineService;
     private static final int WAIT_TIME = Utils.getApp().getInt("wait.exam.time", 10);
+
+
+    @Autowired
+    public void setExamineService(IExamineService examineService) {
+        this.examineService = examineService;
+    }
 
     @Autowired
     public void setEsessionDAO(IEsessionDAO esessionDAO) {
@@ -96,8 +109,11 @@ public class EsessionService implements IEsessionService {
 
         List<ESession> eSessions;
         String username = Authc.getCurrUserName();
+
+        boolean isMusic = username.startsWith("musicPlayer");
         boolean isFixEsession = esessionDAO.isUserAttachEsession(username);
-        if (isFixEsession && !username.startsWith("musicPlayer")) {
+
+        if (isFixEsession && !isMusic) {
             eSessions = esessionDAO.listUserEsessions(username, WAIT_TIME);
         } else {
             eSessions = esessionDAO.listLegelEsessions(username, WAIT_TIME);
@@ -123,10 +139,28 @@ public class EsessionService implements IEsessionService {
     }
 
     @Override
-    public Boolean checkHasDone(Integer tid, Integer eid) {
+    public Boolean checkHasDone(Integer tid, Integer eid) throws ServiceException {
         String username = Authc.getCurrUserName();
 
-        return esessionDAO.checkHasDone(username, tid, eid);
+        boolean r = esessionDAO.checkHasDone(username, tid, eid);
+        if (r) {
+            throw new ServiceException("\u60a8\u5df2\u7ecf\u53c2\u52a0\u8fc7\u672c\u6b21\u8003\u8bd5\uff0c\u4e0d\u80fd\u91cd\u590d\u53c2\u52a0\uff01");
+        }
+        return true;
+    }
+
+    @Override
+    public void examOver(Integer eid) {
+
+        String username = Authc.getCurrUserName();
+
+        ExamineUser examineUser = examineService.findEUByEidAndUname(eid, username);
+        if (examineUser == null) {
+            LOG.error("examOver error,ExamineUser is null !{" + eid + "}{" + username + "}");
+            return;
+        }
+        examineUser.setDone(true);
+        esessionDAO.saveExamineUser(examineUser);
     }
 
 

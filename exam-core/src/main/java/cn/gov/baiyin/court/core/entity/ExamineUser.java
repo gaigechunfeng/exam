@@ -8,6 +8,7 @@ public class ExamineUser extends BaseEntity {
 
     private Integer eid;//考试场次编号
     private Integer uid;//考生编号
+    private Boolean done;//是否已完成考试
 
     public ExamineUser(Integer eid, Integer uid) {
 
@@ -29,6 +30,14 @@ public class ExamineUser extends BaseEntity {
 
     public void setUid(Integer uid) {
         this.uid = uid;
+    }
+
+    public Boolean getDone() {
+        return done;
+    }
+
+    public void setDone(Boolean done) {
+        this.done = done;
     }
 
     @Override

@@ -33,4 +33,6 @@ public interface IScoreDAO {
     void removeByUidAndEid(Integer uid, Integer eid);
 
     String exportDb2Sql();
+
+    void removeByEtidAndUid(Integer etid, Integer uid);
 }

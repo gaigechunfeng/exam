@@ -105,12 +105,12 @@ public class ScoreService implements IScoreService {
 
         Reply r = findReplyByEtidAndUid(reply.getEtid(), reply.getUid());
         if (r != null) {
-            throw new ServiceException("此题答案已经提交，不能重复提交");
-        } else {
-            scoreDAO.addReply(reply);
-
-            reply.setId(scoreDAO.findReplyByEtidAndUid(reply.getEtid(), reply.getUid()).getId());
+//            throw new ServiceException("此题答案已经提交，不能重复提交");
+            scoreDAO.removeByEtidAndUid(reply.getEtid(), reply.getUid());
         }
+
+        scoreDAO.addReply(reply);
+        reply.setId(scoreDAO.findReplyByEtidAndUid(reply.getEtid(), reply.getUid()).getId());
     }
 
     @Override

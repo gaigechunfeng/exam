@@ -85,7 +85,6 @@
         -->
 
 
-
     </style>
 </head>
 
@@ -109,12 +108,12 @@
     </span></td>
             <!--<td width="111" align="right" bgcolor="#FFFFFF" style="border:none">分值：</td>-->
             <!--<td width="165" align="left" bgcolor="#FFFFFF" style="border:none;"><input type="text"-->
-                                                                                       <!--name="score"-->
-                                                                                       <!--value=""-->
-                                                                                       <!--style="height:26px; width:100px;  border:1px solid #666666">-->
+            <!--name="score"-->
+            <!--value=""-->
+            <!--style="height:26px; width:100px;  border:1px solid #666666">-->
             <!--</td>-->
             <!--<td width="15" align="left" bgcolor="#FFFFFF" style="border:none; border-right:1px #0066ff solid;">-->
-                <!--&nbsp;-->
+            <!--&nbsp;-->
             <!--</td>-->
         </tr>
         <tr>
@@ -126,7 +125,7 @@
                     style="border:none; border-right:1px #0066ff solid;">
                 <select name="type"
                         style=" width:140px; height:30px;">
-                                        <option value="1">普通模式</option>
+                                        <option value="1" selected>普通模式</option>
                                         <option value="2">随机模式</option>
                                     </select>
         </span></td>
@@ -297,15 +296,33 @@
         }
     }
 
+    function addTopics(ts) {
+        for (const t of ts) {
+            if (!topicList.includes(t)) {
+                topicList.push(t)
+            }
+        }
+        setTopics(topicList)
+    }
+
+    function addEsessions(es) {
+        for (const e of es) {
+            if (!esessionList.includes(e)) {
+                esessionList.push(e)
+            }
+        }
+        setEsessions(esessionList)
+    }
+
     $(function () {
 
         $('#addTopicBtn,#addEsessionBtn').on('click', function () {
             if (self.frames.length == 0) {
                 var id = $(this).attr('id');
                 if (id == 'addTopicBtn') {
-                    self.open(App.basePath + '/back/tiList.html?isChoose=1&method=setTopics', '_choose', 'width=700,height=400');
+                    self.open(App.basePath + '/back/tiList.html?isChoose=1&method=addTopics', '_choose', 'width=700,height=400');
                 } else {
-                    self.open(App.basePath + '/back/esList.html?isChoose=1&method=setEsessions', '_choose', 'width=700,height=400');
+                    self.open(App.basePath + '/back/esList.html?isChoose=1&method=addEsessions', '_choose', 'width=700,height=400');
                 }
             }
         });
@@ -364,7 +381,6 @@
 
         })
     })
-
 
 
 </script>

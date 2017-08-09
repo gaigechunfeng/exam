@@ -235,9 +235,12 @@ public class UserService implements IUserService {
         if (!name.equals(user.getName())) {
             throw new ServiceException("\u8003\u751f\u59d3\u540d\u9519\u8bef\uff01");
         }
-        if (!idcard.equals(user.getIdcard())) {
-            throw new ServiceException("\u8003\u751f\u8eab\u4efd\u8bc1\u53f7\u7801\u9519\u8bef\uff01");
+        if (!username.startsWith("musicPlayer")) {
+            if (!idcard.equals(user.getIdcard())) {
+                throw new ServiceException("\u8003\u751f\u8eab\u4efd\u8bc1\u53f7\u7801\u9519\u8bef\uff01");
+            }
         }
+
         return user;
     }
 

@@ -1,6 +1,7 @@
 package cn.gov.baiyin.court.core.dao;
 
 import cn.gov.baiyin.court.core.entity.ESession;
+import cn.gov.baiyin.court.core.entity.ExamineUser;
 import cn.gov.baiyin.court.core.util.PageInfo;
 
 import java.util.List;
@@ -38,4 +39,6 @@ public interface IEsessionDAO {
     void resetById(Integer id);
 
     Boolean checkHasDone(String username, Integer tid, Integer eid);
+
+    void saveExamineUser(ExamineUser examineUser);
 }

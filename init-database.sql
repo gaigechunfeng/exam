@@ -29,16 +29,16 @@ CREATE TABLE `examine` (
   DEFAULT CHARSET = utf8;
 
 CREATE TABLE `topic` (
-  `id`      INT(11) NOT NULL AUTO_INCREMENT,
-  `type`    INT(11)          DEFAULT NULL,
-  `content` TEXT,
-  `cruser`  VARCHAR(200)     DEFAULT NULL,
-  `crtime`  VARCHAR(200)     DEFAULT NULL,
-  `period`  INT(11)          DEFAULT NULL,
-  `name`    VARCHAR(200)     DEFAULT NULL,
-  `score`   INT(11)          DEFAULT NULL,
-  `playtype`   INT(11)          DEFAULT NULL,
-  `answer`  TEXT,
+  `id`       INT(11) NOT NULL AUTO_INCREMENT,
+  `type`     INT(11)          DEFAULT NULL,
+  `content`  TEXT,
+  `cruser`   VARCHAR(200)     DEFAULT NULL,
+  `crtime`   VARCHAR(200)     DEFAULT NULL,
+  `period`   INT(11)          DEFAULT NULL,
+  `name`     VARCHAR(200)     DEFAULT NULL,
+  `score`    INT(11)          DEFAULT NULL,
+  `playtype` INT(11)          DEFAULT NULL,
+  `answer`   TEXT,
   PRIMARY KEY (`id`)
 )
   ENGINE = InnoDB
@@ -78,6 +78,7 @@ CREATE TABLE `examine_user` (
   `id`     INT(11) NOT NULL AUTO_INCREMENT,
   `eid`    INT(11)          DEFAULT NULL,
   `uid`    INT(11)          DEFAULT NULL,
+  `done`   INT(1)           DEFAULT NULL,
   `cruser` VARCHAR(200)     DEFAULT NULL,
   `crtime` VARCHAR(200)     DEFAULT NULL,
   PRIMARY KEY (`id`)
@@ -111,8 +112,8 @@ CREATE TABLE `examine_topic` (
 
 CREATE TABLE `examine_info` (
   `id`     INT(11) NOT NULL AUTO_INCREMENT,
-  `ksxz` VARCHAR(2000)     DEFAULT NULL,
-  `kssm` VARCHAR(2000)     DEFAULT NULL,
+  `ksxz`   VARCHAR(2000)    DEFAULT NULL,
+  `kssm`   VARCHAR(2000)    DEFAULT NULL,
 
   `cruser` VARCHAR(200)     DEFAULT NULL,
   `crtime` VARCHAR(200)     DEFAULT NULL,

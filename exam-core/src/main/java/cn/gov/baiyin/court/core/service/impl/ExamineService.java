@@ -269,4 +269,9 @@ public class ExamineService implements IExamineService {
     public ExamineInfo findKsxz() {
         return examineDAO.findKsxz();
     }
+
+    @Override
+    public ExamineUser findEUByEidAndUname(Integer eid, String username) {
+        return examineDAO.findEUByEidAndUname(eid, username);
+    }
 }

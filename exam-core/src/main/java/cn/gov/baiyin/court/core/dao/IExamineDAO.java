@@ -2,6 +2,7 @@ package cn.gov.baiyin.court.core.dao;
 
 import cn.gov.baiyin.court.core.entity.Examine;
 import cn.gov.baiyin.court.core.entity.ExamineInfo;
+import cn.gov.baiyin.court.core.entity.ExamineUser;
 import cn.gov.baiyin.court.core.entity.Topic;
 import cn.gov.baiyin.court.core.util.PageInfo;
 
@@ -29,4 +30,5 @@ public interface IExamineDAO {
 
     ExamineInfo findKsxz();
 
+    ExamineUser findEUByEidAndUname(Integer eid, String username);
 }

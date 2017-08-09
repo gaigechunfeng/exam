@@ -32,5 +32,7 @@ public interface IEsessionService {
 
     void resetById(Integer id);
 
-    Boolean checkHasDone(Integer tid, Integer eid);
+    Boolean checkHasDone(Integer tid, Integer eid) throws ServiceException;
+
+    void examOver(Integer eid);
 }
