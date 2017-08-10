@@ -38,7 +38,7 @@ public interface IEsessionDAO {
 
     void resetById(Integer id);
 
-    Boolean checkHasDone(String username, Integer tid, Integer eid);
+    Boolean checkHasDone(String username, Integer eid);
 
     void saveExamineUser(ExamineUser examineUser);
 }

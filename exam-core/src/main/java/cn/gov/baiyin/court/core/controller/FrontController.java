@@ -49,7 +49,7 @@ public class FrontController {
     @ResponseBody
     public Msg checkHasDone(Integer tid, Integer eid) throws ServiceException {
 
-        esessionService.checkHasDone(tid, eid);
+        esessionService.checkHasDone(eid);
         //您已经参加过本次考试，不能重复参加！
         return Msg.SUCCESS;
 //        return new Msg(r, "\u60a8\u5df2\u7ecf\u53c2\u52a0\u8fc7\u672c\u6b21\u8003\u8bd5\uff0c\u4e0d\u80fd\u91cd\u590d\u53c2\u52a0\uff01", null);

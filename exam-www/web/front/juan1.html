@@ -1,7 +1,6 @@
 <html>
 
 <head>
-
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title>书记员录入能力机考系统</title>
     <style type="text/css">
@@ -104,6 +103,7 @@
         }
 
         -->
+
     </style>
     <script language="javascript">
 
@@ -120,6 +120,7 @@
             m_obj = document.getElementById(objId)
             m_obj.style.backgroundColor = "#0698D1"
         }
+
 
     </script>
 </head>
@@ -784,7 +785,6 @@
             $('#read_topic').show();
 
             var con = currTopic['content'] || '',
-//                conList = con.split('\n'),
                 conList = separatorString(con.replace(/[\n\s]/g, '')),
                 h = []
 
@@ -861,14 +861,11 @@
         }
 
         if (!currTopic || !currIndex) {
-//            alert('所有题目答题时间已过！');
-//            allTopicAnswerTimePassed();
             gotoWait('所有题目答题时间已过');
             return;
         }
 
         $.post(App.basePath + '/front/checkHasDone.do', {tid: currTopic.id, eid: currExam.id}, function (r) {
-
             if (r) {
                 if (r.success) {
                     showTopic();
@@ -879,7 +876,6 @@
                 }
             }
         }, 'JSON');
-
     }
 
     /**
@@ -918,15 +914,11 @@
      */
     function loadEsessions() {
         $.get(App.basePath + '/front/getEsessions.do', {}, function (data) {
-
             if (data && data.success) {
-
                 var esessions = data.obj;
                 if (!esessions || esessions.length == 0) {
                     gotoWait();
-//                    self.location.assign(App.basePath + '/front/wait.html');
                 } else {
-
                     var legals = [];
                     for (var i = 0, len = esessions.length; i < len; i++) {
                         var es = esessions[i],
@@ -944,16 +936,6 @@
                     }
 
                     doingExam(legals[0]);
-//                    $.post(App.basePath + '/front/checkHasDone.do', {}, function (r) {
-//                        if (r) {
-//                            if (r.success) {
-//                                doingExam(legals[0]);
-//                            } else {
-//                                gotoWait('您已经参过当前考试，不能重复考试！');
-//                            }
-//                        }
-//                    }, 'JSON');
-
                 }
             }
         }, 'json');
@@ -999,6 +981,7 @@
 
 //        $('#fullScreenBtn').on('click',App.requestFullScreen).click();
     })
+
 </script>
 
 </body>

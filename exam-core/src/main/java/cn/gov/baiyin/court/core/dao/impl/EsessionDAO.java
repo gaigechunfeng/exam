@@ -11,7 +11,6 @@ import org.springframework.util.CollectionUtils;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 import java.util.stream.Collectors;
 
 /**
@@ -112,7 +111,7 @@ public class EsessionDAO extends AbstractDAO implements IEsessionDAO {
         List<Topic> topics;
 
         List<Topic> topicList = queryList("select t2.* from examine_topic t left join examine t1 on t.eid=t1.id " +
-                "left join topic t2 on t.tid=t2.id where t2.id is not null and t1.id=?", Topic.class, e.getId());
+                "left join topic t2 on t.tid=t2.id where t2.id is not null and t1.id=? order by t2.id", Topic.class, e.getId());
 
         //random
         if (e.getType() != null && e.getType() == 2) {
@@ -186,16 +185,21 @@ public class EsessionDAO extends AbstractDAO implements IEsessionDAO {
     }
 
     @Override
-    public Boolean checkHasDone(String username, Integer tid, Integer eid) {
-        return jdbcTemplate.queryForObject("select count(1) from reply t\n" +
+    public Boolean checkHasDone(String username, Integer eid) {
+        ExamineUser examineUser = jdbcTemplate.queryForObject("select t.* from examine_user t\n" +
                 "left join user t1 on t.uid=t1.id\n" +
-                "left join examine_topic t2 on t.etid=t2.id\n" +
-                "where t2.eid=? and t2.tid=? and t1.username=?", Integer.class, eid, tid, username) > 0;
+                "where t.eid=? and t1.username=?", ExamineUser.class, Integer.class, eid, username);
+
+        return examineUser.getDone() != null && examineUser.getDone();
     }
 
     @Override
     public void saveExamineUser(ExamineUser examineUser) {
 
-        super.modify(examineUser);
+        if (examineUser.getId() == null) {
+            super.insert(examineUser);
+        } else {
+            super.modify(examineUser);
+        }
     }
 }

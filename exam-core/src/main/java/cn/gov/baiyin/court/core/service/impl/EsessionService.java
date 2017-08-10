@@ -4,9 +4,11 @@ import cn.gov.baiyin.court.core.authc.Authc;
 import cn.gov.baiyin.court.core.dao.IEsessionDAO;
 import cn.gov.baiyin.court.core.entity.ESession;
 import cn.gov.baiyin.court.core.entity.ExamineUser;
+import cn.gov.baiyin.court.core.entity.User;
 import cn.gov.baiyin.court.core.exception.ServiceException;
 import cn.gov.baiyin.court.core.service.IEsessionService;
 import cn.gov.baiyin.court.core.service.IExamineService;
+import cn.gov.baiyin.court.core.service.IUserService;
 import cn.gov.baiyin.court.core.util.DateUtil;
 import cn.gov.baiyin.court.core.util.PageInfo;
 import cn.gov.baiyin.court.core.util.Utils;
@@ -18,6 +20,7 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by WK on 2017/3/28.
@@ -25,12 +28,16 @@ import java.util.List;
 @Service
 public class EsessionService implements IEsessionService {
 
-    private static final Logger LOG = LoggerFactory.getLogger(EsessionService.class);
+//    private static final Logger LOG = LoggerFactory.getLogger(EsessionService.class);
 
+    private IUserService userService;
     private IEsessionDAO esessionDAO;
     private IExamineService examineService;
     private static final int WAIT_TIME = Utils.getApp().getInt("wait.exam.time", 10);
 
+    public void setUserService(IUserService userService) {
+        this.userService = userService;
+    }
 
     @Autowired
     public void setExamineService(IExamineService examineService) {
@@ -124,7 +131,9 @@ public class EsessionService implements IEsessionService {
                 eSession.setEndTime(DateUtil.str2long(eSession.getEndTime()));
             }
         }
-        return eSessions;
+        return eSessions.stream()
+                .filter(eSession -> !esessionDAO.checkHasDone(username, eSession.getEid()))
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -139,10 +148,10 @@ public class EsessionService implements IEsessionService {
     }
 
     @Override
-    public Boolean checkHasDone(Integer tid, Integer eid) throws ServiceException {
+    public Boolean checkHasDone(Integer eid) throws ServiceException {
         String username = Authc.getCurrUserName();
 
-        boolean r = esessionDAO.checkHasDone(username, tid, eid);
+        boolean r = esessionDAO.checkHasDone(username, eid);
         if (r) {
             throw new ServiceException("\u60a8\u5df2\u7ecf\u53c2\u52a0\u8fc7\u672c\u6b21\u8003\u8bd5\uff0c\u4e0d\u80fd\u91cd\u590d\u53c2\u52a0\uff01");
         }
@@ -154,14 +163,12 @@ public class EsessionService implements IEsessionService {
 
         String username = Authc.getCurrUserName();
 
+        User user = userService.findByUserName(username);
         ExamineUser examineUser = examineService.findEUByEidAndUname(eid, username);
         if (examineUser == null) {
-            LOG.error("examOver error,ExamineUser is null !{" + eid + "}{" + username + "}");
-            return;
+            examineUser = new ExamineUser(eid, user.getId());
         }
         examineUser.setDone(true);
         esessionDAO.saveExamineUser(examineUser);
     }
-
-
 }
