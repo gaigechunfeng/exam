@@ -76,4 +76,9 @@ public class UserDAO extends AbstractDAO implements IUserDAO {
         jdbcTemplate.update("delete from reply where uid=?", uid);
     }
 
+    @Override
+    public boolean existIdcard(String idcard) {
+        return jdbcTemplate.queryForObject("select count(1) from user where idcard=?", Boolean.class, idcard);
+    }
+
 }

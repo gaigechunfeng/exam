@@ -97,7 +97,7 @@
             </select>
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             <span style="font-size: 16px">选择法院：</span>
-            <select name="posSelect" id="posCode" onchange="selectExamine()">
+            <select name="posSelect" id="posCode">
 
             </select>
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -189,7 +189,7 @@
 <script src="./imges/common.js"></script>
 <script>
 
-    var currExmaineId;
+    var currExmaineId, currPos;
     var posObj = App.getPosCode();
     function renderScoreFields(fields) {
         var h = [];
@@ -205,7 +205,7 @@
     }
 
     function loadStatistic() {
-        $.get(App.basePath + '/back/score/statistic.do', {eid: currExmaineId}, function (data) {
+        $.get(App.basePath + '/back/score/statistic.do', {eid: currExmaineId, pos: currPos}, function (data) {
 
             if (data && data.success) {
 
@@ -216,13 +216,13 @@
 
                 for (var k in obj) {
 
-                    var v = obj[k] || 0;
-                    allscore += v;
+                    var v = (obj[k] || 0).toFixed(2);
+                    allscore += parseFloat(v);
                     h1.push('<td width="221" align="center" valign="middle" bordercolor="#0066FF" class="STYLE4" style="text-indent:0em;">' + k + '</td>');
                     h2.push('<td align="center" valign="middle" bordercolor="#0066FF" style="text-indent:0em;"><span class="STYLE10">' + v + '</span></td>')
                 }
-                h1.push('<td width="221" align="center" valign="middle" bordercolor="#0066FF" class="STYLE4" style="text-indent:0em;">双科总分</td></tr>');
-                h2.push('<td align="center" valign="middle" bordercolor="#0066FF" style="text-indent:0em;"><span class="STYLE10">' + allscore + '</span></td></tr>')
+                h1.push('<td width="221" align="center" valign="middle" bordercolor="#0066FF" class="STYLE4" style="text-indent:0em;">总分</td></tr>');
+                h2.push('<td align="center" valign="middle" bordercolor="#0066FF" style="text-indent:0em;"><span class="STYLE10">' + allscore.toFixed(2) + '</span></td></tr>')
 
                 $('#statisticTable').html(h1.join('') + h2.join(''));
             }
@@ -316,31 +316,12 @@
             self.open(App.basePath + '/back/score/export/detail.do?pos=' + pos + '&pageSize=1000&eid=' + currExmaineId)
         })
 
-//          var loadData = function () {
-//
-//              App.renderTable('dataTable', '/back/score/list.do', function (r, i) {
-//                  var h = [];
-//
-//                  html.push("<tr>                                                                                                                              ")//
-//                  html.push("<td height='30' width='58' align='center'>" + (i + 1) + "</td>                                                                                  ")//
-//                  html.push("    <td height='30' width='112' align='center'>" + (r.type == 1 ? '对照复录' : '听音打字') + "</td>                                                                           ")//
-//                  html.push("    <td  width='213' align='center' style='color:#333333'>" + r.name + "</td>                                                               ")//
-//                  html.push("    <td  width='230' align='center'><a href='xiangxiTi.html?id=" + r.id + "' target='_self'>查看详细</a>|<a href='editTi.html?id=" + r.id + "' target='_self'>修改</a>| ")//
-//                  html.push(" <a href='javascript:;' target='_self'>删除</a></td>                                                                                 ")//
-//                  html.push("    </tr>                                                                                                                         ")//
-//
-//
-//                  return h.join('');
-//              }, 'pagination');
-//          }
-//          App.checkAdminLogin().done(App.check2AdminLogin)
-//              .success(function (data) {
-//                  if (data && data.success) {
-//                      loadData();
-//                  }
-//              });
-//
-//          $('#refreshBtn').on('click', loadData);
+        $('#posCode').on('change', function () {
+
+            currPos = this.value
+            refreshTableList();
+            loadStatistic()
+        })
 
     })
 </script>

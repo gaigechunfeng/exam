@@ -24,4 +24,6 @@ public interface ITopicDAO {
     void addMulti(List<Topic> topics);
 
     List<Topic> findByIds(String topicIds);
+
+    boolean existName(String name);
 }

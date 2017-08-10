@@ -24,4 +24,6 @@ public interface IUserDAO {
     void importExmainee(List<User> list);
 
     void removeReply(int uid);
+
+    boolean existIdcard(String idcard);
 }

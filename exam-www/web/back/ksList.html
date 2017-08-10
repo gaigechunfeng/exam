@@ -153,8 +153,8 @@
 
     $(function () {
 
-        $('#importTempDownBtn').on('click',function () {
-            window.open(App.basePath+'/back/user_template.xls')
+        $('#importTempDownBtn').on('click', function () {
+            window.open(App.basePath + '/back/user_template.xls')
         })
 
         $('#selectAllCb').on('click', function () {
@@ -194,8 +194,12 @@
                 html.push("        <td height='30' width='112' align='center'>" + r.name + "</td>                                        ");
                 html.push("        <td width='213' align='center' style='color:#333333'>" + r.username + "</td>                ");
                 html.push("        <td width='213' align='center' style='color:#333333'>" + (r.pos ? (posCode[r.pos] + '-' + r.pos) : '') + "</td>                ");
-                html.push("        <td width='230' align='center'><a href='ks_xiangxi.html?id=" + r.id + "' target='_self'>查看详细</a>|<a       ");
-                html.push("   href='editKS.html?id=" + r.id + "' target='_self'>修改</a>|<a href='javascript:deleteUser(" + r.id + ")' target='_self'>删除</a></td>     ");
+                if (r.username && r.username.indexOf('musicPlayer') !== 0) {
+                    html.push("        <td width='230' align='center'><a href='ks_xiangxi.html?id=" + r.id + "' target='_self'>查看详细</a>|<a       ");
+                    html.push("   href='editKS.html?id=" + r.id + "' target='_self'>修改</a>|<a href='javascript:deleteUser(" + r.id + ")' target='_self'>删除</a></td>     ");
+                } else {
+                    html.push("<td width='230' align='center'>&nbsp;</td>")
+                }
                 html.push("        </tr>                                                                                     ");
 
                 return html.join('');

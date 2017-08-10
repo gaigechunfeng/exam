@@ -186,10 +186,12 @@ public class EsessionDAO extends AbstractDAO implements IEsessionDAO {
 
     @Override
     public Boolean checkHasDone(String username, Integer eid) {
-        ExamineUser examineUser = jdbcTemplate.queryForObject("select t.* from examine_user t\n" +
+        List<ExamineUser> examineUsers = super.queryList("select t.* from examine_user t\n" +
                 "left join user t1 on t.uid=t1.id\n" +
-                "where t.eid=? and t1.username=?", ExamineUser.class, Integer.class, eid, username);
+                "where t.eid=? and t1.username=?", ExamineUser.class, eid, username);
 
+        if (CollectionUtils.isEmpty(examineUsers)) return false;
+        ExamineUser examineUser = examineUsers.get(0);
         return examineUser.getDone() != null && examineUser.getDone();
     }
 

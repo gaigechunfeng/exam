@@ -174,10 +174,10 @@
                                 <td colspan="3" height="5"></td>
                             </tr>
                             <tr>
-                                <td height="26" align="center" valign="middle" bgcolor="#0698D1" class="STYLE7">考试地点
+                                <td height="26" align="center" valign="middle" bgcolor="#0698D1" class="STYLE7">报考单位
                                 </td>
                                 <td></td>
-                                <td class="STYLE8">甘肃省白银市教育培训中心</td>
+                                <td class="STYLE8" id="posCodeTxt"></td>
                             </tr>
                             <tr>
                                 <td colspan="3" height="5"></td>
@@ -186,7 +186,7 @@
                                 <td height="26" align="center" valign="middle" bgcolor="#0698D1"><span class="STYLE7">设考单位</span>
                                 </td>
                                 <td></td>
-                                <td class="STYLE8">甘肃省白银市中级人民法院</td>
+                                <td class="STYLE8">甘肃省高级人民法院</td>
                             </tr>
                             <tr>
                                 <td colspan="3" height="5"></td>
@@ -284,7 +284,7 @@
         var i = 0, allscore = 0;
         for (var k in scores) {
             var score = scores[k] || 0
-            allscore += score*100
+            allscore += score * 100
             h.push('<tr>                                                                                                   ');
             if (i == 0) {
                 h.push('    <td height="26" align="center" valign="middle" bgcolor="#0698D1"><span class="STYLE7">考试科目</span>  ');
@@ -302,7 +302,7 @@
             i++;
         }
 
-        $('[data-field=allscore]').html(allscore/100)
+        $('[data-field=allscore]').html(allscore / 100)
         $('#topicFields').html(h.join(''));
 
         $('#topicTitle').html(h2.join(''))
@@ -343,6 +343,11 @@
             alert("参数错误！");
             return;
         }
+
+//        App.checkAdminLogin().success(function () {
+//            var obj = App.getPosCode();
+//            $('#posCodeTxt').html(obj[App.currUser.pos]);
+//        })
 
         $.get(App.basePath + '/back/score/detail.do', {uid: uid, eid: eid}, function (data) {
 

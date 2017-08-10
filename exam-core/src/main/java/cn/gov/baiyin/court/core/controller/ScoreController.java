@@ -131,8 +131,8 @@ public class ScoreController {
 
     @RequestMapping("/statistic")
     @ResponseBody
-    public Msg statistic(Integer eid) {
+    public Msg statistic(Integer eid, String pos) {
 
-        return Msg.success(scoreService.statistic(eid));
+        return Msg.success(scoreService.statistic(eid, pos));
     }
 }

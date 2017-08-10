@@ -5,7 +5,6 @@ import cn.gov.baiyin.court.core.entity.Score;
 import cn.gov.baiyin.court.core.exception.ServiceException;
 import cn.gov.baiyin.court.core.util.PageInfo;
 
-import java.math.BigDecimal;
 import java.util.Map;
 
 /**
@@ -20,7 +19,7 @@ public interface IScoreService {
 
     Map<String, Object> detail(Integer uid, Integer eid) throws ServiceException;
 
-    Map<String, Double> statistic(Integer eid);
+    Map<String, Double> statistic(Integer eid, String pos);
 
     Map<String, Object> frontDetail(Integer eid) throws ServiceException;
 

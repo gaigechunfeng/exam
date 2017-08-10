@@ -63,7 +63,10 @@ public class TopicService implements ITopicService {
     public void add(Topic topic) throws ServiceException {
 
         if (StringUtils.isEmpty(topic.getName()) || StringUtils.isEmpty(topic.getContent())) {
-            throw new ServiceException("试题名称和内容不能为空！");
+            throw new ServiceException("\u8bd5\u9898\u540d\u79f0\u548c\u5185\u5bb9\u4e0d\u80fd\u4e3a\u7a7a\uff01");
+        }
+        if (existName(topic.getName())) {
+            throw new ServiceException("\u76f8\u540c\u540d\u79f0\u7684\u8bd5\u9898\u5df2\u7ecf\u5b58\u5728\uff01");
         }
 
         if (topic.getType() == Topic.Type.LISTEN.getTypeVal()) {
@@ -77,7 +80,7 @@ public class TopicService implements ITopicService {
 
         boolean r = topicDAO.add(topic);
         if (!r) {
-            throw new ServiceException("保存试题失败！");
+            throw new ServiceException("\u4fdd\u5b58\u8bd5\u9898\u5931\u8d25\uff01");
         }
     }
 
@@ -175,6 +178,10 @@ public class TopicService implements ITopicService {
             for (int i = 1; i < rowCount; i++) {
 
                 String name = sheet.getCell(0, i).getContents();
+
+                if (existName(name)) {
+                    throw new ServiceException("\u76f8\u540c\u540d\u79f0\u7684\u8bd5\u9898\u5df2\u7ecf\u5b58\u5728\uff01");
+                }
                 int score = Integer.parseInt(sheet.getCell(1, i).getContents());
                 int type = "对照附录".equals(sheet.getCell(2, i).getContents()) ? 1 : 2;
                 int period = Integer.parseInt(sheet.getCell(3, i).getContents());
@@ -209,6 +216,10 @@ public class TopicService implements ITopicService {
             FileUtil.deleteFile(folder);
         }
 
+    }
+
+    private boolean existName(String name) {
+        return topicDAO.existName(name);
     }
 
     @Override

@@ -17,6 +17,7 @@ import org.springframework.util.CollectionUtils;
 import javax.annotation.PostConstruct;
 import java.math.BigDecimal;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Created by WK on 2017/3/30.
@@ -140,6 +141,15 @@ public class ScoreService implements IScoreService {
         pageInfo = scoreDAO.listPagination(pageInfo, pos, eid);
         List<Topic> topics = topicService.listFieldsByEid(eid);
 
+        List<Integer> topicIds;
+        if (isRandom) {
+            topicIds = new ArrayList<>();
+            topicIds.add(1);
+            topicIds.add(2);
+        } else {
+            topicIds = topics.stream().map(Topic::getId).collect(Collectors.toList());
+        }
+
         List<Map<String, Object>> list = new ArrayList<>();
 
         Map<String, Object> scoreMap = isRandom ? scoreDAO.queryRandomScoreMap(eid) : scoreDAO.queryScoreMap(eid);
@@ -153,8 +163,8 @@ public class ScoreService implements IScoreService {
             m.put("pos", user.getPos());
 
             float count = 0;
-            for (int i = 0; i < topics.size(); i++) {
-                Integer key = topics.get(i).getId();
+            for (int i = 0; i < topicIds.size(); i++) {
+                Integer key = topicIds.get(i);
 //                float score = findScoreInMap(key, scoreMap);
                 float score = MapUtils.getFloat(scoreMap, key + "-" + user.getId(), 0F);
 
@@ -162,7 +172,7 @@ public class ScoreService implements IScoreService {
                 m.put("score_" + i, score);
             }
             m.put("allscore", new BigDecimal(count).setScale(2, BigDecimal.ROUND_HALF_UP).floatValue());
-            m.put("fieldSize", topics.size());
+            m.put("fieldSize", topicIds.size());
             list.add(m);
         }
 
@@ -205,7 +215,7 @@ public class ScoreService implements IScoreService {
     }
 
     @Override
-    public Map<String, Double> statistic(Integer eid) {
+    public Map<String, Double> statistic(Integer eid, String pos) {
 
 //        List<Map<String, Object>> list = scoreDAO.statistic(eid);
 //        Map<String, Object> map = new HashMap<>();
@@ -216,7 +226,7 @@ public class ScoreService implements IScoreService {
 //            }
 //        }
 //        return map;
-        return scoreDAO.statistic(eid);
+        return scoreDAO.statistic(eid, pos);
     }
 
     @Override

@@ -1,10 +1,11 @@
 package cn.gov.baiyin.court.core.dao.impl;
 
 import cn.gov.baiyin.court.core.dao.IScoreDAO;
+import cn.gov.baiyin.court.core.entity.Examine;
 import cn.gov.baiyin.court.core.entity.Reply;
 import cn.gov.baiyin.court.core.entity.Score;
 import cn.gov.baiyin.court.core.entity.User;
-import cn.gov.baiyin.court.core.util.CodeUtil;
+import cn.gov.baiyin.court.core.service.IExamineService;
 import cn.gov.baiyin.court.core.util.PageInfo;
 import org.apache.commons.collections.MapUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +25,13 @@ import java.util.stream.Collectors;
  */
 @Repository
 public class ScoreDAO extends AbstractDAO implements IScoreDAO {
+
+    private IExamineService examineService;
+
+    @Autowired
+    public void setExamineService(IExamineService examineService) {
+        this.examineService = examineService;
+    }
 
     @Autowired
     public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
@@ -107,23 +115,38 @@ public class ScoreDAO extends AbstractDAO implements IScoreDAO {
     }
 
     @Override
-    public Map<String, Double> statistic(Integer eid) {
+    public Map<String, Double> statistic(Integer eid, String pos) {
 
-        List<Map<String, Object>> list = jdbcTemplate.queryForList("select t3.name,t.score  from score t\n" +
-                "left join reply t1 on t.rid=t1.id\n" +
-                "left join examine_topic t2 on t1.etid=t2.id\n" +
-                "left join topic t3 on t2.tid= t3.id\n" +
-                "left join user t4 on t1.uid= t4.id\n" +
-                "where t4.id is not null and t2.eid=? ", eid);
+        Examine examine = examineService.findById(eid);
+        List<Map<String, Object>> list;
+        if (examine.getType() == 2) {
+
+            String s = "select t4.type,sum(t.score) score from score t\n" +
+                    "left join reply t1 on t.rid=t1.id\n" +
+                    "left join examine_topic t2 on t1.etid=t2.id\n" +
+                    "left join user t3 on t1.uid=t3.id\n" +
+                    "left join topic t4 on t2.tid=t4.id\n" +
+                    "where eid=?  " + (StringUtils.isEmpty(pos) ? "" : " and t3.pos='" + pos + " '") + "group by t4.type order by t4.type";
+            list = jdbcTemplate.queryForList(s, eid);
+            if (!CollectionUtils.isEmpty(list)) {
+                for (Map<String, Object> map : list) {
+                    Integer type = MapUtils.getInteger(map, "type", 0);
+                    map.put("name", type == 1 ? "对照附录" : "听音打字");
+                }
+            }
+        } else {
+            list = jdbcTemplate.queryForList("select t3.name,t.score  from score t\n" +
+                    "left join reply t1 on t.rid=t1.id\n" +
+                    "left join examine_topic t2 on t1.etid=t2.id\n" +
+                    "left join topic t3 on t2.tid= t3.id\n" +
+                    "left join user t4 on t1.uid= t4.id\n" +
+                    "where t4.id is not null " + (StringUtils.isEmpty(pos) ? "" : " and t4.pos='" + pos + "'") +
+                    " and t2.eid=? order by t3.id", eid);
+        }
 
         return list.stream()
-                .collect(Collectors.groupingBy(m -> m.get("name").toString(), Collectors.averagingDouble(m -> {
-                    String score = MapUtils.getString(m, "score", "0");
-                    if (!"0".equals(score)) {
-                        score = CodeUtil.decrypt(score);
-                    }
-                    return new BigDecimal(score).setScale(2, BigDecimal.ROUND_HALF_UP).floatValue();
-                })));
+                .collect(Collectors.groupingBy(m -> m.get("name").toString(),
+                        Collectors.averagingDouble(m -> MapUtils.getFloatValue(m, "score", 0F))));
     }
 
     @Override

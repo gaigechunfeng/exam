@@ -44,14 +44,19 @@
                 dataType: 'json',
                 done: function (e, data) {
                     var obj = data.result;
-                    if (obj && obj.success) {
+                    if (obj) {
 
 //                        $('input[name=filePath]').val(obj.obj);
 //                        $('#showUploaded').html(App.parseFileName(obj.obj));
-                        if (self.opener && typeof self.opener.importSuccess == 'function') {
 
-                            self.opener.importSuccess(obj.obj);
+                        if (obj.success) {
+                            if (self.opener && typeof self.opener.importSuccess == 'function') {
+                                self.opener.importSuccess(obj.obj);
+                            }
+                        } else {
+                            alert("错误：" + obj.errmsg)
                         }
+
                     }
                 }
             });

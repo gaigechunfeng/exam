@@ -76,6 +76,11 @@ public class TopicDAO extends AbstractDAO implements ITopicDAO {
         return super.queryList("select * from topic where id in (" + topicIds + ")", Topic.class);
     }
 
+    @Override
+    public boolean existName(String name) {
+        return jdbcTemplate.queryForObject("select count(1) from topic where name=?", Boolean.class, name);
+    }
+
 //    public static void main(String[] args) {
 //
 //        for (Object o : System.getProperties().keySet()) {

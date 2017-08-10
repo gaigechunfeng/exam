@@ -4,7 +4,6 @@ import cn.gov.baiyin.court.core.entity.Reply;
 import cn.gov.baiyin.court.core.entity.Score;
 import cn.gov.baiyin.court.core.util.PageInfo;
 
-import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
@@ -26,7 +25,7 @@ public interface IScoreDAO {
 
     List<Map<String,Object>> detail(Integer uid, Integer eid);
 
-    Map<String, Double> statistic(Integer eid);
+    Map<String, Double> statistic(Integer eid, String pos);
 
     void removeReplyByUidAndEid(Integer uid, Integer eid);
 
