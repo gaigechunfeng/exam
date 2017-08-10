@@ -3,6 +3,7 @@ package cn.gov.baiyin.court.core.service;
 import cn.gov.baiyin.court.core.entity.ESession;
 import cn.gov.baiyin.court.core.exception.ServiceException;
 import cn.gov.baiyin.court.core.util.PageInfo;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -32,9 +33,11 @@ public interface IEsessionService {
 
     void resetById(Integer id);
 
-    Boolean checkHasDone(Integer eid) throws ServiceException;
+    void checkHasDone(Integer eid) throws ServiceException;
 
     void examOver(Integer eid);
 
     void clearExamInfo(Integer eid, Integer uid);
+
+    void importEsession(MultipartFile file) throws ServiceException;
 }

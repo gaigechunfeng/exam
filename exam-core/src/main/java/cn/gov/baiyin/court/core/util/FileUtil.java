@@ -84,10 +84,25 @@ public class FileUtil {
     public static void deleteFile(File tempFile) {
 
         if (tempFile.exists()) {
-            try {
-                Files.delete(tempFile.toPath());
-            } catch (IOException e) {
-                LOGGER.error("", e);
+            if (tempFile.isFile()) {
+                try {
+                    Files.delete(tempFile.toPath());
+                } catch (IOException e) {
+                    LOGGER.error("", e);
+                }
+            } else {
+                File[] files = tempFile.listFiles();
+                if (files == null || files.length == 0) {
+                    try {
+                        Files.delete(tempFile.toPath());
+                    } catch (IOException e) {
+                        LOGGER.error("", e);
+                    }
+                } else {
+                    for (File file : files) {
+                        deleteFile(file);
+                    }
+                }
             }
         }
     }
@@ -295,4 +310,7 @@ public class FileUtil {
         }
     }
 
+    public static boolean isXls(String fileName) {
+        return fileName != null && (fileName.toLowerCase().endsWith(".xls") || fileName.toUpperCase().endsWith(".xlsx"));
+    }
 }

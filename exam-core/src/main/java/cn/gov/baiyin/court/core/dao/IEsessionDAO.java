@@ -41,4 +41,6 @@ public interface IEsessionDAO {
     Boolean checkHasDone(String username, Integer eid);
 
     void saveExamineUser(ExamineUser examineUser);
+
+    void saveMulti(List<ESession> eSessions);
 }

@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * Created by WK on 2017/3/28.
@@ -56,6 +57,18 @@ public class EsessionController {
 
         try {
             esessionService.deleteById(id);
+        } catch (ServiceException e) {
+            return Msg.error(e);
+        }
+        return Msg.SUCCESS;
+    }
+
+    @RequestMapping("/import")
+    @ResponseBody
+    public Msg importEsession(MultipartFile file) {
+
+        try {
+            esessionService.importEsession(file);
         } catch (ServiceException e) {
             return Msg.error(e);
         }

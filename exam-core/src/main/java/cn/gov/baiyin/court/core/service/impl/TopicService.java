@@ -204,6 +204,9 @@ public class TopicService implements ITopicService {
             topicDAO.addMulti(topics);
         } catch (IOException | BiffException e) {
             throw new ServiceException("解析xls文件失败！", e);
+        } finally {
+            FileUtil.deleteFile(zipFile);
+            FileUtil.deleteFile(folder);
         }
 
     }

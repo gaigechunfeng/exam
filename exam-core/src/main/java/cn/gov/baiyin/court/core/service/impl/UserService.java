@@ -252,16 +252,15 @@ public class UserService implements IUserService {
             throw new ServiceException("file not exist");
         }
         String fileName = file.getOriginalFilename();
-        if (!fileName.endsWith(".xls") && !fileName.endsWith(".xlsx")) {
-            throw new ServiceException("请上传符合格式的excel文件！");
+        if (!FileUtil.isXls(fileName)) {
+            throw new ServiceException("\u8bf7\u4e0a\u4f20\u7b26\u5408\u683c\u5f0f\u7684excel\u6587\u4ef6\uff01");
         }
 
         String filePath = fileService.save(file);
-
-
+        File tmpFile = new File(filePath);
         List<User> list = new ArrayList<>();
         try {
-            Workbook wb = Workbook.getWorkbook(new File(filePath));
+            Workbook wb = Workbook.getWorkbook(tmpFile);
             Sheet sheet = wb.getSheet(0);
 //            int cols = sheet.getColumns();
             int rows = sheet.getRows();
@@ -285,6 +284,8 @@ public class UserService implements IUserService {
             userDAO.importExmainee(list);
         } catch (IOException | BiffException e) {
             throw new ServiceException("导入考生失败！" + e.getMessage(), e);
+        } finally {
+            FileUtil.deleteFile(tmpFile);
         }
 
         return filePath;

@@ -78,6 +78,8 @@
         <td width="709" height="41" align="right" valign="middle" style=" border-bottom:3px solid #0066FF"><input
                 type="button" name="show" value="刷   新" class="btns" id="refreshBtn"/>
             <input type="button" name="add" value="新增场次" class="btns" id="addEsBtn"/>
+            <input type="button" value="导入模板下载" class="btns" id="downTemplateBtn"/>
+            <input type="button" value="导入" class="btns" id="importBtn"/>
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         </td>
     </tr>
@@ -132,7 +134,8 @@
 
     var isChoose = App.getParam('isChoose'),
         method = App.getParam('method'),
-        eid = App.getParam("eid")
+        eid = App.getParam("eid"),
+        importWin = null
     var mainData = [];
     function deleteTopic(id) {
         if (confirm('您确认删除这个题目吗？')) {
@@ -211,6 +214,14 @@
 
         $('#selectAll').on('click',function () {
             $('.choose_checkbox').prop('checked',$(this).is(':checked'))
+        })
+
+        $('#downTemplateBtn').on('click',function(){
+            self.open(App.basePath+'/back/esession_template.xls')
+        })
+
+        $('#importBtn').on('click',function(){
+            importWin = self.open(App.basePath + '/back/importExcel.html?type=importEsession', '_import', 'width=600px,height=200px');
         })
     })
 </script>

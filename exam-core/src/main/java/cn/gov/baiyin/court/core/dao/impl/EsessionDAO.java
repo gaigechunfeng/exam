@@ -202,4 +202,12 @@ public class EsessionDAO extends AbstractDAO implements IEsessionDAO {
             super.modify(examineUser);
         }
     }
+
+    @Override
+    public void saveMulti(List<ESession> eSessions) {
+
+        for (ESession eSession : eSessions) {
+            insert(eSession);
+        }
+    }
 }
