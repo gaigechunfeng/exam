@@ -35,4 +35,6 @@ public interface IEsessionService {
     Boolean checkHasDone(Integer eid) throws ServiceException;
 
     void examOver(Integer eid);
+
+    void clearExamInfo(Integer eid, Integer uid);
 }

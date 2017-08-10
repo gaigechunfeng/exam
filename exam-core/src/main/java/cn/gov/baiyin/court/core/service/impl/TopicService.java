@@ -1,20 +1,19 @@
 package cn.gov.baiyin.court.core.service.impl;
 
 import cn.gov.baiyin.court.core.dao.ITopicDAO;
+import cn.gov.baiyin.court.core.entity.Examine;
 import cn.gov.baiyin.court.core.entity.Topic;
 import cn.gov.baiyin.court.core.exception.ServiceException;
+import cn.gov.baiyin.court.core.service.IExamineService;
 import cn.gov.baiyin.court.core.service.IExamineTopicService;
 import cn.gov.baiyin.court.core.service.ITopicService;
-import cn.gov.baiyin.court.core.util.DateUtil;
 import cn.gov.baiyin.court.core.util.FileUtil;
 import cn.gov.baiyin.court.core.util.PageInfo;
-import cn.gov.baiyin.court.core.util.Utils;
 import jxl.Sheet;
 import jxl.Workbook;
 import jxl.read.biff.BiffException;
 import jxl.write.*;
 import jxl.write.Number;
-import jxl.write.biff.RowsExceededException;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -38,6 +37,12 @@ public class TopicService implements ITopicService {
 
     private ITopicDAO topicDAO;
     private IExamineTopicService examineTopicService;
+    private IExamineService examineService;
+
+    @Autowired
+    public void setExamineService(IExamineService examineService) {
+        this.examineService = examineService;
+    }
 
     @Autowired
     public void setExamineTopicService(IExamineTopicService examineTopicService) {
@@ -140,10 +145,10 @@ public class TopicService implements ITopicService {
     }
 
     @Override
-    public List<String> listFieldsByEid(Integer eid) {
+    public List<Topic> listFieldsByEid(Integer eid) {
 
-        List<Topic> topics = topicDAO.findByEid(eid);
-        return topics.stream().map(Topic::getName).collect(Collectors.toList());
+        return topicDAO.findByEid(eid);
+//        return topics.stream().map(Topic::getName).collect(Collectors.toList());
     }
 
     @Override

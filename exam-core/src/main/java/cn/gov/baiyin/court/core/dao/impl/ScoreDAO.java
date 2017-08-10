@@ -68,17 +68,18 @@ public class ScoreDAO extends AbstractDAO implements IScoreDAO {
     }
 
     @Override
-    public Map<String, Object> queryScoreMap(Integer uid, Integer eid) {
+    public Map<String, Object> queryScoreMap(Integer eid) {
 
-        List<Map<String, Object>> list = jdbcTemplate.queryForList("select t2.name,t3.score from reply t\n" +
+        List<Map<String, Object>> list = jdbcTemplate.queryForList("select t2.id,t.uid,max(t3.score) score from reply t\n" +
                 "left join examine_topic t1 on t.etid=t1.id\n" +
                 "left join topic t2 on t1.tid=t2.id\n" +
                 "left join score t3 on t3.rid=t.id\n" +
-                "where t.uid=? and t1.eid=?", uid, eid);
+                "where t1.eid=? group by t2.id,t.uid", eid);
         Map<String, Object> m = new HashMap<>();
 
         for (Map<String, Object> map : list) {
-            m.put(map.get("name").toString(), CodeUtil.decrypt(map.get("score").toString()));
+            m.put(MapUtils.getString(map, "id", "") + "-" + MapUtils.getString(map, "uid", ""),
+                    MapUtils.getFloat(map, "score", 0F));
         }
         return m;
     }
@@ -166,6 +167,55 @@ public class ScoreDAO extends AbstractDAO implements IScoreDAO {
     public void removeByEtidAndUid(Integer etid, Integer uid) {
 
         jdbcTemplate.update("delete from reply where etid=? and uid=?", etid, uid);
+    }
+
+    @Override
+    public PageInfo listRandom(PageInfo pageInfo, String pos, Integer eid) {
+
+//        String s = "select t2.id,t2.name,t2.username,t2.pos,t4.type,t.score\n" +
+//                "from score t\n" +
+//                "left join reply t1 on t.rid=t1.id\n" +
+//                "left join user t2 on t1.uid=t2.id\n" +
+//                "left join examine_topic t3 on t1.etid=t3.id\n" +
+//                "left join topic t4 on t3.tid=t4.id\n" +
+//                "where t3.eid=?";
+        String s = "select t2.id,t2.name,t2.username,t2.pos,\n" +
+                "sum(case when t4.type=1 then t.score else 0 end) type1,\n" +
+                "sum(case when t4.type=2 then t.score else 0 end) type2\n" +
+                "from score t\n" +
+                "left join reply t1 on t.rid=t1.id\n" +
+                "left join user t2 on t1.uid=t2.id\n" +
+                "left join examine_topic t3 on t1.etid=t3.id\n" +
+                "left join topic t4 on t3.tid=t4.id\n" +
+                "where t3.eid=?\n" +
+                "group by t2.id,t2.name,t2.username,t2.pos";
+
+        List<Map<String, Object>> list = jdbcTemplate.queryForList(s, eid);
+
+        if (!CollectionUtils.isEmpty(list)) {
+
+            for (Map<String, Object> map : list) {
+                map.put("scoreFields", new String[]{"\u5bf9\u7167\u9644\u5f55", "\u542c\u97f3\u6253\u5b57", "\u603b\u5206"});
+            }
+        }
+
+        return null;
+    }
+
+    @Override
+    public Map<String, Object> queryRandomScoreMap(Integer eid) {
+        List<Map<String, Object>> list = jdbcTemplate.queryForList("select t2.type id,t.uid,max(t3.score) score from reply t\n" +
+                "left join examine_topic t1 on t.etid=t1.id\n" +
+                "left join topic t2 on t1.tid=t2.id\n" +
+                "left join score t3 on t3.rid=t.id\n" +
+                "where t1.eid=? group by t2.type,t.uid order by id", eid);
+        Map<String, Object> m = new HashMap<>();
+
+        for (Map<String, Object> map : list) {
+            m.put(MapUtils.getString(map, "id", "") + "-" + MapUtils.getString(map, "uid", ""),
+                    MapUtils.getFloat(map, "score", 0F));
+        }
+        return m;
     }
 
     private static String map2Sql(String tableName, Map<String, Object> sm) {

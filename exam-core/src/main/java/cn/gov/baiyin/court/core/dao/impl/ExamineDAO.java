@@ -128,4 +128,13 @@ public class ExamineDAO extends AbstractDAO implements IExamineDAO {
         return null;
     }
 
+    @Override
+    public ExamineUser findEUByEidAndUid(Integer eid, Integer uid) {
+        List<ExamineUser> examineUsers = super.queryList("select * from examine_user where eid=? and uid=?", ExamineUser.class, eid, uid);
+        if (!CollectionUtils.isEmpty(examineUsers)) {
+            return examineUsers.get(0);
+        }
+        return null;
+    }
+
 }

@@ -274,4 +274,14 @@ public class ExamineService implements IExamineService {
     public ExamineUser findEUByEidAndUname(Integer eid, String username) {
         return examineDAO.findEUByEidAndUname(eid, username);
     }
+
+    @Override
+    public Examine findById(Integer eid) {
+        return examineDAO.findById(eid);
+    }
+
+    @Override
+    public ExamineUser findEUByEidAndUid(Integer eid, Integer uid) {
+        return examineDAO.findEUByEidAndUid(eid, uid);
+    }
 }

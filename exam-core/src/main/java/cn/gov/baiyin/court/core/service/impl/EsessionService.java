@@ -171,4 +171,14 @@ public class EsessionService implements IEsessionService {
         examineUser.setDone(true);
         esessionDAO.saveExamineUser(examineUser);
     }
+
+    @Override
+    public void clearExamInfo(Integer eid, Integer uid) {
+
+        ExamineUser examineUser = examineService.findEUByEidAndUid(eid, uid);
+        if (examineUser != null) {
+            examineUser.setDone(false);
+            esessionDAO.saveExamineUser(examineUser);
+        }
+    }
 }

@@ -4,13 +4,11 @@ import cn.gov.baiyin.court.core.authc.Authc;
 import cn.gov.baiyin.court.core.dao.IScoreDAO;
 import cn.gov.baiyin.court.core.entity.*;
 import cn.gov.baiyin.court.core.exception.ServiceException;
-import cn.gov.baiyin.court.core.service.IExamineTopicService;
-import cn.gov.baiyin.court.core.service.IScoreService;
-import cn.gov.baiyin.court.core.service.ITopicService;
-import cn.gov.baiyin.court.core.service.IUserService;
+import cn.gov.baiyin.court.core.service.*;
 import cn.gov.baiyin.court.core.util.CosineSimilarAlgorithm;
 import cn.gov.baiyin.court.core.util.PageInfo;
 import cn.gov.baiyin.court.core.util.Utils;
+import org.apache.commons.collections.MapUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,7 +30,21 @@ public class ScoreService implements IScoreService {
     private IUserService userService;
     //    private TextSimilarity textSimilarity = new SimpleTextSimilarity();
     private ITopicService topicService;
+    private IExamineService examineService;
+    private IEsessionService esessionService;
+
+
     private static final int REF_COUNT = Utils.getApp().getInt("reference.count", 120);
+
+    @Autowired
+    public void setEsessionService(IEsessionService esessionService) {
+        this.esessionService = esessionService;
+    }
+
+    @Autowired
+    public void setExamineService(IExamineService examineService) {
+        this.examineService = examineService;
+    }
 
     @Autowired
     public void setTopicService(ITopicService topicService) {
@@ -122,11 +134,15 @@ public class ScoreService implements IScoreService {
     @Override
     public PageInfo listPagination(PageInfo pageInfo, String pos, Integer eid) {
 
+        Examine examine = examineService.findById(eid);
+        boolean isRandom = examine.getType() == 2;
+
         pageInfo = scoreDAO.listPagination(pageInfo, pos, eid);
-        List<String> fields = topicService.listFieldsByEid(eid);
+        List<Topic> topics = topicService.listFieldsByEid(eid);
 
         List<Map<String, Object>> list = new ArrayList<>();
 
+        Map<String, Object> scoreMap = isRandom ? scoreDAO.queryRandomScoreMap(eid) : scoreDAO.queryScoreMap(eid);
         for (Object o : pageInfo.getList()) {
             User user = (User) o;
             Map<String, Object> m = new HashMap<>();
@@ -136,23 +152,21 @@ public class ScoreService implements IScoreService {
             m.put("username", user.getUsername());
             m.put("pos", user.getPos());
 
-            Map<String, Object> scoreMap = scoreDAO.queryScoreMap(user.getId(), eid);
             float count = 0;
-            for (int i = 0; i < fields.size(); i++) {
-                String key = fields.get(i);
-                float score = findScoreInMap(key, scoreMap);
+            for (int i = 0; i < topics.size(); i++) {
+                Integer key = topics.get(i).getId();
+//                float score = findScoreInMap(key, scoreMap);
+                float score = MapUtils.getFloat(scoreMap, key + "-" + user.getId(), 0F);
 
                 count += score;
                 m.put("score_" + i, score);
             }
-
             m.put("allscore", new BigDecimal(count).setScale(2, BigDecimal.ROUND_HALF_UP).floatValue());
-            m.put("fieldSize", fields.size());
+            m.put("fieldSize", topics.size());
             list.add(m);
         }
 
         list.sort((o1, o2) -> ((Float) o2.get("allscore")).compareTo((Float) o1.get("allscore")));
-
         pageInfo.setList(list);
         return pageInfo;
     }
@@ -221,6 +235,8 @@ public class ScoreService implements IScoreService {
         scoreDAO.removeByUidAndEid(uid, eid);
 
         scoreDAO.removeReplyByUidAndEid(uid, eid);
+
+        esessionService.clearExamInfo(eid, uid);
     }
 
     @Override

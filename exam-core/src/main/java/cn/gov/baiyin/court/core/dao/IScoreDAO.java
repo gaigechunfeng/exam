@@ -22,7 +22,7 @@ public interface IScoreDAO {
 
     PageInfo listPagination(PageInfo pageInfo, String pos, Integer eid);
 
-    Map<String,Object> queryScoreMap(Integer uid, Integer eid);
+    Map<String,Object> queryScoreMap(Integer eid);
 
     List<Map<String,Object>> detail(Integer uid, Integer eid);
 
@@ -35,4 +35,8 @@ public interface IScoreDAO {
     String exportDb2Sql();
 
     void removeByEtidAndUid(Integer etid, Integer uid);
+
+    PageInfo listRandom(PageInfo pageInfo, String pos, Integer eid);
+
+    Map<String,Object> queryRandomScoreMap(Integer eid);
 }

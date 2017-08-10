@@ -1,6 +1,9 @@
 package cn.gov.baiyin.court.core.controller;
 
+import cn.gov.baiyin.court.core.entity.Examine;
+import cn.gov.baiyin.court.core.entity.Topic;
 import cn.gov.baiyin.court.core.exception.ServiceException;
+import cn.gov.baiyin.court.core.service.IExamineService;
 import cn.gov.baiyin.court.core.service.IScoreService;
 import cn.gov.baiyin.court.core.service.ITopicService;
 import cn.gov.baiyin.court.core.util.Msg;
@@ -14,9 +17,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Created by WK on 2017/3/31.
@@ -27,6 +29,12 @@ public class ScoreController {
 
     private IScoreService scoreService;
     private ITopicService topicService;
+    private IExamineService examineService;
+
+    @Autowired
+    public void setExamineService(IExamineService examineService) {
+        this.examineService = examineService;
+    }
 
     @Autowired
     public void setTopicService(ITopicService topicService) {
@@ -56,7 +64,7 @@ public class ScoreController {
         }
     }
 
-    @RequestMapping("/reExam")
+    @RequestMapping("/clearExamInfo")
     @ResponseBody
     public Msg reExam(Integer uid, Integer eid) {
 
@@ -77,7 +85,19 @@ public class ScoreController {
 
         Map<String, Object> context = new HashMap<>();
         context.put("list", pageInfo.getList());
-        context.put("fields", topicService.listFieldsByEid(eid));
+
+        Examine examine = examineService.findById(eid);
+        if (examine.getType() == 1) {
+            context.put("fields", topicService.listFieldsByEid(eid)
+                    .stream()
+                    .map(Topic::getName)
+                    .collect(Collectors.toList()));
+        } else {
+            List<String> ss = new ArrayList<>();
+            ss.add("\u5bf9\u7167\u9644\u5f55");
+            ss.add("\u542c\u97f3\u6253\u5b57");
+            context.put("fields", ss);
+        }
 
         String s = VelocityUtil.parse("score", context);
 

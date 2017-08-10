@@ -25,7 +25,7 @@ public interface ITopicService {
 
     Topic findById(Integer tid);
 
-    List<String> listFieldsByEid(Integer eid);
+    List<Topic> listFieldsByEid(Integer eid);
 
     void importTopics(MultipartFile file) throws ServiceException;
 

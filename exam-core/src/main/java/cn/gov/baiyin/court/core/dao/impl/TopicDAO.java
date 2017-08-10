@@ -59,7 +59,7 @@ public class TopicDAO extends AbstractDAO implements ITopicDAO {
 
     @Override
     public List<Topic> findByEid(Integer eid) {
-        return queryList("select t2.* from examine_topic t left join topic t2 on t.tid=t2.id where t.eid=? and t2.id is not null", Topic.class, eid);
+        return queryList("select t2.* from examine_topic t left join topic t2 on t.tid=t2.id where t.eid=? and t2.id is not null order by t2.id", Topic.class, eid);
     }
 
     @Override

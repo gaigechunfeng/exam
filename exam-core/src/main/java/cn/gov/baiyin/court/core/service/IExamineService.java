@@ -27,4 +27,8 @@ public interface IExamineService {
     ExamineInfo findKsxz();
 
     ExamineUser findEUByEidAndUname(Integer eid, String username);
+
+    Examine findById(Integer eid);
+
+    ExamineUser findEUByEidAndUid(Integer eid, Integer uid);
 }

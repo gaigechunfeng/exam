@@ -31,4 +31,6 @@ public interface IExamineDAO {
     ExamineInfo findKsxz();
 
     ExamineUser findEUByEidAndUname(Integer eid, String username);
+
+    ExamineUser findEUByEidAndUid(Integer eid, Integer uid);
 }
