@@ -63,6 +63,18 @@ public class EsessionController {
         return Msg.SUCCESS;
     }
 
+    @RequestMapping("/delMulti")
+    @ResponseBody
+    public Msg delMulti(Integer[] ids) {
+
+        try {
+            esessionService.delMulti(ids);
+        } catch (ServiceException e) {
+            return Msg.error(e);
+        }
+        return Msg.SUCCESS;
+    }
+
     @RequestMapping("/import")
     @ResponseBody
     public Msg importEsession(MultipartFile file) {

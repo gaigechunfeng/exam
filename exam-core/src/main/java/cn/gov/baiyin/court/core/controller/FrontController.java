@@ -41,7 +41,7 @@ public class FrontController {
     }
 
     @Autowired
-    public void setEsessionService(EsessionService esessionService) {
+    public void setEsessionService(IEsessionService esessionService) {
         this.esessionService = esessionService;
     }
 

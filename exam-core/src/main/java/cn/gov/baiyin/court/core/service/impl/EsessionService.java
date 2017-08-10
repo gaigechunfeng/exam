@@ -51,6 +51,7 @@ public class EsessionService implements IEsessionService {
     private IExamineService examineService;
     private static final int WAIT_TIME = Utils.getApp().getInt("wait.exam.time", 10);
 
+    @Autowired
     public void setUserService(IUserService userService) {
         this.userService = userService;
     }
@@ -234,6 +235,15 @@ public class EsessionService implements IEsessionService {
             throw new ServiceException("\u5bfc\u5165\u573a\u6b21\u5931\u8d25\uff01", e);
         } finally {
             FileUtil.deleteFile(tmpFile);
+        }
+    }
+
+    @Override
+    @Transactional
+    public void delMulti(Integer[] ids) throws ServiceException {
+
+        for (Integer id : ids) {
+            deleteById(String.valueOf(id));
         }
     }
 

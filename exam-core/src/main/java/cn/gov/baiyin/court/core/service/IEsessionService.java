@@ -40,4 +40,6 @@ public interface IEsessionService {
     void clearExamInfo(Integer eid, Integer uid);
 
     void importEsession(MultipartFile file) throws ServiceException;
+
+    void delMulti(Integer[] ids) throws ServiceException;
 }

@@ -80,6 +80,7 @@
             <input type="button" name="add" value="新增场次" class="btns" id="addEsBtn"/>
             <input type="button" value="导入模板下载" class="btns" id="downTemplateBtn"/>
             <input type="button" value="导入" class="btns" id="importBtn"/>
+            <input type="button" value="批量删除" class="btns" id="delMultiBtn"/>
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         </td>
     </tr>
@@ -91,7 +92,7 @@
             <table width="613" border="0" cellpadding="0" cellspacing="0" class="sta">
                 <tr bgcolor="#00FFFF">
                     <td class="choose_cls" width="58" height="30" align="center" valign="middle"><strong>
-                        <input id="selectAll" class="choose_cls" style="display: none" type='checkbox' >选 择</strong>
+                        <input id="selectAll" class="choose_cls" style="display: none" type='checkbox'>选 择</strong>
                     </td>
                     <td width="58" height="30" align="center" valign="middle"><strong>
                         序 号</strong></td>
@@ -144,6 +145,14 @@
                     $('#refreshBtn').click();
                 }
             }, 'json');
+        }
+    }
+    function importSuccess(filePath) {
+
+        $('#refreshBtn').click();
+
+        if (importWin) {
+            importWin.close();
         }
     }
     $(function () {
@@ -212,16 +221,37 @@
             self.location.assign(App.basePath + '/back/addEs.html' + self.location.search)
         })
 
-        $('#selectAll').on('click',function () {
-            $('.choose_checkbox').prop('checked',$(this).is(':checked'))
+        $('#selectAll').on('click', function () {
+            $('.choose_checkbox').prop('checked', $(this).is(':checked'))
         })
 
-        $('#downTemplateBtn').on('click',function(){
-            self.open(App.basePath+'/back/esession_template.xls')
+        $('#downTemplateBtn').on('click', function () {
+            self.open(App.basePath + '/back/esession_template.xls')
         })
 
-        $('#importBtn').on('click',function(){
+        $('#importBtn').on('click', function () {
             importWin = self.open(App.basePath + '/back/importExcel.html?type=importEsession', '_import', 'width=600px,height=200px');
+        })
+
+        $('#delMultiBtn').on('click', function () {
+
+            var cb = $('.choose_checkbox:checked')
+            if (cb.length === 0) {
+                alert('请选择待删除的记录！')
+                return
+            }
+            var ids = cb.map(function (i, c) {
+                return mainData[c.value].id;
+            }).toArray().join(',');
+            if (confirm('您确认删除这' + cb.length + '条记录吗？')) {
+                $.post(App.basePath + '/back/esession/delMulti.do', {ids: ids}, function (r) {
+
+                    if (r && r.success) {
+                        alert('删除成功！')
+                        $('#refreshBtn').click();
+                    }
+                }, 'json');
+            }
         })
     })
 </script>
