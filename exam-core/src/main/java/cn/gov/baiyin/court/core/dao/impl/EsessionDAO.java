@@ -138,7 +138,7 @@ public class EsessionDAO extends AbstractDAO implements IEsessionDAO {
         String sql = "select t2.*\n" +
                 "from examine_user t \n" +
                 "left join user t1 on t.uid=t1.id\n" +
-                "left join esession t2 on t.eid=t2.id\n" +
+                "left join esession t2 on t.eid=t2.eid\n" +
                 "where t1.username=? and t2.endTime > NOW()\n" +
                 "and FROM_UNIXTIME(UNIX_TIMESTAMP(t2.startTime)-?) <=NOW()\n";
 //                "and not EXISTS(select 1 from reply r left join examine_topic et on r.etid=et.id " +
@@ -161,7 +161,7 @@ public class EsessionDAO extends AbstractDAO implements IEsessionDAO {
 
         List<Boolean> list = jdbcTemplate.queryForList("select 1 from examine_user t \n" +
                 "left join user t1 on t.uid=t1.id \n" +
-                "where t1.username=?", Boolean.class, currUserName);
+                "where t1.username=? and t.done<>1", Boolean.class, currUserName);
 
         return !CollectionUtils.isEmpty(list);
     }
@@ -170,10 +170,12 @@ public class EsessionDAO extends AbstractDAO implements IEsessionDAO {
     public List<ESession> listLegelEsessions(String username, int waitTime) {
         String sql = "select * from esession t \n" +
                 "where t.eid is not null and t.endTime > NOW()\n" +
-                "and FROM_UNIXTIME(UNIX_TIMESTAMP(t.startTime)-?) <=NOW()\n";
+                "and FROM_UNIXTIME(UNIX_TIMESTAMP(t.startTime)-?) <=NOW() " +
+                "and not exists (select 1 from examine_user eu left join user u on eu.uid=u.id" +
+                " where t.eid=eu.eid and u.username=? and eu.done=1)\n";
 //                "and not EXISTS(select 1 from reply r left join examine_topic et on r.etid=et.id\n" +
 //                "left join `user` u on r.uid=u.id where u.username=? and et.eid=t.eid)\n";
-        List<ESession> eSessions = queryList(sql, ESession.class, waitTime * 60 * 1000);
+        List<ESession> eSessions = queryList(sql, ESession.class, waitTime * 60 * 1000, username);
 
         addExamineRelation(eSessions);
         return eSessions;

@@ -107,7 +107,7 @@ public class ScoreDAO extends AbstractDAO implements IScoreDAO {
                     "left join examine t4 on t3.eid=t4.id\n" +
                     "left join esession t5 on t5.eid=t4.id\n" +
                     "where t2.id=? and t4.id=? " +
-                    "group by t2.id uid,t4.id eid,t2.name,t2.username,t5.startTime,t2.photo,t7.type order by t7.type", uid, eid);
+                    "group by t2.id,t4.id,t2.name,t2.username,t5.startTime,t2.photo,t7.type order by t7.type", uid, eid);
         } else {
             return jdbcTemplate.queryForList("select t2.id uid,t4.id eid,t2.name,t2.username,t5.startTime,t2.photo,t7.`name` topicname,t.score " +
                     "from score t\n" +

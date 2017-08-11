@@ -64,7 +64,7 @@ public class ScoreController {
         }
     }
 
-    @RequestMapping("/clearExamInfo")
+    @RequestMapping("/reExam")
     @ResponseBody
     public Msg reExam(Integer uid, Integer eid) {
 

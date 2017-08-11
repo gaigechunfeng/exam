@@ -341,7 +341,7 @@
         $.get(App.basePath+'/back/user/detail.do',{id:uid},function(r){
             if(r && r.success) {
                 var obj = App.getPosCode();
-                $('#posCodeTxt').html(obj[r.obj.pos]);
+                $('#posCodeTxt').html(obj[r.obj.user.pos]);
             }
         },'json')
     }

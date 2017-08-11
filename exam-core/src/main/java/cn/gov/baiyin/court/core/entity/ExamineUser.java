@@ -10,6 +10,9 @@ public class ExamineUser extends BaseEntity {
     private Integer uid;//考生编号
     private Boolean done;//是否已完成考试
 
+    public ExamineUser() {
+    }
+
     public ExamineUser(Integer eid, Integer uid) {
 
         this.eid = eid;
