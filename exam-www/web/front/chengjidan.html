@@ -174,10 +174,10 @@
                                 <td colspan="3" height="5"></td>
                             </tr>
                             <tr>
-                                <td height="26" align="center" valign="middle" bgcolor="#0698D1" class="STYLE7">考试地点
+                                <td height="26" align="center" valign="middle" bgcolor="#0698D1" class="STYLE7">报考单位
                                 </td>
                                 <td></td>
-                                <td class="STYLE8">甘肃省白银市教育培训中心</td>
+                                <td class="STYLE8" id="posCodeTxt"></td>
                             </tr>
                             <tr>
                                 <td colspan="3" height="5"></td>
@@ -186,7 +186,7 @@
                                 <td height="26" align="center" valign="middle" bgcolor="#0698D1"><span class="STYLE7">设考单位</span>
                                 </td>
                                 <td></td>
-                                <td class="STYLE8">甘肃省白银市中级人民法院</td>
+                                <td class="STYLE8">甘肃省高级人民法院</td>
                             </tr>
                             <tr>
                                 <td colspan="3" height="5"></td>
@@ -238,7 +238,7 @@
                 <tr>
                     <td align="right" style="text-indent:0em;"><span class="bq" style="text-indent:8em"><span
                             class="STYLE15"><span
-                            class="STYLE16">成绩来源：书记员录入能力机考系统,发布单位：甘肃省白银市中级人民法院</span></span></span></td>
+                            class="STYLE16">成绩来源：书记员录入能力机考系统,发布单位：甘肃省高级人民法院</span></span></span></td>
                 </tr>
             </table>
             <div style="width:97%; height:auto; position:relative; z-index:999; text-align:right; margin-top:-100px;">
@@ -253,7 +253,7 @@
     </tr>
     <tr>
         <td height="29" align="right" valign="middle" class="STYLE16">
-            成绩查询地址：http://www.chinagscourt.gov.cn/zy.htm?site=baiyin &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            成绩查询地址：http://www.chinagscourt.gov.cn
         </td>
     </tr>
     <tr>
@@ -345,6 +345,11 @@
             alert("参数错误！");
             return;
         }
+
+        App.checkLogin().success(function(){
+            var obj = App.getPosCode();
+            $('#posCodeTxt').html(obj[App.currUser.pos]);
+        })
 
         $.get(App.basePath + '/front/showScoreDetail.do', {eid: eid}, function (data) {
 

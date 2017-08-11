@@ -97,6 +97,7 @@
         }
 
         -->
+
     </style>
 </head>
 
@@ -238,7 +239,7 @@
                 <tr>
                     <td align="right" style="text-indent:0em;"><span class="bq" style="text-indent:8em"><span
                             class="STYLE15"><span
-                            class="STYLE16">成绩来源：书记员录入能力机考系统,发布单位：甘肃省白银市中级人民法院</span></span></span></td>
+                            class="STYLE16">成绩来源：书记员录入能力机考系统,发布单位：甘肃省高级人民法院</span></span></span></td>
                 </tr>
             </table>
             <div style="width:97%; height:auto; position:relative; z-index:999; text-align:right; margin-top:-100px;">
@@ -253,7 +254,7 @@
     </tr>
     <tr>
         <td height="29" align="right" valign="middle" class="STYLE16">
-            成绩查询地址：http://www.chinagscourt.gov.cn/zy.htm?site=baiyin &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            成绩查询地址：http://www.chinagscourt.gov.cn
         </td>
     </tr>
     <tr>
@@ -274,6 +275,7 @@
 <script src="./imges/common.js"></script>
 <script>
 
+    var uid = App.getParam("uid"),eid = App.getParam("eid");
     var topicFields = [];
 
     function renderTopicFields(scores) {
@@ -334,10 +336,16 @@
         renderTopicFields(obj.scores)
     }
 
-    $(function () {
+    function loadUser(){
+        $.get(App.basePath+'/back/user/detail.do',{id:uid},function(r){
+            if(r && r.success) {
+                var obj = App.getPosCode();
+                $('#posCodeTxt').html(obj[r.obj.pos]);
+            }
+        },'json')
+    }
 
-        var uid = App.getParam("uid"),
-            eid = App.getParam("eid");
+    $(function () {
 
         if (!uid || !eid) {
             alert("参数错误！");
@@ -348,6 +356,7 @@
 //            var obj = App.getPosCode();
 //            $('#posCodeTxt').html(obj[App.currUser.pos]);
 //        })
+        loadUser();
 
         $.get(App.basePath + '/back/score/detail.do', {uid: uid, eid: eid}, function (data) {
 
@@ -357,6 +366,7 @@
             }
         }, 'json')
     })
+
 </script>
 
 </body>
