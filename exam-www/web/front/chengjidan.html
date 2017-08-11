@@ -305,7 +305,7 @@
             i++;
         }
 
-        $('[data-field=allscore]').html(allscore/100)
+        $('[data-field=allscore]').html((allscore/100).toFixed(2))
         $('#topicFields').html(h.join(''));
 
         $('#topicTitle').html(h2.join(''))

@@ -203,11 +203,12 @@ public class ScoreService implements IScoreService {
                 obj.put("startTime", m.get("startTime"));
                 obj.put("photo", m.get("photo"));
             }
-            Object sObj = m.get("score");
-            if (sObj != null) {
-                allscore += (float) sObj;
-            }
-            scoreMap.put(m.get("topicname").toString(), m.get("score"));
+            float score = new BigDecimal(MapUtils.getFloatValue(m, "score", 0F))
+                    .setScale(2, BigDecimal.ROUND_HALF_UP)
+                    .floatValue();
+            allscore += score;
+
+            scoreMap.put(m.get("topicname").toString(), score);
         }
         obj.put("scores", scoreMap);
         obj.put("allscore", allscore);

@@ -24,7 +24,7 @@ public class UserDAO extends AbstractDAO implements IUserDAO {
 
     @Override
     public User findByUserName(String username) {
-        List<User> users = jdbcTemplate.query("select * from user where username=?", new BeanPropertyRowMapper<User>(User.class), username);
+        List<User> users = jdbcTemplate.query("select * from user where username=?", new BeanPropertyRowMapper<>(User.class), username);
         if (!CollectionUtils.isEmpty(users)) {
             return users.get(0);
         }

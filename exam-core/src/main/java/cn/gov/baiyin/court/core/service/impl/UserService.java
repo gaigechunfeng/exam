@@ -257,7 +257,7 @@ public class UserService implements IUserService {
         }
 
         String filePath = fileService.save(file);
-        File tmpFile = new File(FileService.getTempFolder(),filePath);
+        File tmpFile = new File(FileService.getTempFolder(), filePath);
         List<User> list = new ArrayList<>();
         try {
             Workbook wb = Workbook.getWorkbook(tmpFile);
@@ -278,7 +278,8 @@ public class UserService implements IUserService {
                     throw new ServiceException("\u59d3\u540d\uff0c\u51c6\u8003\u8bc1\u53f7\uff0c\u8eab\u4efd\u8bc1\u53f7\uff0c\u5c97\u4f4d\u4ee3\u7801\u4e0d\u80fd\u4e3a\u7a7a\uff01");
                 }
                 if (existIdcard(idcard)) {
-                    throw new ServiceException("\u76f8\u540c\u7684\u8eab\u4efd\u8bc1\u53f7\u7801\u7684\u8003\u8bd5\u5df2\u7ecf\u5b58\u5728\uff01");
+                    //相同的身份证号码的考试已经存在！
+                    throw new ServiceException("\u76f8\u540c\u7684\u8eab\u4efd\u8bc1\u53f7\u7801\u7684\u8003\u751f\u5df2\u7ecf\u5b58\u5728\uff01");
                 }
 
                 User user = new User();

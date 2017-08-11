@@ -128,7 +128,7 @@ INSERT INTO user (username, password, photo, name, permission, type, sex, cruser
 VALUES ('admin', '3d186804534370c3c817db0563f0e461', NULL, 'admin', 100, 2, 1, 'system', '2017325205', NULL);
 
 INSERT INTO user (username, password, photo, name, permission, type, sex, cruser, crtime, idcard)
-VALUES ('musicPlayer1', '3d186804534370c3c817db0563f0e461', NULL, 'admin', 100, 1, 1, 'system', '2017325205', NULL);
+VALUES ('musicPlayer1', '3d186804534370c3c817db0563f0e461', NULL, 'admin', 100, 2, 1, 'system', '2017325205', NULL);
 
 INSERT INTO user (username, password, photo, name, permission, type, sex, cruser, crtime, idcard)
-VALUES ('musicPlayer2', '3d186804534370c3c817db0563f0e461', NULL, 'admin', 100, 1, 1, 'system', '2017325205', NULL);
+VALUES ('musicPlayer2', '3d186804534370c3c817db0563f0e461', NULL, 'admin', 100, 2, 1, 'system', '2017325205', NULL);

@@ -183,7 +183,7 @@ public class TopicService implements ITopicService {
                     throw new ServiceException("\u76f8\u540c\u540d\u79f0\u7684\u8bd5\u9898\u5df2\u7ecf\u5b58\u5728\uff01");
                 }
                 int score = Integer.parseInt(sheet.getCell(1, i).getContents());
-                int type = "对照附录".equals(sheet.getCell(2, i).getContents()) ? 1 : 2;
+                int type = "对照复录".equals(sheet.getCell(2, i).getContents()) ? 1 : 2;
                 int period = Integer.parseInt(sheet.getCell(3, i).getContents());
                 String content = sheet.getCell(4, i).getContents();
                 String answer = type == 1 ? content : sheet.getCell(5, i).getContents();
@@ -254,7 +254,7 @@ public class TopicService implements ITopicService {
 
                     sheet.addCell(new Label(0, index, name));
                     sheet.addCell(new Number(1, index, score));
-                    sheet.addCell(new Label(2, index, type == 1 ? "对照附录" : "听音打字"));
+                    sheet.addCell(new Label(2, index, type == 1 ? "对照复录" : "听音打字"));
                     sheet.addCell(new Number(3, index, period));
                     sheet.addCell(new Label(4, index, type == 1 ? content : ""));
                     sheet.addCell(new Label(5, index, type == 1 ? "" : answer));

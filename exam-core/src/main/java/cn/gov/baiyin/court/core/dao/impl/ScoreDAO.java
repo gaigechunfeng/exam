@@ -94,24 +94,32 @@ public class ScoreDAO extends AbstractDAO implements IScoreDAO {
 
     @Override
     public List<Map<String, Object>> detail(Integer uid, Integer eid) {
-        List<Map<String, Object>> list = jdbcTemplate.queryForList("select t2.id uid,t4.id eid,t2.name,t2.username,t5.startTime,t2.photo,t7.`name` topicname,t.score " +
-                "from score t\n" +
-                "left join reply t1 on t.rid=t1.id\n" +
-                "left join user t2 on t1.uid=t2.id\n" +
-                "left join examine_topic t3 on t1.etid=t3.id\n" +
-                "left join topic t7 on t3.tid=t7.id\n" +
-                "left join examine t4 on t3.eid=t4.id\n" +
-                "left join esession t5 on t5.eid=t4.id\n" +
-                "where t2.id=? and t4.id=?", uid, eid);
 
-//        //将分数解密
-//        list.forEach(m -> {
-//            String score = MapUtils.getString(m, "score", "");
-//            if (!StringUtils.isEmpty(score)) {
-//                m.put("score", CodeUtil.decrypt(score));
-//            }
-//        });
-        return list;
+        Examine examine = examineService.findById(eid);
+        if (examine != null && examine.getType() == 2) {
+            return jdbcTemplate.queryForList("select t2.id uid,t4.id eid,t2.name,t2.username,t5.startTime,t2.photo," +
+                    "case when t7.type=1 then '对照复录' else '听音打字' end topicname,max(t.score) score " +
+                    "from score t\n" +
+                    "left join reply t1 on t.rid=t1.id\n" +
+                    "left join user t2 on t1.uid=t2.id\n" +
+                    "left join examine_topic t3 on t1.etid=t3.id\n" +
+                    "left join topic t7 on t3.tid=t7.id\n" +
+                    "left join examine t4 on t3.eid=t4.id\n" +
+                    "left join esession t5 on t5.eid=t4.id\n" +
+                    "where t2.id=? and t4.id=? " +
+                    "group by t2.id uid,t4.id eid,t2.name,t2.username,t5.startTime,t2.photo,t7.type order by t7.type", uid, eid);
+        } else {
+            return jdbcTemplate.queryForList("select t2.id uid,t4.id eid,t2.name,t2.username,t5.startTime,t2.photo,t7.`name` topicname,t.score " +
+                    "from score t\n" +
+                    "left join reply t1 on t.rid=t1.id\n" +
+                    "left join user t2 on t1.uid=t2.id\n" +
+                    "left join examine_topic t3 on t1.etid=t3.id\n" +
+                    "left join topic t7 on t3.tid=t7.id\n" +
+                    "left join examine t4 on t3.eid=t4.id\n" +
+                    "left join esession t5 on t5.eid=t4.id\n" +
+                    "where t2.id=? and t4.id=? order by t7.id", uid, eid);
+        }
+
     }
 
     @Override
@@ -131,7 +139,7 @@ public class ScoreDAO extends AbstractDAO implements IScoreDAO {
             if (!CollectionUtils.isEmpty(list)) {
                 for (Map<String, Object> map : list) {
                     Integer type = MapUtils.getInteger(map, "type", 0);
-                    map.put("name", type == 1 ? "对照附录" : "听音打字");
+                    map.put("name", type == 1 ? "对照复录" : "听音打字");
                 }
             }
         } else {
