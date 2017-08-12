@@ -4,6 +4,7 @@ import cn.gov.baiyin.court.core.entity.Reply;
 import cn.gov.baiyin.court.core.entity.Score;
 import cn.gov.baiyin.court.core.exception.ServiceException;
 import cn.gov.baiyin.court.core.util.PageInfo;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.util.Map;
@@ -29,4 +30,6 @@ public interface IScoreService {
     String exportDb2Sql();
 
     File genDataUploadZip(Integer eid, String pos) throws ServiceException;
+
+    File importEnc(MultipartFile file) throws ServiceException;
 }

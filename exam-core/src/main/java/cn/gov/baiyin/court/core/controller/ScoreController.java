@@ -6,6 +6,7 @@ import cn.gov.baiyin.court.core.exception.ServiceException;
 import cn.gov.baiyin.court.core.service.IExamineService;
 import cn.gov.baiyin.court.core.service.IScoreService;
 import cn.gov.baiyin.court.core.service.ITopicService;
+import cn.gov.baiyin.court.core.service.impl.FileService;
 import cn.gov.baiyin.court.core.util.Msg;
 import cn.gov.baiyin.court.core.util.PageInfo;
 import cn.gov.baiyin.court.core.util.VelocityUtil;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.util.StreamUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
@@ -139,5 +141,28 @@ public class ScoreController {
     public Msg statistic(Integer eid, String pos) {
 
         return Msg.success(scoreService.statistic(eid, pos));
+    }
+
+    @RequestMapping("/importEnc")
+    @ResponseBody
+    public Msg importEnc(HttpServletResponse response, MultipartFile file) throws ServiceException {
+
+        File f = scoreService.importEnc(file);
+
+        return Msg.success(f.getName());
+    }
+
+    @RequestMapping("/downloadDec")
+    public void downloadDec(HttpServletResponse response, String fileName) throws ServiceException {
+
+        File f = new File(FileService.getTempFolder(), fileName);
+
+        response.setCharacterEncoding("utf-8");
+        response.setHeader("Content-Disposition", "attachment; filename=" + f.getName());
+        try (FileInputStream fis = new FileInputStream(f)) {
+            StreamUtils.copy(fis, response.getOutputStream());
+        } catch (IOException e) {
+            throw new RuntimeException("download score excel error", e);
+        }
     }
 }

@@ -111,6 +111,7 @@
         <td width="709" height="41" align="right" valign="middle" style=" border-bottom:3px solid #0066FF">
             <input
                     type="button" value="数据上报" class="btns" id="dataUploadBtn"/>
+            <input type="button" value="上报数据解密" class="btns" id="dataDecBtn"/>
             <input type="button" name="show" value="刷 新" class="btns" id="refreshBtn1"/>
             <input type="button" name="add" value="导出成绩单" class="btns" id="exportScoreBtn"/>
             <!--style="width:120px;"/>-->
@@ -191,7 +192,7 @@
 <script src="./imges/common.js"></script>
 <script>
 
-    var currExmaineId, currPos;
+    var currExmaineId, currPos, importWin;
     var posObj = App.getPosCode();
     function renderScoreFields(fields) {
         var h = [];
@@ -280,6 +281,16 @@
         refreshTableList();
         loadStatistic();
     }
+
+    function importSuccess(filePath) {
+
+        $('#refreshBtn').click();
+
+        if (importWin) {
+            importWin.close();
+        }
+    }
+
     $(function () {
 
         App.renderPosSelect('posCode', true);
@@ -327,6 +338,10 @@
 
         $('#dataUploadBtn').on('click', function () {
             self.open(App.basePath + '/back/score/export/dataUpload.do?eid=' + currExmaineId + "&pos=" + (currPos || ''))
+        })
+
+        $('#dataDecBtn').on('click', function () {
+            importWin = self.open(App.basePath + '/back/importAndExport.html?type=importEncScore', '_import', 'width=600px,height=200px');
         })
 
     })

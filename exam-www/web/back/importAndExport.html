@@ -7,6 +7,8 @@
 <body>
 
 <input name="file" type="file" id="fileupload">
+<input name="uploaded" type="hidden" id="uploaded">
+<input type="button" value="开始下载" id="downloadBtn">
 
 <script src="./imges/jquery.min.js"></script>
 <script src="./imges/jquery.ui.widget.js"></script>
@@ -24,15 +26,6 @@
 
         var url;
         switch (type) {
-            case 'importUser' :
-                url = '/back/user/import.do';
-                break;
-            case 'importTopic':
-                url = '/back/topic/import.do';
-                break;
-            case 'importEsession':
-                url = '/back/esession/import.do';
-                break;
             case 'importEncScore':
                 url = '/back/score/importEnc.do';
                 break;
@@ -48,19 +41,23 @@
                     var obj = data.result;
                     if (obj) {
 
-//                        $('input[name=filePath]').val(obj.obj);
-//                        $('#showUploaded').html(App.parseFileName(obj.obj));
-
                         if (obj.success) {
-                            if (self.opener && typeof self.opener.importSuccess == 'function') {
-                                self.opener.importSuccess(obj.obj);
-                            }
+                            $('#uploaded').val(obj.obj)
                         } else {
                             alert("错误：" + obj.errmsg)
                         }
                     }
                 }
             });
+
+        $('#downloadBtn').on('click', function () {
+            var fileName = $('#uploaded').val()
+            if (!fileName) {
+                alert('请先上传文件！')
+                return
+            }
+            self.open(App.basePath + '/back/score/downloadDec.do?fileName=' + fileName, '_self');
+        })
     })
 </script>
 </body>

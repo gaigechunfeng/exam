@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StreamUtils;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.PostConstruct;
 import java.io.*;
@@ -310,14 +311,36 @@ public class ScoreService implements IScoreService {
         return zipFile;
     }
 
+    @Override
+    public File importEnc(MultipartFile file) throws ServiceException {
+
+        File xlsFile = new File(FileService.getTempFolder(), "score-" + System.currentTimeMillis() + ".xls");
+        try (InputStream is = file.getInputStream(); FileOutputStream fos = new FileOutputStream(xlsFile)) {
+
+            String s = StreamUtils.copyToString(is, CodeUtil.ENC_U8);
+            StreamUtils.copy(CodeUtil.decrypt(s), CodeUtil.ENC_U8, fos);
+            return xlsFile;
+        } catch (IOException e) {
+            throw new ServiceException("\u89e3\u5bc6\u5931\u8d25\uff01", e);
+        }
+    }
+
     private File genEncScoreFile(File folder, Integer eid, String pos) throws ServiceException {
 
-        PageInfo pageInfo = listPagination(new PageInfo(1, 1000), pos, eid);
-        Map<String, Object> m = new HashMap<>();
-        m.put("data", pageInfo == null ? null : pageInfo.getList());
-        m.put("fields", topicService.listFieldNameByEid(eid));
+//        PageInfo pageInfo = listPagination(new PageInfo(1, 1000), pos, eid);
+//        Map<String, Object> m = new HashMap<>();
+//        m.put("data", pageInfo == null ? null : pageInfo.getList());
+//        m.put("fields", topicService.listFieldNameByEid(eid));
 
-        String enc = CodeUtil.encrypt(JSONUtils.toJSONString(m));
+        PageInfo pageInfo = listPagination(new PageInfo(1, 1000), pos, eid);
+
+        Map<String, Object> context = new HashMap<>();
+        context.put("list", pageInfo.getList());
+        context.put("fields", topicService.listFieldNameByEid(eid));
+
+        String s = VelocityUtil.parse("score", context);
+
+        String enc = CodeUtil.encrypt(s);
         File f = new File(folder, "dataUpload-" + System.currentTimeMillis());
 
         try (FileOutputStream fos = new FileOutputStream(f)) {
