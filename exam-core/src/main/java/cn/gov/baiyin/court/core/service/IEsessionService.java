@@ -42,4 +42,8 @@ public interface IEsessionService {
     void importEsession(MultipartFile file) throws ServiceException;
 
     void delMulti(Integer[] ids) throws ServiceException;
+
+    List<ESession> findByIds(String esessionIds);
+
+    void edit(ESession eSession);
 }

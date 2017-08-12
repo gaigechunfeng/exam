@@ -10,6 +10,7 @@ public class ESession extends BaseEntity {
 
     private Integer eid;
     private String name;
+    private String topics;
     private String startTime;
     private String endTime;
     private Examine examine;
@@ -53,6 +54,14 @@ public class ESession extends BaseEntity {
 
     public void setEndTime(String endTime) {
         this.endTime = endTime;
+    }
+
+    public String getTopics() {
+        return topics;
+    }
+
+    public void setTopics(String topics) {
+        this.topics = topics;
     }
 
     @Override

@@ -65,11 +65,11 @@ public class FrontController {
 
     @RequestMapping("/submitAnswer")
     @ResponseBody
-    public Msg submitAnswer(String answer, Integer speed, Float accuracy, Integer tid, Integer eid) {
+    public Msg submitAnswer(String answer, Integer speed, Float accuracy, Integer tid, Integer eid, Integer esId) {
 
         Score score;
         try {
-            score = scoreService.submitAnswer(answer, speed, accuracy, tid, eid);
+            score = scoreService.submitAnswer(answer, speed, accuracy, tid, eid, esId);
         } catch (ServiceException e) {
             return Msg.error(e);
         }

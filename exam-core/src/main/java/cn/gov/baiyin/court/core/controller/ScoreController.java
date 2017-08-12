@@ -11,10 +11,13 @@ import cn.gov.baiyin.court.core.util.PageInfo;
 import cn.gov.baiyin.court.core.util.VelocityUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.StreamUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletResponse;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -85,19 +88,7 @@ public class ScoreController {
 
         Map<String, Object> context = new HashMap<>();
         context.put("list", pageInfo.getList());
-
-        Examine examine = examineService.findById(eid);
-        if (examine.getType() == 1) {
-            context.put("fields", topicService.listFieldsByEid(eid)
-                    .stream()
-                    .map(Topic::getName)
-                    .collect(Collectors.toList()));
-        } else {
-            List<String> ss = new ArrayList<>();
-            ss.add("\u5bf9\u7167\u9644\u5f55");
-            ss.add("\u542c\u97f3\u6253\u5b57");
-            context.put("fields", ss);
-        }
+        context.put("fields", topicService.listFieldNameByEid(eid));
 
         String s = VelocityUtil.parse("score", context);
 
@@ -118,6 +109,20 @@ public class ScoreController {
         response.setHeader("Content-Disposition", "attachment; filename=db-" + new Date().getTime() + ".sql");
         try {
             response.getOutputStream().write(s.getBytes("utf-8"));
+        } catch (IOException e) {
+            throw new RuntimeException("download score excel error", e);
+        }
+    }
+
+    @RequestMapping("/export/dataUpload")
+    public void dataUpload(HttpServletResponse response, Integer eid, String pos) throws ServiceException {
+
+        File zipFile = scoreService.genDataUploadZip(eid, pos);
+
+        response.setCharacterEncoding("utf-8");
+        response.setHeader("Content-Disposition", "attachment; filename=" + zipFile.getName());
+        try (FileInputStream fis = new FileInputStream(zipFile)) {
+            StreamUtils.copy(fis, response.getOutputStream());
         } catch (IOException e) {
             throw new RuntimeException("download score excel error", e);
         }

@@ -291,6 +291,23 @@ public class TopicService implements ITopicService {
         return topicDAO.findByIds(topicIds);
     }
 
+    @Override
+    public List<String> listFieldNameByEid(Integer eid) {
+        Examine examine = examineService.findById(eid);
+        List<String> list;
+        if (examine.getType() == 1) {
+            list = listFieldsByEid(eid)
+                    .stream()
+                    .map(Topic::getName)
+                    .collect(Collectors.toList());
+        } else {
+            list = new ArrayList<>();
+            list.add("\u5bf9\u7167\u9644\u5f55");
+            list.add("\u542c\u97f3\u6253\u5b57");
+        }
+        return list;
+    }
+
     private static void copyAudios(List<String> audios, File tmpFolder) throws ServiceException {
 
         File proFolder = FileService.getProductionFolder();

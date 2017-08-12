@@ -43,4 +43,6 @@ public interface IEsessionDAO {
     void saveExamineUser(ExamineUser examineUser);
 
     void saveMulti(List<ESession> eSessions);
+
+    List<ESession> findByIds(String esessionIds);
 }

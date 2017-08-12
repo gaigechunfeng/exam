@@ -9,7 +9,7 @@ import java.time.format.DateTimeFormatter;
  */
 public class DateUtil {
 
-    private static final DateTimeFormatter TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+    public static final DateTimeFormatter TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
     private static final DateTimeFormatter TIME_FORMATTER2 = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
     public static String current() {

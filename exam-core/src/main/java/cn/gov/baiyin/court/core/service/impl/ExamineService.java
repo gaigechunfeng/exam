@@ -82,6 +82,29 @@ public class ExamineService implements IExamineService {
         Examine added = examineDAO.findByName(examine.getName());
         addTopicRelation(added.getId(), topicIds);
         addEsessionRelation(added.getId(), esessionIds);
+        applyTopic2Esession(examine, topicIds, esessionIds);
+    }
+
+    private void applyTopic2Esession(Examine examine, String topicIds, String esessionIds) {
+        if (!StringUtils.isEmpty(topicIds) || StringUtils.isEmpty(esessionIds)) {
+            return;
+        }
+        if (examine.getType() != null && examine.getType() == 2) {
+            List<Topic> topics = topicService.findByIds(topicIds);
+            List<Topic> t1s = topics.stream().filter(topic -> topic.getType() != null && topic.getType() == 1).collect(Collectors.toList());
+            List<Topic> t2s = topics.stream().filter(topic -> topic.getType() != null && topic.getType() == 2).collect(Collectors.toList());
+            List<ESession> eSessions = esessionService.findByIds(esessionIds);
+
+            int t1l = t1s.size(), t2l = t2s.size();
+            for (int i = 0, len = eSessions.size(); i < len; i++) {
+
+                int i1 = i % t1l,
+                        i2 = i % t2l;
+                ESession eSession = eSessions.get(i);
+                eSession.setTopics(t1s.get(i1).getId() + "," + t2s.get(i2).getId());
+                esessionService.edit(eSession);
+            }
+        }
     }
 
     private void autoCalculateScore(Examine examine, String topicIds) {

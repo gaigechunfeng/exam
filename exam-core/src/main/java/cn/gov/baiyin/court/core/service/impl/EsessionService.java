@@ -247,6 +247,16 @@ public class EsessionService implements IEsessionService {
         }
     }
 
+    @Override
+    public List<ESession> findByIds(String esessionIds) {
+        return esessionDAO.findByIds(esessionIds);
+    }
+
+    @Override
+    public void edit(ESession eSession) {
+        esessionDAO.edit(eSession);
+    }
+
     private static void checkEsessionTime(String startTime) {
         LocalDateTime.parse(startTime, FORMATTER);
     }

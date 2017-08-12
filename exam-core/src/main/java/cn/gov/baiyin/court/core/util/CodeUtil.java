@@ -6,6 +6,7 @@ import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
+import java.nio.charset.Charset;
 import java.security.SecureRandom;
 
 /**
@@ -17,6 +18,7 @@ public final class CodeUtil {
     private static final String ENCODING = "UTF-8";
     private static final int KEY_LEN = 128;
     private static final String PWD = "gaigechunfeng";
+    public static final Charset ENC_U8 = Charset.forName("UTF-8");
 
     private CodeUtil() {
     }

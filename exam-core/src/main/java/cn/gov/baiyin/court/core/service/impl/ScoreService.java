@@ -5,18 +5,27 @@ import cn.gov.baiyin.court.core.dao.IScoreDAO;
 import cn.gov.baiyin.court.core.entity.*;
 import cn.gov.baiyin.court.core.exception.ServiceException;
 import cn.gov.baiyin.court.core.service.*;
-import cn.gov.baiyin.court.core.util.CosineSimilarAlgorithm;
-import cn.gov.baiyin.court.core.util.PageInfo;
-import cn.gov.baiyin.court.core.util.Utils;
+import cn.gov.baiyin.court.core.util.*;
+import com.alibaba.druid.support.json.JSONUtils;
 import org.apache.commons.collections.MapUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
+import org.springframework.util.StreamUtils;
 
 import javax.annotation.PostConstruct;
+import java.io.*;
 import java.math.BigDecimal;
+import java.nio.charset.Charset;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
 
 /**
@@ -25,7 +34,13 @@ import java.util.stream.Collectors;
 @Service
 public class ScoreService implements IScoreService {
 
+    private static final Logger LOG = LoggerFactory.getLogger(ScoreService.class);
     private static final String LISTEN_ANSWER_PATTERN = "[^0-9a-zA-Z\\u4E00-\\u9FA5\\uF900-\\uFA2D]+";
+    private static final Charset ENC_U8 = Charset.forName("utf-8");
+    private static final Map<Integer, Boolean> BACKUP_TAG = new ConcurrentHashMap<>();
+    private static final ExecutorService BACKUP_ES = Executors.newSingleThreadExecutor();
+    private static final DateTimeFormatter DTF = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
+
     private IScoreDAO scoreDAO;
     private IExamineTopicService examineTopicService;
     private IUserService userService;
@@ -80,38 +95,64 @@ public class ScoreService implements IScoreService {
 
     @Override
     @Transactional
-    public Score submitAnswer(String answer, Integer speed, Float accuracy, Integer tid, Integer eid) throws ServiceException {
+    public Score submitAnswer(String answer, Integer speed, Float accuracy, Integer tid, Integer eid, Integer esId) throws ServiceException {
 
         if (answer == null || tid == null || eid == null) {
             throw new ServiceException("参数错误！");
         }
-        ExamineTopic examineTopic = examineTopicService.findByEidAndTid(eid, tid);
-        if (examineTopic == null) {
-            throw new ServiceException("试卷与题目不匹配！");
-        }
-        Topic topic = topicService.findById(tid);
-        User user = userService.findByUserName(Authc.getCurrUserName());
 
-        Reply reply = new Reply(examineTopic.getId(), user.getId(), answer);
-        addReply(reply);
-
-        Score score;
-        if (topic.getType() == Topic.Type.LOOK.getTypeVal()) {
-            if (speed == null || accuracy == null) {
-                throw new ServiceException("参数错误！");
+        try {
+            ExamineTopic examineTopic = examineTopicService.findByEidAndTid(eid, tid);
+            if (examineTopic == null) {
+                throw new ServiceException("试卷与题目不匹配！");
             }
-            float s = Math.min(accuracy * speed * topic.getScore() / REF_COUNT / 100, topic.getScore());
-            score = new Score(reply.getId(), accuracy, s);
-        } else {
-            accuracy = CosineSimilarAlgorithm.levenshtein(answer.replaceAll(LISTEN_ANSWER_PATTERN, ""),
-                    topic.getAnswer().replaceAll(LISTEN_ANSWER_PATTERN, ""));
-            score = new Score(reply.getId(), accuracy, Math.min(topic.getScore() * accuracy, topic.getScore()));
+            Topic topic = topicService.findById(tid);
+            User user = userService.findByUserName(Authc.getCurrUserName());
+
+            Reply reply = new Reply(examineTopic.getId(), user.getId(), answer);
+            addReply(reply);
+
+            Score score;
+            if (topic.getType() == Topic.Type.LOOK.getTypeVal()) {
+                if (speed == null || accuracy == null) {
+                    throw new ServiceException("参数错误！");
+                }
+                float s = Math.min(accuracy * speed * topic.getScore() / REF_COUNT / 100, topic.getScore());
+                score = new Score(reply.getId(), accuracy, s);
+            } else {
+                accuracy = CosineSimilarAlgorithm.levenshtein(answer.replaceAll(LISTEN_ANSWER_PATTERN, ""),
+                        topic.getAnswer().replaceAll(LISTEN_ANSWER_PATTERN, ""));
+                score = new Score(reply.getId(), accuracy, Math.min(topic.getScore() * accuracy, topic.getScore()));
+            }
+            boolean r = scoreDAO.add(score);
+            if (!r) {
+                throw new ServiceException("保存分数失败！");
+            }
+            return score;
+        } finally {
+            autoBackup(esId);
         }
-        boolean r = scoreDAO.add(score);
-        if (!r) {
-            throw new ServiceException("保存分数失败！");
-        }
-        return score;
+    }
+
+    private void autoBackup(Integer esId) {
+
+        BACKUP_TAG.computeIfAbsent(esId, (k) -> {
+            BACKUP_ES.execute(() -> {
+                try {
+                    Thread.sleep(10000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                File folder = new File(FileService.getProductionFolder(), "esession-" + LocalDateTime.now().format(DTF));
+                FileUtil.creatFolder(folder);
+                try {
+                    genSqlFile(folder);
+                } catch (ServiceException e) {
+                    LOG.error("\u573a\u6b21{" + esId + "}\u7ed3\u675f\u540e10\u79d2\u4e2d\u5907\u4efdsql\u6587\u4ef6\u5931\u8d25\uff01", e);
+                }
+            });
+            return Boolean.TRUE;
+        });
     }
 
     private void addReply(Reply reply) throws ServiceException {
@@ -253,6 +294,50 @@ public class ScoreService implements IScoreService {
     @Override
     public String exportDb2Sql() {
         return scoreDAO.exportDb2Sql();
+    }
+
+    @Override
+    public File genDataUploadZip(Integer eid, String pos) throws ServiceException {
+
+        File folder = new File(FileService.getTempFolder(), "dataUpload-" + System.currentTimeMillis());
+        FileUtil.creatFolder(folder);
+
+        genSqlFile(folder);
+        genEncScoreFile(folder, eid, pos);
+        File zipFile = new File(FileService.getTempFolder(), folder.getName() + ".zip");
+
+        FileUtil.zipFile(zipFile.getAbsolutePath(), folder);
+        return zipFile;
+    }
+
+    private File genEncScoreFile(File folder, Integer eid, String pos) throws ServiceException {
+
+        PageInfo pageInfo = listPagination(new PageInfo(1, 1000), pos, eid);
+        Map<String, Object> m = new HashMap<>();
+        m.put("data", pageInfo == null ? null : pageInfo.getList());
+        m.put("fields", topicService.listFieldNameByEid(eid));
+
+        String enc = CodeUtil.encrypt(JSONUtils.toJSONString(m));
+        File f = new File(folder, "dataUpload-" + System.currentTimeMillis());
+
+        try (FileOutputStream fos = new FileOutputStream(f)) {
+            StreamUtils.copy(enc, ENC_U8, fos);
+            return f;
+        } catch (IOException e) {
+            throw new ServiceException("\u751f\u6210\u52a0\u5bc6\u5206\u6570\u6587\u4ef6\u5931\u8d25\uff01");
+        }
+    }
+
+    private File genSqlFile(File folder) throws ServiceException {
+
+        String s = exportDb2Sql();
+        File f = new File(folder, "db-" + System.currentTimeMillis() + ".sql");
+        try (FileOutputStream fos = new FileOutputStream(f)) {
+            StreamUtils.copy(s, ENC_U8, fos);
+            return f;
+        } catch (IOException e) {
+            throw new ServiceException("生成sql文件失败！");
+        }
     }
 
     private float findScoreInMap(String s, Map<String, Object> scoreMap) {

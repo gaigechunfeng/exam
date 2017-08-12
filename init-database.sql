@@ -92,6 +92,7 @@ CREATE TABLE `esession` (
   `id`        INT(11) NOT NULL AUTO_INCREMENT,
   `eid`       INT(11)          DEFAULT NULL,
   `name`      VARCHAR(200)     DEFAULT NULL,
+  `topics`    VARCHAR(200)     DEFAULT NULL,
   `startTime` VARCHAR(200)     DEFAULT NULL,
   `endTime`   VARCHAR(200)     DEFAULT NULL,
   `cruser`    VARCHAR(200)     DEFAULT NULL,

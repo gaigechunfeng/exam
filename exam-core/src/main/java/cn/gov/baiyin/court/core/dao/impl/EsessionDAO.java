@@ -2,13 +2,16 @@ package cn.gov.baiyin.court.core.dao.impl;
 
 import cn.gov.baiyin.court.core.dao.IEsessionDAO;
 import cn.gov.baiyin.court.core.entity.*;
+import cn.gov.baiyin.court.core.service.ITopicService;
 import cn.gov.baiyin.court.core.util.PageInfo;
 import org.apache.commons.lang.math.RandomUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -18,6 +21,14 @@ import java.util.stream.Collectors;
  */
 @Repository
 public class EsessionDAO extends AbstractDAO implements IEsessionDAO {
+
+
+    private ITopicService topicService;
+
+    @Autowired
+    public void setTopicService(ITopicService topicService) {
+        this.topicService = topicService;
+    }
 
     @Autowired
     public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
@@ -97,7 +108,7 @@ public class EsessionDAO extends AbstractDAO implements IEsessionDAO {
                         List<Examine> es = m.get(eSession.getEid());
                         Examine e = CollectionUtils.isEmpty(es) ? null : es.get(0);
                         if (e != null) {
-                            addTopicRelation(e);
+                            addTopicRelation(e, eSession.getTopics());
                         }
                         eSession.setExamine(e);
                     }
@@ -106,22 +117,21 @@ public class EsessionDAO extends AbstractDAO implements IEsessionDAO {
         }
     }
 
-    private void addTopicRelation(Examine e) {
+    private void addTopicRelation(Examine e, String topicIds) {
 
         List<Topic> topics;
-
-        List<Topic> topicList = queryList("select t2.* from examine_topic t left join examine t1 on t.eid=t1.id " +
-                "left join topic t2 on t.tid=t2.id where t2.id is not null and t1.id=? order by t2.id", Topic.class, e.getId());
 
         //random
         if (e.getType() != null && e.getType() == 2) {
 
-            topics = topicList.stream()
-                    .collect(Collectors.groupingBy(Topic::getType))
-                    .values().stream().map(this::getRandomOne)
-                    .collect(Collectors.toList());
+            if (!StringUtils.isEmpty(topicIds)) {
+                topics = topicService.findByIds(topicIds);
+            } else {
+                topics = new ArrayList<>(0);
+            }
         } else {
-            topics = topicList;
+            topics = queryList("select t2.* from examine_topic t left join examine t1 on t.eid=t1.id " +
+                    "left join topic t2 on t.tid=t2.id where t2.id is not null and t1.id=? order by t2.id", Topic.class, e.getId());
         }
         e.setTopics(topics);
     }
@@ -213,5 +223,11 @@ public class EsessionDAO extends AbstractDAO implements IEsessionDAO {
         for (ESession eSession : eSessions) {
             insert(eSession);
         }
+    }
+
+    @Override
+    public List<ESession> findByIds(String esessionIds) {
+
+        return super.queryList("select * from session where id in (" + esessionIds + ")", ESession.class);
     }
 }
