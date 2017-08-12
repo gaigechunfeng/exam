@@ -231,7 +231,7 @@ public class EsessionService implements IEsessionService {
             }
 
             esessionDAO.saveMulti(eSessions);
-        } catch (IOException | BiffException e) {
+        } catch (Exception e) {
             throw new ServiceException("\u5bfc\u5165\u573a\u6b21\u5931\u8d25\uff01", e);
         } finally {
             FileUtil.deleteFile(tmpFile);
