@@ -19,6 +19,7 @@
                 <include name="bin/**"/>
                 <include name="lib/**"/>
                 <include name="init-database.sql"/>
+                <include name="lisence.lsc"/>
                 <include name="readme.md"/>
             </fileset>
         </copy>

@@ -228,6 +228,6 @@ public class EsessionDAO extends AbstractDAO implements IEsessionDAO {
     @Override
     public List<ESession> findByIds(String esessionIds) {
 
-        return super.queryList("select * from session where id in (" + esessionIds + ")", ESession.class);
+        return super.queryList("select * from esession where id in (" + esessionIds + ")", ESession.class);
     }
 }

@@ -129,7 +129,7 @@ public class ScoreDAO extends AbstractDAO implements IScoreDAO {
         List<Map<String, Object>> list;
         if (examine.getType() == 2) {
 
-            String s = "select t4.type,sum(t.score) score from score t\n" +
+            String s = "select t4.type,avg(t.score) score from score t\n" +
                     "left join reply t1 on t.rid=t1.id\n" +
                     "left join examine_topic t2 on t1.etid=t2.id\n" +
                     "left join user t3 on t1.uid=t3.id\n" +

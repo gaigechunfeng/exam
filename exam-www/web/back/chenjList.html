@@ -108,8 +108,10 @@
         <td height="13" align="center" valign="top">&nbsp;</td>
     </tr>
     <tr>
-        <td width="709" height="41" align="right" valign="middle" style=" border-bottom:3px solid #0066FF"><input
-                type="button" name="show" value="刷   新" class="btns" id="refreshBtn1"/>
+        <td width="709" height="41" align="right" valign="middle" style=" border-bottom:3px solid #0066FF">
+            <input
+                    type="button" value="数据上报" class="btns" id="dataUploadBtn"/>
+            <input type="button" name="show" value="刷 新" class="btns" id="refreshBtn1"/>
             <input type="button" name="add" value="导出成绩单" class="btns" id="exportScoreBtn"/>
             <!--style="width:120px;"/>-->
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -209,7 +211,7 @@
 
             if (data && data.success) {
 
-                var obj = data.obj,
+                var obj = App.sortObj(data.obj),
                     allscore = 0,
                     h1 = ['<tr><td width="147" height="45" align="center" valign="middle" bordercolor="#0066FF" style="text-indent:0em;"><span class="STYLE14">科目</span></td>'],
                     h2 = ['<td height="37" align="center" valign="middle" bordercolor="#0066FF" class="STYLE14" style="text-indent:0em;">平均成绩</td>']
@@ -321,6 +323,10 @@
             currPos = this.value
             refreshTableList();
             loadStatistic()
+        })
+
+        $('#dataUploadBtn').on('click', function () {
+            self.open(App.basePath + '/back/score/export/dataUpload.do?eid=' + currExmaineId + "&pos=" + (currPos || ''))
         })
 
     })

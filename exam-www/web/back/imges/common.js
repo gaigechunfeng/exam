@@ -32,6 +32,24 @@
             }
             return obj;
         },
+        sortObj: function (obj) {
+            if (typeof obj !== 'object') return obj;
+
+            try {
+                var o = {},
+                    keys = Object.keys(obj).sort(function (k1, k2) {
+                        return k2.charCodeAt(0) - k1.charCodeAt(0)
+                    })
+
+                for (var k of keys) {
+                    o[k] = obj[k]
+                }
+                return o;
+            } catch (e) {
+                console.error('sortObj error', e);
+            }
+            return obj;
+        },
         renderPosSelect: function (eid, appendAll) {
 
             var posCode = App.getPosCode(), html = [];

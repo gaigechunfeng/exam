@@ -64,7 +64,7 @@ public class App {
         }
         try (FileInputStream fis = new FileInputStream(lisFile)) {
             String s = StreamUtils.copyToString(fis, CodeUtil.ENC_U8);
-            Map<String, Object> m = (Map<String, Object>) JSONUtils.parse(s);
+            Map<String, Object> m = (Map<String, Object>) JSONUtils.parse(CodeUtil.decrypt(s));
             String expireTime = MapUtils.getString(m, "expireTime", "");
             if (StringUtils.isEmpty(expireTime)) {
                 throw new RuntimeException("\u8fc7\u671f\u65f6\u95f4\u4e3a\u7a7a\uff01");

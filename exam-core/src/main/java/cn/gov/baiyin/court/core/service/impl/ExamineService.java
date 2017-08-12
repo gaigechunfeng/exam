@@ -86,7 +86,7 @@ public class ExamineService implements IExamineService {
     }
 
     private void applyTopic2Esession(Examine examine, String topicIds, String esessionIds) {
-        if (!StringUtils.isEmpty(topicIds) || StringUtils.isEmpty(esessionIds)) {
+        if (StringUtils.isEmpty(topicIds) || StringUtils.isEmpty(esessionIds)) {
             return;
         }
         if (examine.getType() != null && examine.getType() == 2) {
@@ -277,6 +277,8 @@ public class ExamineService implements IExamineService {
                 }
             }
         }
+
+        applyTopic2Esession(examine, topicIds, esessionIds);
     }
 
     @Override
