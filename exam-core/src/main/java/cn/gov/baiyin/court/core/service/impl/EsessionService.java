@@ -217,6 +217,7 @@ public class EsessionService implements IEsessionService {
             for (int i = 1; i < rowCount; i++) {
 
                 String name = sheet.getCell(0, i).getContents();
+                if (StringUtils.isEmpty(name)) continue;
                 String startTime = sheet.getCell(1, i).getContents();
                 String endTime = sheet.getCell(2, i).getContents();
 
@@ -232,7 +233,7 @@ public class EsessionService implements IEsessionService {
 
             esessionDAO.saveMulti(eSessions);
         } catch (Exception e) {
-            throw new ServiceException("\u5bfc\u5165\u573a\u6b21\u5931\u8d25\uff01", e);
+            throw new RuntimeException("\u5bfc\u5165\u573a\u6b21\u5931\u8d25\uff01", e);
         } finally {
             FileUtil.deleteFile(tmpFile);
         }

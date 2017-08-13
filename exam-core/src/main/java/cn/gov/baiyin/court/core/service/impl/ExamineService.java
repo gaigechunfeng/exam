@@ -87,8 +87,11 @@ public class ExamineService implements IExamineService {
 
     private void applyTopic2AddedEsession(Examine examine, String topicIds, String esessionIds, List<Integer> addEsIds) throws ServiceException {
 
-        if (StringUtils.isEmpty(topicIds) || CollectionUtils.isEmpty(addEsIds)) {
+        if (StringUtils.isEmpty(topicIds)) {
             return;
+        }
+        if (addEsIds == null) {
+            addEsIds = new ArrayList<>();
         }
         if (examine.getType() != null && examine.getType() == 2) {
 
@@ -97,11 +100,21 @@ public class ExamineService implements IExamineService {
             String[] used = new String[0];
 
             if (!StringUtils.isEmpty(esessionIds)) {
+                List<Integer> finalAddEsIds = addEsIds;
                 esessionIds = Arrays.stream(esessionIds.split(","))
-                        .filter(s -> !CollectionUtils.contains(addEsIds.iterator(), Integer.parseInt(s)))
+                        .filter(s -> !CollectionUtils.contains(finalAddEsIds.iterator(), Integer.parseInt(s)))
                         .reduce((s1, s2) -> s1 + "," + s2).orElse("");
                 if (!StringUtils.isEmpty(esessionIds)) {
-                    used = esessionService.findByIds(esessionIds).stream()
+
+                    List<ESession> originEs = esessionService.findByIds(esessionIds);
+
+                    //如果先前保存的esession没有score信息，则将其与新增的一同处理
+                    addEsIds.addAll(originEs.stream()
+                            .filter(eSession -> StringUtils.isEmpty(eSession.getTopics()))
+                            .map(BaseEntity::getId)
+                            .collect(Collectors.toList()));
+                    used = originEs.stream()
+                            .filter(eSession -> !StringUtils.isEmpty(eSession.getTopics()))
                             .map(ESession::getTopics)
                             .reduce((s1, s2) -> s1 + "," + s2)
                             .orElse("").split(",");

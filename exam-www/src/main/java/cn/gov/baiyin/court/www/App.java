@@ -36,6 +36,7 @@ public class App {
     public static void main(String[] args) {
 
         Utils.setApp(WebUtil.APP);
+        Utils.setHome(WebUtil.HOME);
 
         checkLisence();
 

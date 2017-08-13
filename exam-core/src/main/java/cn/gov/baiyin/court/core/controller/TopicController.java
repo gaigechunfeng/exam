@@ -126,11 +126,11 @@ public class TopicController {
 
     @RequestMapping("/import")
     @ResponseBody
-    public Msg importUser(MultipartFile file) {
+    public Msg importTopics(MultipartFile file) {
 
         try {
             topicService.importTopics(file);
-        } catch (ServiceException e) {
+        } catch (Exception e) {
             return Msg.error(e);
         }
         return Msg.SUCCESS;

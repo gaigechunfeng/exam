@@ -5,6 +5,7 @@ package cn.gov.baiyin.court.core.util;
  */
 public class Utils {
     private static PropertyHolder app;
+    private static String home;
 
     public static void setApp(PropertyHolder propertyHolder) {
         app = propertyHolder;
@@ -12,5 +13,13 @@ public class Utils {
 
     public static PropertyHolder getApp() {
         return app;
+    }
+
+    public static void setHome(String home) {
+        Utils.home = home;
+    }
+
+    public static String getHome() {
+        return home;
     }
 }

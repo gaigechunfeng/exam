@@ -97,7 +97,7 @@ public class UserController {
 
         try {
             userService.importUser(file);
-        } catch (ServiceException e) {
+        } catch (Exception e) {
             return Msg.error(e);
         }
         return Msg.SUCCESS;

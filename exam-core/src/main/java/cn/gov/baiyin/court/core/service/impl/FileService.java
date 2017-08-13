@@ -47,7 +47,7 @@ public class FileService implements IFileService {
     }
 
     public static File getTempFolder() {
-        File f = new File(Utils.getApp().getString("temp.path", System.getProperty("java.io.tmpdir")));
+        File f = new File(Utils.getApp().getString("temp.path", Utils.getHome() + "\\temp"));
         if (!f.exists()) {
             boolean r = f.mkdirs();
             if (!r) {
@@ -88,7 +88,7 @@ public class FileService implements IFileService {
     }
 
     public static File getProductionFolder() {
-        File f = new File(Utils.getApp().getString("upload.path", System.getProperty("user.dir")));
+        File f = new File(Utils.getApp().getString("upload.path", Utils.getHome() + "\\files"));
         if (!f.exists()) {
             f.mkdirs();
 //            if (!r) {
@@ -115,12 +115,8 @@ public class FileService implements IFileService {
             Files.list(folder.toPath())
                     .filter(path -> path.toFile().lastModified() < deadline)
                     .forEach(path -> {
-                        try {
-                            Files.delete(path);
-                            count.incrementAndGet();
-                        } catch (IOException e) {
-                            LOGGER.error("remove path error [" + path + "]", e);
-                        }
+                        FileUtil.deleteFile(path.toFile());
+                        count.incrementAndGet();
                     });
         } catch (IOException e) {
             LOGGER.error("clean function error!", e);

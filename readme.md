@@ -1,16 +1,16 @@
-# 启动步骤
+﻿# 启动步骤
 
-- 解压baiyin-exam.zip
+- 解压exam.zip
 
 - 修改mysql配置文件【mysql/my.ini】中的配置项【basedir】和【datadir】成实际地址
 
 - 执行【bin/start-mysql.bat】启动数据库
 
-- 以上两步可以自行安装mysql，
+- 以上两步可以自行安装mysql
 
-- 用root/root登录mysql【mysql/bin/mysql.exe -uroot -proot】
+- 执行【bin/login-mysql.bat】登陆mysql数据库
 
-- 导入表结构【source init-database.sql】
+- 输入 source init-database.sql 数据库初始化
 
 - 修改系统配置文件【app.properties】中的配置项成正式配置
 

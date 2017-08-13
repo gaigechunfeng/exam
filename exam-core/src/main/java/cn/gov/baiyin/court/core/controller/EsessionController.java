@@ -81,7 +81,7 @@ public class EsessionController {
 
         try {
             esessionService.importEsession(file);
-        } catch (ServiceException e) {
+        } catch (Exception e) {
             return Msg.error(e);
         }
         return Msg.SUCCESS;

@@ -159,14 +159,14 @@ public class TopicService implements ITopicService {
     public void importTopics(MultipartFile file) throws ServiceException {
 
         if (!file.getOriginalFilename().toUpperCase().endsWith(".ZIP")) {
-            throw new ServiceException("\u5bfc\u5165\u7684\u6587\u4ef6\u5fc5\u987b\u662fzip\u6587\u4ef6\uff01");
+            throw new RuntimeException("\u5bfc\u5165\u7684\u6587\u4ef6\u5fc5\u987b\u662fzip\u6587\u4ef6\uff01");
         }
 
         File zipFile = saveFile(file);
         File folder = FileUtil.unzip(zipFile.getAbsolutePath());
         File excelFile = findExcelFile(folder);
         if (excelFile == null) {
-            throw new ServiceException("zip\u6587\u4ef6\u4e2d\u6ca1\u6709xls\u6587\u4ef6\uff0c\u5fc5\u987b\u5305\u542b\u4e00\u4e2axls\u6587\u4ef6\uff01");
+            throw new RuntimeException("zip\u6587\u4ef6\u4e2d\u6ca1\u6709xls\u6587\u4ef6\uff0c\u5fc5\u987b\u5305\u542b\u4e00\u4e2axls\u6587\u4ef6\uff01");
         }
 
         try {
@@ -178,9 +178,10 @@ public class TopicService implements ITopicService {
             for (int i = 1; i < rowCount; i++) {
 
                 String name = sheet.getCell(0, i).getContents();
+                if (StringUtils.isEmpty(name)) continue;
 
                 if (existName(name)) {
-                    throw new ServiceException("\u76f8\u540c\u540d\u79f0\u7684\u8bd5\u9898\u5df2\u7ecf\u5b58\u5728\uff01");
+                    throw new RuntimeException("\u76f8\u540c\u540d\u79f0\u7684\u8bd5\u9898\u5df2\u7ecf\u5b58\u5728\uff01");
                 }
                 int score = Integer.parseInt(sheet.getCell(1, i).getContents());
                 int type = "对照复录".equals(sheet.getCell(2, i).getContents()) ? 1 : 2;
@@ -210,7 +211,7 @@ public class TopicService implements ITopicService {
 
             topicDAO.addMulti(topics);
         } catch (IOException | BiffException e) {
-            throw new ServiceException("解析xls文件失败！", e);
+            throw new RuntimeException("解析xls文件失败！", e);
         } finally {
             FileUtil.deleteFile(zipFile);
             FileUtil.deleteFile(folder);

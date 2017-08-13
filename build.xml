@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <project default="main">
 
-    <target name="main" depends="clean,init,copy,zip">
+    <target name="main" depends="clean,init,copy,zip64,zip32">
         <echo>Success</echo>
     </target>
 
@@ -43,10 +43,20 @@
         </copy>
     </target>
 
-    <target name="zip">
+    <target name="zip64">
         <delete dir="dist"/>
         <mkdir dir="dist"/>
-        <zip destfile="dist/baiyin-exam.zip">
+        <zip destfile="dist/exam-64.zip">
+            <zipfileset dir="_tmp"/>
+        </zip>
+    </target>
+
+    <target name="zip32">
+        <delete dir="_tmp/jre"/>
+        <copy todir="_tmp/jre">
+            <fileset dir="jre-1.8-32"/>
+        </copy>
+        <zip destfile="dist/exam-32.zip">
             <zipfileset dir="_tmp"/>
         </zip>
         <delete dir="_tmp"/>

@@ -249,11 +249,11 @@ public class UserService implements IUserService {
     public String importUser(MultipartFile file) throws ServiceException {
 
         if (file == null || file.isEmpty()) {
-            throw new ServiceException("file not exist");
+            throw new RuntimeException("file not exist");
         }
         String fileName = file.getOriginalFilename();
         if (!FileUtil.isXls(fileName)) {
-            throw new ServiceException("\u8bf7\u4e0a\u4f20\u7b26\u5408\u683c\u5f0f\u7684excel\u6587\u4ef6\uff01");
+            throw new RuntimeException("\u8bf7\u4e0a\u4f20\u7b26\u5408\u683c\u5f0f\u7684excel\u6587\u4ef6\uff01");
         }
 
         String filePath = fileService.save(file);
@@ -268,6 +268,7 @@ public class UserService implements IUserService {
             for (int i = 1; i < rows; i++) {
 
                 String name = sheet.getCell(0, i).getContents();
+                if (StringUtils.isEmpty(name)) continue;
                 String username = sheet.getCell(1, i).getContents();
                 String sex = sheet.getCell(2, i).getContents();
                 String idcard = sheet.getCell(3, i).getContents();
@@ -275,11 +276,11 @@ public class UserService implements IUserService {
 
                 if (StringUtils.isEmpty(name) || StringUtils.isEmpty(username) || StringUtils.isEmpty(idcard)
                         || StringUtils.isEmpty(pos)) {
-                    throw new ServiceException("\u59d3\u540d\uff0c\u51c6\u8003\u8bc1\u53f7\uff0c\u8eab\u4efd\u8bc1\u53f7\uff0c\u5c97\u4f4d\u4ee3\u7801\u4e0d\u80fd\u4e3a\u7a7a\uff01");
+                    throw new RuntimeException("\u59d3\u540d\uff0c\u51c6\u8003\u8bc1\u53f7\uff0c\u8eab\u4efd\u8bc1\u53f7\uff0c\u5c97\u4f4d\u4ee3\u7801\u4e0d\u80fd\u4e3a\u7a7a\uff01");
                 }
                 if (existIdcard(idcard)) {
                     //相同的身份证号码的考试已经存在！
-                    throw new ServiceException("\u76f8\u540c\u7684\u8eab\u4efd\u8bc1\u53f7\u7801\u7684\u8003\u751f\u5df2\u7ecf\u5b58\u5728\uff01");
+                    throw new RuntimeException("\u76f8\u540c\u7684\u8eab\u4efd\u8bc1\u53f7\u7801\u7684\u8003\u751f\u5df2\u7ecf\u5b58\u5728\uff01");
                 }
 
                 User user = new User();
@@ -293,7 +294,7 @@ public class UserService implements IUserService {
 
             userDAO.importExmainee(list);
         } catch (IOException | BiffException e) {
-            throw new ServiceException("导入考生失败！" + e.getMessage(), e);
+            throw new RuntimeException("\u5bfc\u5165\u8003\u751f\u5931\u8d25\uff01" + e.getMessage(), e);
         } finally {
             FileUtil.deleteFile(tmpFile);
         }

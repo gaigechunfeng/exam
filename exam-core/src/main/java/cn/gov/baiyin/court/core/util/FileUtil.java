@@ -114,7 +114,8 @@ public class FileUtil {
             response.setHeader("Content-Disposition", "attachment; filename=" + fullPath + "");
 
             try (FileInputStream fis = new FileInputStream(f);) {
-                FileUtil.saveFile(fis, response.getOutputStream());
+//                FileUtil.saveFile(fis, response.getOutputStream());
+                StreamUtils.copy(fis, response.getOutputStream());
             } catch (IOException e) {
                 LOGGER.error("download file error!", e);
             }
