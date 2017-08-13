@@ -13,6 +13,7 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -136,6 +137,7 @@ public class EsessionDAO extends AbstractDAO implements IEsessionDAO {
             topics = queryList("select t2.* from examine_topic t left join examine t1 on t.eid=t1.id " +
                     "left join topic t2 on t.tid=t2.id where t2.id is not null and t1.id=? order by t2.id", Topic.class, e.getId());
         }
+        topics.sort(Comparator.comparingInt(Topic::getType));
         e.setTopics(topics);
     }
 

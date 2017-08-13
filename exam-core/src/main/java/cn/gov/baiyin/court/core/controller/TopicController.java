@@ -101,6 +101,18 @@ public class TopicController {
         }
     }
 
+    @RequestMapping("/delMulti")
+    @ResponseBody
+    public Msg delMulti(Integer[] ids) {
+
+        try {
+            topicService.delMulti(ids);
+        } catch (ServiceException e) {
+            return Msg.success(e.getMessage());
+        }
+        return Msg.SUCCESS;
+    }
+
     @RequestMapping("/detail")
     @ResponseBody
     public Msg detail(String id) {

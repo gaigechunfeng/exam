@@ -15,10 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -96,13 +93,23 @@ public class ExamineService implements IExamineService {
         if (examine.getType() != null && examine.getType() == 2) {
 
             List<Topic> topics = topicService.findByIds(topicIds);
-            String[] used = StringUtils.isEmpty(esessionIds) ? new String[0] :
-                    esessionService.findByIds(esessionIds).stream()
+
+            String[] used = new String[0];
+
+            if (!StringUtils.isEmpty(esessionIds)) {
+                esessionIds = Arrays.stream(esessionIds.split(","))
+                        .filter(s -> !CollectionUtils.contains(addEsIds.iterator(), Integer.parseInt(s)))
+                        .reduce((s1, s2) -> s1 + "," + s2).orElse("");
+                if (!StringUtils.isEmpty(esessionIds)) {
+                    used = esessionService.findByIds(esessionIds).stream()
                             .map(ESession::getTopics)
                             .reduce((s1, s2) -> s1 + "," + s2)
                             .orElse("").split(",");
+                }
+            }
+            String[] finalUsed = used;
             List<Topic> avilable = topics.stream()
-                    .filter(topic -> !ArrayUtils.contains(used, topic.getId() + ""))
+                    .filter(topic -> !ArrayUtils.contains(finalUsed, topic.getId() + ""))
                     .collect(Collectors.toList());
             if (CollectionUtils.isEmpty(avilable)) {
                 throw new RuntimeException("\u6ca1\u6709\u591a\u4f59\u7684\u9898\u76ee\u53ef\u4f9b\u5206\u914d\uff01");

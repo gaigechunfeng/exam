@@ -308,6 +308,13 @@ public class TopicService implements ITopicService {
         return list;
     }
 
+    @Override
+    public void delMulti(Integer[] ids) throws ServiceException {
+        for (Integer id : ids) {
+            deleteById(id + "");
+        }
+    }
+
     private static void copyAudios(List<String> audios, File tmpFolder) throws ServiceException {
 
         File proFolder = FileService.getProductionFolder();

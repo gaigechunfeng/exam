@@ -34,4 +34,6 @@ public interface ITopicService {
     List<Topic> findByIds(String topicIds);
 
     List<String> listFieldNameByEid(Integer eid);
+
+    void delMulti(Integer[] ids) throws ServiceException;
 }

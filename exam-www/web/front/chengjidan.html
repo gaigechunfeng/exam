@@ -285,7 +285,7 @@
         var i = 0,
             allscore = 0;
 
-        for (var k in scores) {
+        for (var k in App.sortObj(scores)) {
             var score = scores[k] || 0
             allscore += score*100
             h.push('<tr>                                                                                                   ');
