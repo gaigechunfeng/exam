@@ -184,7 +184,7 @@ public class EsessionService implements IEsessionService {
         if (examineUser == null) {
             examineUser = new ExamineUser(eid, user.getId());
         }
-        examineUser.setDone(true);
+        examineUser.setDone(1);
         esessionDAO.saveExamineUser(examineUser);
     }
 
@@ -193,7 +193,7 @@ public class EsessionService implements IEsessionService {
 
         ExamineUser examineUser = examineService.findEUByEidAndUid(eid, uid);
         if (examineUser != null) {
-            examineUser.setDone(false);
+            examineUser.setDone(0);
             esessionDAO.saveExamineUser(examineUser);
         }
     }

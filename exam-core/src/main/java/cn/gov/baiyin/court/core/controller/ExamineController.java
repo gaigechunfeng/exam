@@ -72,7 +72,7 @@ public class ExamineController {
         try {
             examineService.edit(examine, topicIds, esessionIds);
             return Msg.SUCCESS;
-        } catch (ServiceException e) {
+        } catch (Exception e) {
             return Msg.error(e);
         }
     }
@@ -84,7 +84,7 @@ public class ExamineController {
         try {
             Map<String, Object> data = examineService.detail(id);
             return Msg.success(data);
-        } catch (ServiceException e) {
+        } catch (Exception e) {
             return Msg.error(e);
         }
     }
@@ -96,7 +96,7 @@ public class ExamineController {
         try {
             examineService.deleteById(id);
             return Msg.SUCCESS;
-        } catch (ServiceException e) {
+        } catch (Exception e) {
             return Msg.error(e);
         }
     }

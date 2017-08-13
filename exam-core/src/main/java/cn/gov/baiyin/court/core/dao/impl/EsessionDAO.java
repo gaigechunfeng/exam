@@ -5,6 +5,7 @@ import cn.gov.baiyin.court.core.entity.*;
 import cn.gov.baiyin.court.core.service.ITopicService;
 import cn.gov.baiyin.court.core.util.PageInfo;
 import org.apache.commons.lang.math.RandomUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -108,9 +109,11 @@ public class EsessionDAO extends AbstractDAO implements IEsessionDAO {
                         List<Examine> es = m.get(eSession.getEid());
                         Examine e = CollectionUtils.isEmpty(es) ? null : es.get(0);
                         if (e != null) {
-                            addTopicRelation(e, eSession.getTopics());
+                            Examine ne = new Examine();
+                            BeanUtils.copyProperties(e, ne);
+                            addTopicRelation(ne, eSession.getTopics());
+                            eSession.setExamine(ne);
                         }
-                        eSession.setExamine(e);
                     }
                 }
             }
@@ -149,7 +152,7 @@ public class EsessionDAO extends AbstractDAO implements IEsessionDAO {
                 "from examine_user t \n" +
                 "left join user t1 on t.uid=t1.id\n" +
                 "left join esession t2 on t.eid=t2.eid\n" +
-                "where t1.username=? and t2.endTime > NOW()\n" +
+                "where t1.username=? and done=0 and t2.endTime > NOW()\n" +
                 "and FROM_UNIXTIME(UNIX_TIMESTAMP(t2.startTime)-?) <=NOW()\n";
 //                "and not EXISTS(select 1 from reply r left join examine_topic et on r.etid=et.id " +
 //                "where r.uid=t1.id and et.eid=t2.eid)\n";
@@ -204,7 +207,7 @@ public class EsessionDAO extends AbstractDAO implements IEsessionDAO {
 
         if (CollectionUtils.isEmpty(examineUsers)) return false;
         ExamineUser examineUser = examineUsers.get(0);
-        return examineUser.getDone() != null && examineUser.getDone();
+        return examineUser.getDone() != null && examineUser.getDone() == 1;
     }
 
     @Override

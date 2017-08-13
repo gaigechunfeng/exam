@@ -5,7 +5,9 @@ import cn.gov.baiyin.court.core.entity.*;
 import cn.gov.baiyin.court.core.exception.ServiceException;
 import cn.gov.baiyin.court.core.service.*;
 import cn.gov.baiyin.court.core.util.PageInfo;
+import org.apache.commons.collections.MapUtils;
 import org.apache.commons.lang.ArrayUtils;
+import org.apache.commons.lang.math.RandomUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -85,24 +88,121 @@ public class ExamineService implements IExamineService {
         applyTopic2Esession(examine, topicIds, esessionIds);
     }
 
-    private void applyTopic2Esession(Examine examine, String topicIds, String esessionIds) {
+    private void applyTopic2AddedEsession(Examine examine, String topicIds, String esessionIds, List<Integer> addEsIds) throws ServiceException {
+
+        if (StringUtils.isEmpty(topicIds) || CollectionUtils.isEmpty(addEsIds)) {
+            return;
+        }
+        if (examine.getType() != null && examine.getType() == 2) {
+
+            List<Topic> topics = topicService.findByIds(topicIds);
+            String[] used = StringUtils.isEmpty(esessionIds) ? new String[0] :
+                    esessionService.findByIds(esessionIds).stream()
+                            .map(ESession::getTopics)
+                            .reduce((s1, s2) -> s1 + "," + s2)
+                            .orElse("").split(",");
+            List<Topic> avilable = topics.stream()
+                    .filter(topic -> !ArrayUtils.contains(used, topic.getId() + ""))
+                    .collect(Collectors.toList());
+            if (CollectionUtils.isEmpty(avilable)) {
+                throw new RuntimeException("\u6ca1\u6709\u591a\u4f59\u7684\u9898\u76ee\u53ef\u4f9b\u5206\u914d\uff01");
+            }
+            List<Map<String, Object>> l1 = avilable.stream()
+                    .filter(topic -> topic.getType() != null && topic.getType() == 1)
+                    .map(topic -> {
+                        Map<String, Object> m = new HashMap<>();
+                        m.put("id", topic.getId());
+                        m.put("use", false);
+                        return m;
+                    }).collect(Collectors.toList());
+            List<Map<String, Object>> l2 = avilable.stream()
+                    .filter(topic -> topic.getType() != null && topic.getType() == 2)
+                    .map(topic -> {
+                        Map<String, Object> m = new HashMap<>();
+                        m.put("id", topic.getId());
+                        m.put("use", false);
+                        return m;
+                    }).collect(Collectors.toList());
+            if (addEsIds.size() > Math.min(l1.size(), l2.size())) {
+                throw new RuntimeException("\u6ca1\u6709\u8db3\u591f\u7684\u8bd5\u9898\u53ef\u4f9b\u5206\u914d\u7ed9\u8003\u573a\uff01");
+            }
+
+            List<ESession> eSessions = esessionService.findByIds(addEsIds.
+                    stream()
+                    .map(integer -> integer + "")
+                    .reduce((i1, i2) -> i1 + "," + i2)
+                    .orElse(""));
+
+            for (int i = 0, len = eSessions.size(); i < len; i++) {
+                List<Map<String, Object>> usableList1 = l1.stream()
+                        .filter(m -> !MapUtils.getBooleanValue(m, "use", false))
+                        .collect(Collectors.toList());
+                List<Map<String, Object>> usableList2 = l2.stream()
+                        .filter(m -> !MapUtils.getBooleanValue(m, "use", false))
+                        .collect(Collectors.toList());
+                if (StringUtils.isEmpty(usableList1) || StringUtils.isEmpty(usableList2)) {
+                    throw new RuntimeException("\u53ef\u4f9b\u5206\u914d\u7684\u9898\u76ee\u4e0d\u8db3\uff01");
+                }
+                Map<String, Object> m1 = usableList1.get(RandomUtils.nextInt(usableList1.size()));
+                Map<String, Object> m2 = usableList2.get(RandomUtils.nextInt(usableList2.size()));
+                int id1 = (int) m1.get("id");
+                int id2 = (int) m2.get("id");
+                ESession eSession = eSessions.get(i);
+                eSession.setTopics(id1 + "," + id2);
+                esessionService.edit(eSession);
+
+                m1.put("use", true);
+                m2.put("use", true);
+            }
+        }
+    }
+
+    private void applyTopic2Esession(Examine examine, String topicIds, String esessionIds) throws ServiceException {
         if (StringUtils.isEmpty(topicIds) || StringUtils.isEmpty(esessionIds)) {
             return;
         }
         if (examine.getType() != null && examine.getType() == 2) {
             List<Topic> topics = topicService.findByIds(topicIds);
-            List<Topic> t1s = topics.stream().filter(topic -> topic.getType() != null && topic.getType() == 1).collect(Collectors.toList());
-            List<Topic> t2s = topics.stream().filter(topic -> topic.getType() != null && topic.getType() == 2).collect(Collectors.toList());
+            List<Map<String, Object>> t1s = topics.stream()
+                    .filter(topic -> topic.getType() != null && topic.getType() == 1)
+                    .map(topic -> {
+                        Map<String, Object> m = new HashMap<>();
+                        m.put("id", topic.getId());
+                        m.put("use", false);
+                        return m;
+                    }).collect(Collectors.toList());
+            List<Map<String, Object>> t2s = topics.stream()
+                    .filter(topic -> topic.getType() != null && topic.getType() == 2)
+                    .map(topic -> {
+                        Map<String, Object> m = new HashMap<>();
+                        m.put("id", topic.getId());
+                        m.put("use", false);
+                        return m;
+                    })
+                    .collect(Collectors.toList());
             List<ESession> eSessions = esessionService.findByIds(esessionIds);
 
-            int t1l = t1s.size(), t2l = t2s.size();
             for (int i = 0, len = eSessions.size(); i < len; i++) {
 
-                int i1 = i % t1l,
-                        i2 = i % t2l;
+                List<Map<String, Object>> usableList1 = t1s.stream()
+                        .filter(m -> !MapUtils.getBooleanValue(m, "use", false))
+                        .collect(Collectors.toList());
+                List<Map<String, Object>> usableList2 = t2s.stream()
+                        .filter(m -> !MapUtils.getBooleanValue(m, "use", false))
+                        .collect(Collectors.toList());
+                if (StringUtils.isEmpty(usableList1) || StringUtils.isEmpty(usableList2)) {
+                    throw new RuntimeException("\u53ef\u4f9b\u5206\u914d\u7684\u9898\u76ee\u4e0d\u8db3\uff01");
+                }
+                Map<String, Object> m1 = usableList1.get(RandomUtils.nextInt(usableList1.size()));
+                Map<String, Object> m2 = usableList2.get(RandomUtils.nextInt(usableList2.size()));
+                int id1 = (int) m1.get("id");
+                int id2 = (int) m2.get("id");
                 ESession eSession = eSessions.get(i);
-                eSession.setTopics(t1s.get(i1).getId() + "," + t2s.get(i2).getId());
+                eSession.setTopics(id1 + "," + id2);
                 esessionService.edit(eSession);
+
+                m1.put("use", true);
+                m2.put("use", true);
             }
         }
     }
@@ -194,20 +294,6 @@ public class ExamineService implements IExamineService {
             throw new ServiceException("参数错误！");
         }
 
-//        examineTopicService.removeByEid(examine.getId());
-//        esessionService.resetByEid(examine.getId());
-//
-//        Examine persist = examineDAO.findById(examine.getId());
-//
-//        BeanUtils.copyProperties(persist, examine, "name", "score");
-//
-//        int r = examineDAO.edit(examine);
-//        if (r == 0) {
-//            throw new ServiceException("操作结果为空！");
-//        }
-//
-//        addTopicRelation(examine.getId(), topicIds);
-//        addEsessionRelation(examine.getId(), esessionIds);
 
         Examine persist = examineDAO.findById(examine.getId());
 
@@ -256,14 +342,17 @@ public class ExamineService implements IExamineService {
             Integer[] originIds = originEsessions.stream().map(BaseEntity::getId).toArray(Integer[]::new);
 
             {
+                List<Integer> addList = new ArrayList<>();
                 for (int i = 0; i < newEsessionIds.length; i++) {
                     Integer id = Integer.parseInt(newEsessionIds[i]);
                     if (ArrayUtils.contains(originIds, id)) {//EDIT
                         //ignore...
                     } else {//ADD
                         addEsessionRelation(examine.getId(), id + "");
+                        addList.add(id);
                     }
                 }
+                applyTopic2AddedEsession(examine, topicIds, esessionIds, addList);
             }
 
             //DEL
@@ -278,8 +367,9 @@ public class ExamineService implements IExamineService {
             }
         }
 
-        applyTopic2Esession(examine, topicIds, esessionIds);
+//        applyTopic2Esession(examine, topicIds, esessionIds);
     }
+
 
     @Override
     public void changeKsxz(String ksxz, String kssm) throws ServiceException {
