@@ -33,4 +33,6 @@ public interface IExamineDAO {
     ExamineUser findEUByEidAndUname(Integer eid, String username);
 
     ExamineUser findEUByEidAndUid(Integer eid, Integer uid);
+
+    Integer findExamineeNum(Integer eid, String pos);
 }

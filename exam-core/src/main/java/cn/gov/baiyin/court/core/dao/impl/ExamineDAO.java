@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 
 import java.util.List;
 import java.util.Map;
@@ -135,6 +136,16 @@ public class ExamineDAO extends AbstractDAO implements IExamineDAO {
             return examineUsers.get(0);
         }
         return null;
+    }
+
+    @Override
+    public Integer findExamineeNum(Integer eid, String pos) {
+        String sql = "select count(distinct t2.id) from score t\n" +
+                "left join reply t1 on t.rid=t1.id\n" +
+                "left join user t2 on t1.uid=t2.id\n" +
+                "left join examine_topic t3 on t1.etid=t3.id\n" +
+                "where t3.eid=? " + (StringUtils.isEmpty(pos) ? "" : "and t2.pos='" + pos + "'") + " and t2.id is not null";
+        return jdbcTemplate.queryForObject(sql, Integer.class, eid);
     }
 
 }

@@ -127,9 +127,14 @@ public class ScoreDAO extends AbstractDAO implements IScoreDAO {
 
         Examine examine = examineService.findById(eid);
         List<Map<String, Object>> list;
+
+        Integer userNum = examineService.findExamineeNum(eid, pos);
+        if (userNum == null) {
+            return null;
+        }
         if (examine.getType() == 2) {
 
-            String s = "select t4.type,avg(t.score) score from score t\n" +
+            String s = "select t4.type,sum(t.score) score from score t\n" +
                     "left join reply t1 on t.rid=t1.id\n" +
                     "left join examine_topic t2 on t1.etid=t2.id\n" +
                     "left join user t3 on t1.uid=t3.id\n" +
@@ -139,18 +144,26 @@ public class ScoreDAO extends AbstractDAO implements IScoreDAO {
             if (!CollectionUtils.isEmpty(list)) {
                 for (Map<String, Object> map : list) {
                     Integer type = MapUtils.getInteger(map, "type", 0);
+                    float score = MapUtils.getFloatValue(map, "score", 0);
                     map.put("name", type == 1 ? "对照复录" : "听音打字");
+                    map.put("score", score / userNum);
                 }
             }
         } else {
-            list = jdbcTemplate.queryForList("select t3.name,t.score  from score t\n" +
+            list = jdbcTemplate.queryForList("select t3.name,sum(t.score) score  from score t\n" +
                     "left join reply t1 on t.rid=t1.id\n" +
                     "left join examine_topic t2 on t1.etid=t2.id\n" +
                     "left join topic t3 on t2.tid= t3.id\n" +
                     "left join user t4 on t1.uid= t4.id\n" +
                     "where t4.id is not null " + (StringUtils.isEmpty(pos) ? "" : " and t4.pos='" + pos + "'") +
-                    " and t2.eid=? order by t3.id", eid);
+                    " and t2.eid=? group by t3.id,t3.name order by t3.id", eid);
+
+            for (Map<String, Object> map : list) {
+                float score = MapUtils.getFloatValue(map, "score", 0f);
+                map.put("score", score / userNum);
+            }
         }
+
 
         return list.stream()
                 .collect(Collectors.groupingBy(m -> m.get("name").toString(),

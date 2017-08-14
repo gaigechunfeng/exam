@@ -31,4 +31,6 @@ public interface IExamineService {
     Examine findById(Integer eid);
 
     ExamineUser findEUByEidAndUid(Integer eid, Integer uid);
+
+    Integer findExamineeNum(Integer eid, String pos);
 }

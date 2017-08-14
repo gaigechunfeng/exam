@@ -201,6 +201,9 @@ public class ExamineService implements IExamineService {
                     })
                     .collect(Collectors.toList());
             List<ESession> eSessions = esessionService.findByIds(esessionIds);
+            if (eSessions.size() > Math.min(t1s.size(), t2s.size())) {
+                throw new RuntimeException("\u8bd5\u9898\u4e0d\u8db3\u4ee5\u5206\u914d\u7ed9\u5404\u573a\u6b21\uff01");
+            }
 
             for (int i = 0, len = eSessions.size(); i < len; i++) {
 
@@ -418,5 +421,10 @@ public class ExamineService implements IExamineService {
     @Override
     public ExamineUser findEUByEidAndUid(Integer eid, Integer uid) {
         return examineDAO.findEUByEidAndUid(eid, uid);
+    }
+
+    @Override
+    public Integer findExamineeNum(Integer eid, String pos) {
+        return examineDAO.findExamineeNum(eid, pos);
     }
 }
