@@ -6,7 +6,6 @@ import cn.gov.baiyin.court.core.entity.*;
 import cn.gov.baiyin.court.core.exception.ServiceException;
 import cn.gov.baiyin.court.core.service.*;
 import cn.gov.baiyin.court.core.util.*;
-import com.alibaba.druid.support.json.JSONUtils;
 import org.apache.commons.collections.MapUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -51,7 +50,7 @@ public class ScoreService implements IScoreService {
     private IEsessionService esessionService;
 
 
-    private static final int REF_COUNT = Utils.getApp().getInt("reference.count", 120);
+    private static final int REF_COUNT = Utils.getApp().getInt("reference.count", 105);
 
     @Autowired
     public void setEsessionService(IEsessionService esessionService) {
@@ -96,16 +95,16 @@ public class ScoreService implements IScoreService {
 
     @Override
     @Transactional
-    public Score submitAnswer(String answer, Integer speed, Float accuracy, Integer tid, Integer eid, Integer esId) throws ServiceException {
+    public Score submitAnswer(String answer, Integer speed, Float accuracy, Integer tid, Integer eid, Integer esId) {
 
         if (answer == null || tid == null || eid == null) {
-            throw new ServiceException("参数错误！");
+            throw new RuntimeException("参数错误！");
         }
 
         try {
             ExamineTopic examineTopic = examineTopicService.findByEidAndTid(eid, tid);
             if (examineTopic == null) {
-                throw new ServiceException("试卷与题目不匹配！");
+                throw new RuntimeException("试卷与题目不匹配！");
             }
             Topic topic = topicService.findById(tid);
             User user = userService.findByUserName(Authc.getCurrUserName());
@@ -116,7 +115,7 @@ public class ScoreService implements IScoreService {
             Score score;
             if (topic.getType() == Topic.Type.LOOK.getTypeVal()) {
                 if (speed == null || accuracy == null) {
-                    throw new ServiceException("参数错误！");
+                    throw new RuntimeException("参数错误！");
                 }
                 float s = Math.min(accuracy * speed * topic.getScore() / REF_COUNT / 100, topic.getScore());
                 score = new Score(reply.getId(), accuracy, s);
@@ -127,7 +126,7 @@ public class ScoreService implements IScoreService {
             }
             boolean r = scoreDAO.add(score);
             if (!r) {
-                throw new ServiceException("保存分数失败！");
+                throw new RuntimeException("保存分数失败！");
             }
             return score;
         } finally {
@@ -148,7 +147,7 @@ public class ScoreService implements IScoreService {
                 FileUtil.creatFolder(folder);
                 try {
                     genSqlFile(folder);
-                } catch (ServiceException e) {
+                } catch (Exception e) {
                     LOG.error("\u573a\u6b21{" + esId + "}\u7ed3\u675f\u540e10\u79d2\u4e2d\u5907\u4efdsql\u6587\u4ef6\u5931\u8d25\uff01", e);
                 }
             });
@@ -156,7 +155,7 @@ public class ScoreService implements IScoreService {
         });
     }
 
-    private void addReply(Reply reply) throws ServiceException {
+    private void addReply(Reply reply) {
 
         Reply r = findReplyByEtidAndUid(reply.getEtid(), reply.getUid());
         if (r != null) {
@@ -224,11 +223,11 @@ public class ScoreService implements IScoreService {
     }
 
     @Override
-    public Map<String, Object> detail(Integer uid, Integer eid) throws ServiceException {
+    public Map<String, Object> detail(Integer uid, Integer eid) {
 
         List<Map<String, Object>> list = scoreDAO.detail(uid, eid);
         if (CollectionUtils.isEmpty(list)) {
-            throw new ServiceException("未查到分数信息！");
+            throw new RuntimeException("未查到分数信息！");
         }
         Map<String, Object> obj = new HashMap<>();
         Map<String, Object> scoreMap = new HashMap<>();
@@ -273,17 +272,17 @@ public class ScoreService implements IScoreService {
     }
 
     @Override
-    public Map<String, Object> frontDetail(Integer eid) throws ServiceException {
+    public Map<String, Object> frontDetail(Integer eid) {
         User currUser = userService.findByUserName(Authc.getCurrUserName());
         return detail(currUser.getId(), eid);
     }
 
     @Override
     @Transactional
-    public void reExam(Integer uid, Integer eid) throws ServiceException {
+    public void reExam(Integer uid, Integer eid) {
 
         if (uid == null || uid == 0 || eid == null || eid == 0) {
-            throw new ServiceException("uid或eid错误");
+            throw new RuntimeException("uid或eid错误");
         }
         scoreDAO.removeByUidAndEid(uid, eid);
 
@@ -298,7 +297,7 @@ public class ScoreService implements IScoreService {
     }
 
     @Override
-    public File genDataUploadZip(Integer eid, String pos) throws ServiceException {
+    public File genDataUploadZip(Integer eid, String pos) {
 
         File folder = new File(FileService.getTempFolder(), "dataUpload-" + System.currentTimeMillis());
         FileUtil.creatFolder(folder);
@@ -312,7 +311,7 @@ public class ScoreService implements IScoreService {
     }
 
     @Override
-    public File importEnc(MultipartFile file) throws ServiceException {
+    public File importEnc(MultipartFile file) {
 
         File xlsFile = new File(FileService.getTempFolder(), "score-" + System.currentTimeMillis() + ".xls");
         try (InputStream is = file.getInputStream(); FileOutputStream fos = new FileOutputStream(xlsFile)) {
@@ -321,11 +320,11 @@ public class ScoreService implements IScoreService {
             StreamUtils.copy(CodeUtil.decrypt(s), CodeUtil.ENC_U8, fos);
             return xlsFile;
         } catch (IOException e) {
-            throw new ServiceException("\u89e3\u5bc6\u5931\u8d25\uff01", e);
+            throw new RuntimeException("\u89e3\u5bc6\u5931\u8d25\uff01", e);
         }
     }
 
-    private File genEncScoreFile(File folder, Integer eid, String pos) throws ServiceException {
+    private File genEncScoreFile(File folder, Integer eid, String pos) {
 
 //        PageInfo pageInfo = listPagination(new PageInfo(1, 1000), pos, eid);
 //        Map<String, Object> m = new HashMap<>();
@@ -347,11 +346,11 @@ public class ScoreService implements IScoreService {
             StreamUtils.copy(enc, ENC_U8, fos);
             return f;
         } catch (IOException e) {
-            throw new ServiceException("\u751f\u6210\u52a0\u5bc6\u5206\u6570\u6587\u4ef6\u5931\u8d25\uff01");
+            throw new RuntimeException("\u751f\u6210\u52a0\u5bc6\u5206\u6570\u6587\u4ef6\u5931\u8d25\uff01");
         }
     }
 
-    private File genSqlFile(File folder) throws ServiceException {
+    private File genSqlFile(File folder) {
 
         String s = exportDb2Sql();
         File f = new File(folder, "db-" + System.currentTimeMillis() + ".sql");
@@ -359,7 +358,7 @@ public class ScoreService implements IScoreService {
             StreamUtils.copy(s, ENC_U8, fos);
             return f;
         } catch (IOException e) {
-            throw new ServiceException("生成sql文件失败！");
+            throw new RuntimeException("生成sql文件失败！");
         }
     }
 

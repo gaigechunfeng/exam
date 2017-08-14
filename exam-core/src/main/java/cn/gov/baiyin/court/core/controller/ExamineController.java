@@ -1,7 +1,6 @@
 package cn.gov.baiyin.court.core.controller;
 
 import cn.gov.baiyin.court.core.entity.Examine;
-import cn.gov.baiyin.court.core.exception.ServiceException;
 import cn.gov.baiyin.court.core.service.IExamineService;
 import cn.gov.baiyin.court.core.util.Msg;
 import cn.gov.baiyin.court.core.util.PageInfo;
@@ -41,7 +40,7 @@ public class ExamineController {
         try {
             examineService.add(examine, topicIds, esessionIds);
             return Msg.SUCCESS;
-        } catch (ServiceException e) {
+        } catch (Exception e) {
             return Msg.error(e);
         }
     }
@@ -53,7 +52,7 @@ public class ExamineController {
         try {
             examineService.changeKsxz(ksxz, kssm);
             return Msg.SUCCESS;
-        } catch (ServiceException e) {
+        } catch (Exception e) {
             return Msg.error(e);
         }
     }

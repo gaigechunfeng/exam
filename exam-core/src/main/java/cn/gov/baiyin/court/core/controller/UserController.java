@@ -39,7 +39,7 @@ public class UserController {
         try {
             userService.add(user, examineIds);
             return Msg.SUCCESS;
-        } catch (ServiceException e) {
+        } catch (Exception e) {
             return Msg.error(e);
         }
     }
@@ -51,7 +51,7 @@ public class UserController {
         try {
             userService.edit(user, examineIds);
             return Msg.SUCCESS;
-        } catch (ServiceException e) {
+        } catch (Exception e) {
             return Msg.error(e);
         }
     }
@@ -62,7 +62,7 @@ public class UserController {
 
         try {
             return Msg.success(userService.findById(id));
-        } catch (ServiceException e) {
+        } catch (Exception e) {
             return Msg.error(e);
         }
     }
@@ -73,7 +73,7 @@ public class UserController {
 
         try {
             userService.deleteById(id);
-        } catch (ServiceException e) {
+        } catch (Exception e) {
             return Msg.error(e);
         }
         return Msg.SUCCESS;
@@ -85,7 +85,7 @@ public class UserController {
 
         try {
             userService.deleteMulti(ids);
-        } catch (ServiceException e) {
+        } catch (Exception e) {
             return Msg.error(e);
         }
         return Msg.SUCCESS;

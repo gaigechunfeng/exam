@@ -6,7 +6,6 @@ import cn.gov.baiyin.court.core.entity.Score;
 import cn.gov.baiyin.court.core.exception.ServiceException;
 import cn.gov.baiyin.court.core.service.IEsessionService;
 import cn.gov.baiyin.court.core.service.IScoreService;
-import cn.gov.baiyin.court.core.service.impl.EsessionService;
 import cn.gov.baiyin.court.core.util.FileUtil;
 import cn.gov.baiyin.court.core.util.Msg;
 import org.slf4j.Logger;
@@ -47,9 +46,13 @@ public class FrontController {
 
     @RequestMapping("/checkHasDone")
     @ResponseBody
-    public Msg checkHasDone(Integer tid, Integer eid) throws ServiceException {
+    public Msg checkHasDone(Integer tid, Integer eid) {
 
-        esessionService.checkHasDone(eid);
+        try {
+            esessionService.checkHasDone(eid);
+        } catch (Exception e) {
+            return Msg.error(e);
+        }
         //您已经参加过本次考试，不能重复参加！
         return Msg.SUCCESS;
 //        return new Msg(r, "\u60a8\u5df2\u7ecf\u53c2\u52a0\u8fc7\u672c\u6b21\u8003\u8bd5\uff0c\u4e0d\u80fd\u91cd\u590d\u53c2\u52a0\uff01", null);
@@ -70,7 +73,7 @@ public class FrontController {
         Score score;
         try {
             score = scoreService.submitAnswer(answer, speed, accuracy, tid, eid, esId);
-        } catch (ServiceException e) {
+        } catch (Exception e) {
             return Msg.error(e);
         }
         return Msg.success(score);
@@ -90,7 +93,7 @@ public class FrontController {
 
         try {
             return Msg.success(scoreService.frontDetail(eid));
-        } catch (ServiceException e) {
+        } catch (Exception e) {
             return Msg.error(e);
         }
     }

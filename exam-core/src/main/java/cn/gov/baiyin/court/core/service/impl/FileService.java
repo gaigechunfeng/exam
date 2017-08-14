@@ -29,10 +29,10 @@ public class FileService implements IFileService {
     private static final int BEFORE = Utils.getApp().getInt("clean.task.period", 600);
 
     @Override
-    public String save(MultipartFile file) throws ServiceException {
+    public String save(MultipartFile file) {
 
         if (file.isEmpty()) {
-            throw new ServiceException("file is empty");
+            throw new RuntimeException("file is empty");
         }
 
         File destFile = getTempFolder();
@@ -41,7 +41,7 @@ public class FileService implements IFileService {
         try {
             FileUtil.saveFile(file.getInputStream(), new FileOutputStream(saveFile));
         } catch (IOException e) {
-            throw new ServiceException("save file error");
+            throw new RuntimeException("save file error");
         }
         return saveFile.getName();
     }
@@ -61,20 +61,20 @@ public class FileService implements IFileService {
     public void deleteFile(String file) throws ServiceException {
 
         if (StringUtils.isEmpty(file)) {
-            throw new ServiceException("参数错误！[file]");
+            throw new RuntimeException("参数错误！[file]");
         }
         File f = new File(file);
         if (!f.exists()) {
-            throw new ServiceException("文件不存在！[" + file + "]");
+            throw new RuntimeException("文件不存在！[" + file + "]");
         }
 
         if (!validatePermission(f)) {
-            throw new ServiceException("改文件非项目上传路径，不允许删除！");
+            throw new RuntimeException("\u6539\u6587\u4ef6\u975e\u9879\u76ee\u4e0a\u4f20\u8def\u5f84\uff0c\u4e0d\u5141\u8bb8\u5220\u9664\uff01");
         }
         try {
             Files.delete(f.toPath());
         } catch (IOException e) {
-            throw new ServiceException("删除失败！[" + e.getMessage() + "]", e);
+            throw new RuntimeException("删除失败！[" + e.getMessage() + "]", e);
         }
     }
 

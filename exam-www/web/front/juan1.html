@@ -105,8 +105,6 @@
         -->
 
 
-
-
     </style>
     <script language="javascript">
 
@@ -123,9 +121,6 @@
             m_obj = document.getElementById(objId)
             m_obj.style.backgroundColor = "#0698D1"
         }
-
-
-
 
 
     </script>
@@ -519,14 +514,14 @@
                     answer: vals.join(''),
                     accuracy: speedObj.accuracy,
                     speed: speedObj.speed,
-                    esId:currEsession ? currEsession.id:null,
+                    esId: currEsession ? currEsession.id : null,
                     tid: currTopic.id,
                     eid: currExam.id
                 }
             } else {
                 p = {
                     answer: $.trim($('[name=answer]').prop('readonly', true).val()),
-                    esId:currEsession ? currEsession.id:null,
+                    esId: currEsession ? currEsession.id : null,
                     tid: currTopic.id,
                     eid: currExam.id
                 }
@@ -560,9 +555,7 @@
     function examOver(cb) {
 
         if (App.currUser && App.currUser.username.indexOf('musicPlayer') == 0) {
-            if (cb) {
-                cb();
-            }
+            App.logout(true);
         } else {
             $.post(App.basePath + '/front/examOver.do', {eid: currExam.id}, function (d) {
                 if (cb) {
@@ -992,8 +985,6 @@
 
 //        $('#fullScreenBtn').on('click',App.requestFullScreen).click();
     })
-
-
 
 
 </script>

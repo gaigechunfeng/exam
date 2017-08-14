@@ -4,8 +4,6 @@ import cn.gov.baiyin.court.core.exception.ServiceException;
 import cn.gov.baiyin.court.core.service.IFileService;
 import cn.gov.baiyin.court.core.util.FileUtil;
 import cn.gov.baiyin.court.core.util.Msg;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -44,7 +42,7 @@ public class FileController {
             String filePath = fileService.save(file);
 
             return Msg.success(filePath);
-        } catch (ServiceException e) {
+        } catch (Exception e) {
             return Msg.error(e);
         }
     }
@@ -57,7 +55,7 @@ public class FileController {
             fileService.deleteFile(file);
 
             return Msg.SUCCESS;
-        } catch (ServiceException e) {
+        } catch (Exception e) {
             return Msg.error(e);
         }
     }
