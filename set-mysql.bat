@@ -1,0 +1,1 @@
+@set mysql_home=C:\Program Files\MySQL\MySQL Server 5.7

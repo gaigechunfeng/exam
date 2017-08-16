@@ -1,0 +1,1 @@
+@set maven_home=D:\apache-maven-3.2.5
