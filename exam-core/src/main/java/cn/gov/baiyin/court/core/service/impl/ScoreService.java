@@ -159,8 +159,8 @@ public class ScoreService implements IScoreService {
 
         Reply r = findReplyByEtidAndUid(reply.getEtid(), reply.getUid());
         if (r != null) {
-//            throw new ServiceException("此题答案已经提交，不能重复提交");
-            scoreDAO.removeByEtidAndUid(reply.getEtid(), reply.getUid());
+            throw new RuntimeException("\u6b64\u9898\u7b54\u6848\u5df2\u7ecf\u63d0\u4ea4\uff0c\u4e0d\u80fd\u91cd\u590d\u63d0\u4ea4");
+//            scoreDAO.removeByEtidAndUid(reply.getEtid(), reply.getUid());
         }
 
         scoreDAO.addReply(reply);

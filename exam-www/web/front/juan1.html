@@ -535,7 +535,8 @@
                             score = obj.score;
 //                alert('您本题的得分是：' + score + '分');
                     } else {
-                        alert('错误：' + data.errmsg)
+//                        alert('错误：' + data.errmsg)
+                        console.error('错误：', data.errmsg);
                     }
                 }
 
