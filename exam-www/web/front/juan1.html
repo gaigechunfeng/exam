@@ -920,6 +920,7 @@
         $.get(App.basePath + '/front/getEsessions.do', {}, function (data) {
             if (data && data.success) {
                 var esessions = data.obj;
+                console.log('loadEsessions esessions::', esessions)
                 if (!esessions || esessions.length == 0) {
                     gotoWait();
                 } else {
@@ -929,11 +930,13 @@
                             st = parseInt(es.startTime),
                             et = parseInt(es.endTime)
 
+                        console.log('loadEsessions App.currTime:', App.currTime, '---st:', st, '----et:', et)
                         if (App.currTime >= st && App.currTime < et) {
                             legals.push(es);
                         }
 
                     }
+                    console.log('loadEsessions legals::', legals)
                     if (legals.length === 0) {//没有正在进行的考试
                         gotoWait();
                         return;
@@ -941,6 +944,8 @@
 
                     doingExam(legals[0]);
                 }
+            } else {
+                console.error("loadEsessions error::", data)
             }
         }, 'json');
     }

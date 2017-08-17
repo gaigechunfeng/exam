@@ -1,0 +1,1 @@
+@set JAVA_HOME=D:\java\jdk-8u92-windows-x64

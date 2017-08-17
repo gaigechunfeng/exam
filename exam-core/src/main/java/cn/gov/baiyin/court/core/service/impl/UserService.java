@@ -83,7 +83,7 @@ public class UserService implements IUserService {
         }
         User persist = userDAO.findByUserName(user.getUsername());
         if (persist != null) {
-            throw new ServiceException("准考证号是[" + user.getUsername() + "]的考试已经存在！");
+            throw new ServiceException("准考证号是[" + user.getUsername() + "]的考生已经存在！");
         }
 
         boolean r = userDAO.add(user);

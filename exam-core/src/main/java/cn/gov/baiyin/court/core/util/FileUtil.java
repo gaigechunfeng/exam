@@ -232,7 +232,7 @@ public class FileUtil {
         creatFolder(productionFolder);
 
         File f = new File(productionFolder,
-                "" + new Date().getTime() + "." + getFileExt(file));
+                "" + new Date().getTime() + "-" + Utils.nextNum() + "." + getFileExt(file));
         createFile(f);
         try (FileInputStream fis = new FileInputStream(file); FileOutputStream fos = new FileOutputStream(f)) {
             StreamUtils.copy(fis, fos);

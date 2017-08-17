@@ -4,7 +4,6 @@ import cn.gov.baiyin.court.core.authc.Authc;
 import cn.gov.baiyin.court.core.dao.IEsessionDAO;
 import cn.gov.baiyin.court.core.entity.ESession;
 import cn.gov.baiyin.court.core.entity.ExamineUser;
-import cn.gov.baiyin.court.core.entity.Topic;
 import cn.gov.baiyin.court.core.entity.User;
 import cn.gov.baiyin.court.core.exception.ServiceException;
 import cn.gov.baiyin.court.core.service.IEsessionService;
@@ -16,7 +15,8 @@ import cn.gov.baiyin.court.core.util.PageInfo;
 import cn.gov.baiyin.court.core.util.Utils;
 import jxl.Sheet;
 import jxl.Workbook;
-import jxl.read.biff.BiffException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,7 +32,6 @@ import java.io.InputStream;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -42,7 +41,7 @@ import java.util.stream.Collectors;
 @Service
 public class EsessionService implements IEsessionService {
 
-//    private static final Logger LOG = LoggerFactory.getLogger(EsessionService.class);
+    private static final Logger LOG = LoggerFactory.getLogger(EsessionService.class);
 
     private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
@@ -134,16 +133,25 @@ public class EsessionService implements IEsessionService {
         List<ESession> eSessions;
         String username = Authc.getCurrUserName();
 
+
         boolean isMusic = username.startsWith("musicPlayer");
         boolean isFixEsession = esessionDAO.isUserAttachEsession(username);
+
+        LOG.info("getCurrEsessions user ::" + username);
+        LOG.info("getCurrEsessions user isMusic ::" + isMusic);
+        LOG.info("getCurrEsessions user isFixEsession::" + isFixEsession);
 
         if (isFixEsession && !isMusic) {
             eSessions = esessionDAO.listUserEsessions(username, WAIT_TIME);
         } else {
             eSessions = esessionDAO.listLegelEsessions(username, WAIT_TIME);
         }
+        LOG.info("getCurrEsessions user eSessions::" + eSessions);
         if (!CollectionUtils.isEmpty(eSessions)) {
+            LOG.info("getCurrEsessions user eSessions size::" + eSessions.size());
             for (ESession eSession : eSessions) {
+                LOG.info("getCurrEsessions user eSessions[" + eSession.getName() + "] startTime::" + eSession.getStartTime() + "-" + DateUtil.current());
+                LOG.info("getCurrEsessions user eSessions[" + eSession.getName() + "] endTime::" + eSession.getEndTime() + "-" + DateUtil.current());
                 eSession.setStartTime(DateUtil.str2long(eSession.getStartTime()));
                 eSession.setEndTime(DateUtil.str2long(eSession.getEndTime()));
             }
@@ -169,6 +177,7 @@ public class EsessionService implements IEsessionService {
         String username = Authc.getCurrUserName();
 
         boolean r = esessionDAO.checkHasDone(username, eid);
+        LOG.info("checkHasDone user[" + username + "] result:: " + r);
         if (r) {
             throw new ServiceException("\u60a8\u5df2\u7ecf\u53c2\u52a0\u8fc7\u672c\u6b21\u8003\u8bd5\uff0c\u4e0d\u80fd\u91cd\u590d\u53c2\u52a0\uff01");
         }

@@ -392,6 +392,13 @@
             }
         },
         getTimeStamp: function (t) {
+            if (t <= 0) {
+                return {
+                    h: 0,
+                    m: 0,
+                    s: 0
+                }
+            }
             var h = Math.floor(t / 3600000),
                 m = Math.floor((t - h * 3600000) / 60000),
                 s = Math.floor((t - h * 3600000 - m * 60000) / 1000);

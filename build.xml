@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <project default="main">
 
-    <target name="main" depends="clean,init,copy,zip64,zip32">
+    <target name="main" depends="clean,init,copy,zip64">
         <echo>Success</echo>
     </target>
 
@@ -36,10 +36,10 @@
             <fileset dir="exam-www/work"/>
         </copy>
         <copy todir="_tmp/jre">
-            <fileset dir="jdk1.8.0_121/jre"/>
+            <fileset dir="D:\\java\\jdk-8u92-windows-x64\\jre"/>
         </copy>
         <copy todir="_tmp/mysql">
-            <fileset dir="MySQL Server 5.0"/>
+            <fileset dir="C:\\Program Files\\MySQL\\MySQL Server 5.7"/>
         </copy>
     </target>
 
@@ -51,14 +51,14 @@
         </zip>
     </target>
 
-    <target name="zip32">
-        <delete dir="_tmp/jre"/>
-        <copy todir="_tmp/jre">
-            <fileset dir="jre-1.8-32"/>
-        </copy>
-        <zip destfile="dist/exam-32.zip">
-            <zipfileset dir="_tmp"/>
-        </zip>
-        <delete dir="_tmp"/>
-    </target>
+    <!--<target name="zip32">-->
+        <!--<delete dir="_tmp/jre"/>-->
+        <!--<copy todir="_tmp/jre">-->
+            <!--<fileset dir="jre-1.8-32"/>-->
+        <!--</copy>-->
+        <!--<zip destfile="dist/exam-32.zip">-->
+            <!--<zipfileset dir="_tmp"/>-->
+        <!--</zip>-->
+        <!--<delete dir="_tmp"/>-->
+    <!--</target>-->
 </project>
