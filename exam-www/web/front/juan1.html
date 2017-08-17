@@ -507,7 +507,7 @@
                     vals = []
                 $('#readAndWrite input').prop('readonly', true).each(function () {
                     var ip = $(this),
-                    val = ip.val()
+                        val = ip.val()
                     vals.push(val || '')
                 })
                 p = {
@@ -530,11 +530,13 @@
 
                 if (data && data.success) {
 
-                    var obj = data.obj,
-                        score = obj.score;
+                    if (data.success) {
+                        var obj = data.obj,
+                            score = obj.score;
 //                alert('您本题的得分是：' + score + '分');
-                } else {
-                    alert('错误：' + data.errmsg)
+                    } else {
+                        alert('错误：' + data.errmsg)
+                    }
                 }
 
                 if (typeof callback === 'function') {
