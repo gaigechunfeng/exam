@@ -38,4 +38,6 @@ public interface IScoreDAO {
     PageInfo listRandom(PageInfo pageInfo, String pos, Integer eid);
 
     Map<String,Object> queryRandomScoreMap(Integer eid);
+
+    Score findByRid(Integer id);
 }

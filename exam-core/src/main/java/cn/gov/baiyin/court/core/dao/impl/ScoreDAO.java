@@ -262,6 +262,11 @@ public class ScoreDAO extends AbstractDAO implements IScoreDAO {
         return m;
     }
 
+    @Override
+    public Score findByRid(Integer id) {
+        return jdbcTemplate.queryForObject("select * from score where rid=?", Score.class, id);
+    }
+
     private static String map2Sql(String tableName, Map<String, Object> sm) {
 
         StringBuilder fields = new StringBuilder();
@@ -273,9 +278,9 @@ public class ScoreDAO extends AbstractDAO implements IScoreDAO {
             String field = entry.getKey();
             Object val = entry.getValue();
 
-            if ("id".equalsIgnoreCase(field)) {
-                continue;
-            }
+//            if ("id".equalsIgnoreCase(field)) {
+//                continue;
+//            }
             fields.append(",").append(field);
             values.append(",").append(parseVal(val));
         }

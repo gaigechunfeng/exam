@@ -112,7 +112,11 @@ public class ScoreService implements IScoreService {
             Reply reply = new Reply(examineTopic.getId(), user.getId(), answer);
             addReply(reply);
 
-            Score score;
+            Score score = findByRid(reply.getId());
+            if (score != null) {
+                //该答案的分数已经生成，不能重复生成！
+                throw new RuntimeException("\u8be5\u7b54\u6848\u7684\u5206\u6570\u5df2\u7ecf\u751f\u6210\uff0c\u4e0d\u80fd\u91cd\u590d\u751f\u6210\uff01");
+            }
             if (topic.getType() == Topic.Type.LOOK.getTypeVal()) {
                 if (speed == null || accuracy == null) {
                     throw new RuntimeException("参数错误！");
@@ -132,6 +136,10 @@ public class ScoreService implements IScoreService {
         } finally {
             autoBackup(esId);
         }
+    }
+
+    private Score findByRid(Integer id) {
+        return scoreDAO.findByRid(id);
     }
 
     private void autoBackup(Integer esId) {
