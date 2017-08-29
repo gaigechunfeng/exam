@@ -1,0 +1,56 @@
+
+html, body, :global(#root) {
+  background-color: #FFFFFF;
+  margin: 0;
+}
+
+:global(.backgroundRepeat) {
+  background-repeat: repeat-x;
+}
+
+:global(.whiteBgColor) {
+  background-color: #FFFFFF
+}
+
+:global(.bottom) {
+  line-height: 28px;
+  font-size: 12px;
+  color: #999999
+}
+
+:global(.pointerCursor) {
+  cursor: pointer;
+}
+
+:global(.border0) {
+  border: 0;
+}
+
+:global(.alignCenter) {
+  text-align: center;
+}
+
+:global(.alignLeft) {
+  text-align: left;
+}
+
+:global(.alignRight) {
+  text-align: right;
+}
+
+:global(.valignBottom) {
+  vertical-align: bottom;
+}
+
+:global(.valignTop) {
+  vertical-align: top;
+}
+
+:global(.valignMiddle) {
+  vertical-align: middle;
+}
+
+:global(.marginCenter){
+  margin: auto;
+}
+
