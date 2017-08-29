@@ -1,0 +1,68 @@
+.border1 {
+  border: 1px solid #CCCCCC
+}
+
+.border2 {
+  border: 2px solid #0698D1
+}
+
+.input1 {
+  border: none;
+  width: 187px;
+  height: 27px;
+  text-indent: 0.5em
+}
+
+.bgColor1 {
+  background-color: rgb(6, 152, 209);
+}
+
+.bgColor2 {
+  background-color: rgb(255, 102, 0);
+}
+
+.STYLE1 {
+  color: #000000;
+  font-size: 36px;
+  font-family: "黑体";
+}
+
+.STYLE2 {
+  color: #FFFFFF;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.STYLE3 {
+  color: #FFFFFF;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.STYLE4 {
+  color: #666666;
+  font-weight: bold;
+}
+
+.STYLE6 {
+  color: #EDFAFA;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.STYLE7 {
+  color: #999999
+}
+
+.STYLE9 {
+  color: #0000FF
+}
+
+.bgColor3{
+  background-color: #EAEBED;
+}
+
+.bgColor4{
+  background-color: #0698D1;
+}
+
